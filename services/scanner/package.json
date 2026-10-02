@@ -1,0 +1,21 @@
+{
+  "name": "@tdrop/scanner",
+  "version": "1.0.0",
+  "description": "ClamAV malware scanner bridge service for tdrop",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.665.0",
+    "@tdrop/shared": "*",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.7.4",
+    "typescript": "^5.6.2"
+  }
+}

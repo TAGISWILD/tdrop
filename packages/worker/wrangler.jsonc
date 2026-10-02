@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tdrop-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "tdrop.link",
+      "custom_domain": true
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "tdrop-files"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "METADATA",
+      "id": "3b544de62e664567ab00db512a9f59e6"
+    }
+  ],
+  "vars": {
+    "APP_DOMAIN": "tdrop.link",
+    "SCANNER_URL": "http://10.0.0.9:3310",
+    "RATE_LIMIT_SECRET": "tdrop_super_secret_rate_limit_salt"
+  }
+}

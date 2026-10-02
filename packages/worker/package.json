@@ -1,0 +1,20 @@
+{
+  "name": "@tdrop/worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker Edge API for tdrop.link",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@tdrop/shared": "*",
+    "@upstash/redis": "^1.34.3",
+    "hono": "^4.6.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241004.0",
+    "wrangler": "^3.80.0"
+  }
+}

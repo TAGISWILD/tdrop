@@ -1,0 +1,117 @@
+import { Hono } from "hono";
+import { isValidShortcode, formatContentDisposition } from "@tdrop/shared";
+import type { AppContext } from "../types.js";
+import { MetadataService } from "../services/redis.js";
+
+export const downloadRoute = new Hono<AppContext>();
+
+// Common handler for GET and HEAD
+async function handleDownload(c: any, isHead: boolean) {
+  const code = c.req.param("code");
+  const redisService = new MetadataService(c.env);
+  const ipHash = c.get("ipHash") || "unknown";
+
+  // Validate format
+  if (!isValidShortcode(code)) {
+    await redisService.recordFailedProbe(ipHash);
+    return c.json({ error: "Not Found", message: "Invalid or nonexistent shortcode." }, 404);
+  }
+
+  // Retrieve metadata
+  const metadata = await redisService.getMetadata(code);
+  if (!metadata) {
+    // Nonexistent code probe: count towards tripwire
+    const isNowBlocked = await redisService.recordFailedProbe(ipHash);
+    if (isNowBlocked) {
+      return c.json(
+        {
+          error: "Too Many Requests",
+          message: "Repeated invalid probes detected. Your IP is blocked for 30 minutes.",
+        },
+        429
+      );
+    }
+    return c.json({ error: "Not Found", message: "File has expired or does not exist." }, 404);
+  }
+
+  // Check logical expiration
+  if (Date.now() > metadata.expiresAt) {
+    await redisService.deleteMetadata(code);
+    await c.env.BUCKET.delete(metadata.objectKey);
+    return c.json({ error: "Gone", message: "This file has expired and been purged." }, 410);
+  }
+
+  // Check malware quarantine verdict
+  if (metadata.status === "INFECTED") {
+    return c.json(
+      {
+        error: "Unavailable",
+        message: "This file was flagged by security scanning and purged.",
+      },
+      410
+    );
+  }
+
+  // Range Header handling
+  const rangeHeader = c.req.header("range");
+  const headers = new Headers();
+  headers.set("Content-Type", metadata.mimeType || "application/octet-stream");
+  headers.set("Content-Disposition", formatContentDisposition(metadata.filename));
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Security-Scan", "ClamAV-Verified");
+  headers.set("Accept-Ranges", "bytes");
+  headers.set("Cache-Control", "private, no-cache, no-store, must-revalidate");
+
+  let r2Object: R2ObjectBody | R2Object | null = null;
+
+  if (rangeHeader) {
+    // Parse range e.g. bytes=0-1023
+    const match = rangeHeader.match(/bytes=(\d+)-(\d*)/);
+    if (match) {
+      const start = parseInt(match[1], 10);
+      const end = match[2] ? parseInt(match[2], 10) : metadata.size - 1;
+
+      if (start >= metadata.size || end >= metadata.size || start > end) {
+        headers.set("Content-Range", `bytes */${metadata.size}`);
+        return new Response(null, { status: 416, headers });
+      }
+
+      const length = end - start + 1;
+      r2Object = await c.env.BUCKET.get(metadata.objectKey, {
+        range: { offset: start, length },
+      });
+
+      headers.set("Content-Range", `bytes ${start}-${end}/${metadata.size}`);
+      headers.set("Content-Length", length.toString());
+
+      if (isHead || !r2Object || !("body" in r2Object)) {
+        return new Response(null, { status: 206, headers });
+      }
+
+      return new Response(r2Object.body, { status: 206, headers });
+    }
+  }
+
+  // Full object request
+  headers.set("Content-Length", metadata.size.toString());
+
+  if (isHead) {
+    return new Response(null, { status: 200, headers });
+  }
+
+  r2Object = await c.env.BUCKET.get(metadata.objectKey);
+  if (!r2Object || !("body" in r2Object)) {
+    return c.json({ error: "Not Found", message: "Underlying storage object not found." }, 404);
+  }
+
+  return new Response(r2Object.body, { status: 200, headers });
+}
+
+downloadRoute.on(["GET", "HEAD"], "/:code", (c) =>
+  handleDownload(c, c.req.method === "HEAD")
+);
+
+// Allow pretty URLs for terminal curl: curl -O https://tdrop.link/:code/:filename
+downloadRoute.on(["GET", "HEAD"], "/:code/:filename", (c) =>
+  handleDownload(c, c.req.method === "HEAD")
+);
