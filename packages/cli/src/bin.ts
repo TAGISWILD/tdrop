@@ -18,7 +18,7 @@ program
   .argument("[file]", "Path to the file to upload")
   .option("-t, --ttl <retention>", "Retention duration: 1h, 24h, 7d", DEFAULT_RETENTION)
   .option("-n, --filename <name>", "Custom filename (especially for piped stdin)")
-  .option("-u, --url <url>", "Backend API URL", `https://${DEFAULT_DOMAIN}`)
+  .option("-u, --url <url>", "Backend API URL", process.env.TDROP_SERVER || `https://${DEFAULT_DOMAIN}`)
   .option("--json", "Output response as raw JSON")
   .action(async (fileArg, options) => {
     const isPiped = !process.stdin.isTTY;

@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { isValidShortcode, formatContentDisposition } from "@tdrop/shared";
 import type { AppContext } from "../types.js";
 import { MetadataService } from "../services/redis.js";
+import { renderDownloadPage } from "../views/download.html.js";
 
 export const downloadRoute = new Hono<AppContext>();
 
@@ -20,7 +21,6 @@ async function handleDownload(c: any, isHead: boolean) {
   // Retrieve metadata
   const metadata = await redisService.getMetadata(code);
   if (!metadata) {
-    // Nonexistent code probe: count towards tripwire
     const isNowBlocked = await redisService.recordFailedProbe(ipHash);
     if (isNowBlocked) {
       return c.json(
@@ -52,6 +52,16 @@ async function handleDownload(c: any, isHead: boolean) {
     );
   }
 
+  // BROWSER DETECTION: If opened in Chrome / Web Browser and not explicitly downloading
+  const acceptHeader = c.req.header("accept") || "";
+  const isHtmlRequest = acceptHeader.includes("text/html");
+  const forceDownload = Boolean(c.req.query("download"));
+
+  if (!isHead && isHtmlRequest && !forceDownload) {
+    const domain = c.env.APP_DOMAIN || "tdrop.link";
+    return c.html(renderDownloadPage(metadata, domain));
+  }
+
   // Range Header handling
   const rangeHeader = c.req.header("range");
   const headers = new Headers();
@@ -65,7 +75,6 @@ async function handleDownload(c: any, isHead: boolean) {
   let r2Object: R2ObjectBody | R2Object | null = null;
 
   if (rangeHeader) {
-    // Parse range e.g. bytes=0-1023
     const match = rangeHeader.match(/bytes=(\d+)-(\d*)/);
     if (match) {
       const start = parseInt(match[1], 10);

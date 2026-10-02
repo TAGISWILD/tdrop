@@ -6,6 +6,7 @@ import { uploadRoute } from "./routes/upload.js";
 import { downloadRoute } from "./routes/download.js";
 import { blipRoute } from "./routes/blip.js";
 import { internalRoute } from "./routes/internal.js";
+import { renderHomePage } from "./views/home.html.js";
 
 const app = new Hono<AppContext>();
 
@@ -21,9 +22,15 @@ app.get("/health", (c) => {
   });
 });
 
-// Root landing with terminal curl usage guide
+// Root landing: Rich web homepage for browsers, plain text for curl/terminal
 app.get("/", (c) => {
   const domain = c.env.APP_DOMAIN || "tdrop.link";
+  const acceptHeader = c.req.header("accept") || "";
+
+  if (acceptHeader.includes("text/html")) {
+    return c.html(renderHomePage(domain));
+  }
+
   return c.text(
     `tdrop (Terminal Drop) - Ephemeral File Sharing
 
