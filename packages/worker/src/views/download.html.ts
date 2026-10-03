@@ -39,14 +39,15 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
   <style>
     :root {
-      --bg: #07080b;
-      --surface: #0f1218;
-      --surface-border: #1b2230;
-      --surface-hover: #161c26;
+      --bg: #07090e;
+      --surface: #0e111a;
+      --surface-card: #131722;
+      --surface-border: rgba(255, 255, 255, 0.08);
+      --surface-border-subtle: rgba(255, 255, 255, 0.04);
       --accent-green: #00ff88;
       --accent-green-dim: rgba(0, 255, 136, 0.12);
-      --accent-cyan: #00d9f5;
-      --accent-cyan-dim: rgba(0, 217, 245, 0.12);
+      --accent-cyan: #00e5ff;
+      --accent-cyan-dim: rgba(0, 229, 255, 0.12);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
@@ -74,23 +75,86 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       width: 100%;
       overflow-x: hidden;
       background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 255, 136, 0.08), transparent 70%),
-        radial-gradient(circle at 100% 100%, rgba(0, 217, 245, 0.04), transparent 40%);
+        radial-gradient(ellipse 70% 40% at 50% -10%, rgba(0, 255, 136, 0.08), transparent 70%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
       background-attachment: fixed;
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
     }
 
-    /* Flexbox 3-Column Layout: Left Rail | Center Main | Right Rail */
+    /* Floating Pill Navbar */
+    .nav-wrapper {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+
+    .nav-island {
+      pointer-events: auto;
+      background: rgba(14, 17, 26, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .logo-wrap span {
+      color: var(--accent-green);
+    }
+
+    .nav-action {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--surface-border);
+      border-radius: 9999px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-action:hover {
+      color: var(--accent-green);
+      border-color: rgba(0, 255, 136, 0.4);
+      background: rgba(0, 255, 136, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Master Layout: 3 Columns */
     .site-wrapper {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 28px;
-      padding: 0 16px 60px;
+      gap: 32px;
+      padding: 30px 16px 80px;
       min-height: 100vh;
     }
 
@@ -101,7 +165,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       flex: 0 0 160px;
     }
 
-    @media (min-width: 1180px) {
+    @media (min-width: 1220px) {
       .ad-rail {
         display: block;
       }
@@ -109,10 +173,10 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .ad-sticky {
       position: sticky;
-      top: 24px;
-      background: rgba(15, 18, 24, 0.75);
+      top: 96px;
+      background: rgba(14, 17, 26, 0.75);
       border: 1px dashed var(--surface-border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 16px 8px;
       min-height: 600px;
       display: flex;
@@ -121,7 +185,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       justify-content: center;
       gap: 12px;
       text-align: center;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     .ad-tag {
@@ -140,7 +205,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(255, 255, 255, 0.015);
       border-radius: 8px;
     }
 
@@ -149,74 +214,27 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       color: var(--text-dim);
     }
 
-    /* Central Content Column: Always Centered & Guaranteed Never Squished */
+    /* Central Content Area */
     .content-container {
       width: 100%;
-      max-width: 680px;
-      flex: 1 1 680px;
+      max-width: 700px;
+      flex: 1 1 700px;
       min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* Header Nav */
-    header.nav {
-      width: 100%;
-      padding: 20px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: var(--text-main);
-      text-decoration: none;
-    }
-
-    .logo-badge {
-      background: var(--accent-green-dim);
-      color: var(--accent-green);
-      font-size: 0.68rem;
-      padding: 2px 7px;
-      border-radius: 4px;
-      border: 1px solid rgba(0, 255, 136, 0.25);
-    }
-
-    .nav-action {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 7px 14px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
-      border-radius: 8px;
-      transition: all 0.15s;
-    }
-
-    .nav-action:hover {
-      color: var(--accent-green);
-      border-color: rgba(0, 255, 136, 0.3);
-    }
-
     /* In-Flow Horizontal Ad Banners */
     .ad-banner-inline {
       width: 100%;
-      margin: 8px 0 20px;
-      background: rgba(15, 18, 24, 0.6);
+      margin: 10px 0 24px;
+      background: rgba(14, 17, 26, 0.65);
       border: 1px dashed var(--surface-border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 12px 10px;
       text-align: center;
-      min-height: 70px;
+      min-height: 65px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -227,31 +245,27 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     .ad-banner-tag {
       position: absolute;
       top: 4px;
-      right: 10px;
+      right: 12px;
       font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-dim);
     }
 
-    /* Main Download Container */
-    main.download-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Download Card */
+    /* Download Card Console */
     .download-card {
-      background: var(--surface);
+      background: linear-gradient(180deg, rgba(18, 22, 32, 0.85) 0%, rgba(10, 13, 20, 0.95) 100%);
       border: 1px solid var(--surface-border);
-      border-radius: 18px;
-      padding: clamp(20px, 5vw, 36px);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+      border-radius: 24px;
+      padding: clamp(24px, 5vw, 40px);
+      box-shadow: 
+        0 30px 60px -15px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
       width: 100%;
+      margin-bottom: 24px;
     }
 
     .download-card::before {
@@ -266,18 +280,19 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     .file-header {
       display: flex;
       align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 20px;
+      gap: 18px;
+      margin-bottom: 24px;
     }
 
     .file-icon {
-      font-size: clamp(2.2rem, 5vw, 2.8rem);
+      font-size: clamp(2.4rem, 5vw, 3rem);
       line-height: 1;
-      padding: clamp(10px, 3vw, 16px);
+      padding: clamp(12px, 3vw, 18px);
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--surface-border);
-      border-radius: 14px;
+      border-radius: 18px;
       flex-shrink: 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .file-details {
@@ -286,13 +301,14 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     }
 
     .file-name {
-      font-size: clamp(1.15rem, 4vw, 1.45rem);
-      font-weight: 700;
+      font-size: clamp(1.25rem, 4vw, 1.6rem);
+      font-weight: 800;
       color: var(--text-main);
       overflow-wrap: anywhere;
       word-break: break-word;
-      line-height: 1.3;
+      line-height: 1.25;
       margin-bottom: 6px;
+      letter-spacing: -0.02em;
     }
 
     .file-meta {
@@ -300,31 +316,32 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       flex-wrap: wrap;
       align-items: center;
       gap: 8px 12px;
-      font-size: clamp(0.78rem, 2.5vw, 0.85rem);
+      font-size: clamp(0.8rem, 2.5vw, 0.88rem);
       color: var(--text-muted);
       font-family: var(--font-mono);
     }
 
     .file-size {
       color: var(--accent-cyan);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    /* Security Verified Badge */
+    /* Security Stamp */
     .security-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.25);
+      border: 1px solid rgba(0, 255, 136, 0.28);
       color: var(--accent-green);
-      padding: 8px 14px;
-      border-radius: 30px;
-      font-size: clamp(0.75rem, 2.4vw, 0.82rem);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: clamp(0.76rem, 2.4vw, 0.84rem);
       font-weight: 600;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
       width: fit-content;
       max-width: 100%;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
     }
 
     /* High-contrast Download Action Button */
@@ -334,38 +351,38 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       justify-content: center;
       gap: 10px;
       width: 100%;
-      min-height: 52px;
+      min-height: 56px;
       background: linear-gradient(135deg, var(--accent-green), #00cc6a);
       color: #04140b;
       font-family: var(--font-sans);
-      font-size: clamp(0.95rem, 3vw, 1.05rem);
-      font-weight: 700;
-      padding: 14px 20px;
-      border-radius: 12px;
+      font-size: clamp(1rem, 3vw, 1.1rem);
+      font-weight: 800;
+      padding: 16px 24px;
+      border-radius: 14px;
       text-decoration: none;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 25px rgba(0, 255, 136, 0.35);
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
 
     .download-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+      box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
     }
 
     .download-btn:active {
-      transform: translateY(0);
+      transform: scale(0.98);
       opacity: 0.95;
     }
 
     /* Terminal cURL Block */
     .curl-block {
-      margin-top: 20px;
-      background: #090b10;
+      margin-top: 24px;
+      background: #080a0f;
       border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border-radius: 12px;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -388,7 +405,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .curl-code {
       font-family: var(--font-mono);
-      font-size: clamp(0.75rem, 2.4vw, 0.85rem);
+      font-size: clamp(0.76rem, 2.4vw, 0.86rem);
       color: var(--text-muted);
       white-space: nowrap;
     }
@@ -396,47 +413,48 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     .curl-code span { color: var(--accent-cyan); }
 
     .copy-btn {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--surface-border);
       color: var(--text-main);
-      padding: 7px 14px;
-      border-radius: 6px;
-      font-size: 0.78rem;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
       flex-shrink: 0;
-      min-height: 36px;
+      min-height: 38px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
 
     .copy-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(0, 255, 136, 0.15);
       color: var(--accent-green);
+      border-color: rgba(0, 255, 136, 0.35);
     }
 
-    /* Expiry & Retention details */
+    /* Expiry & Retention Bar */
     .expiry-bar {
-      margin-top: 18px;
+      margin-top: 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 8px;
-      font-size: clamp(0.72rem, 2.3vw, 0.8rem);
+      font-size: clamp(0.74rem, 2.3vw, 0.82rem);
       color: var(--text-dim);
       font-family: var(--font-mono);
-      padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 16px;
+      border-top: 1px solid var(--surface-border-subtle);
     }
 
     /* Footer */
     footer {
       width: 100%;
       margin-top: 24px;
-      padding: 24px 16px;
-      font-size: 0.8rem;
+      padding: 28px 16px;
+      font-size: 0.82rem;
       color: var(--text-dim);
       text-align: center;
     }
@@ -447,9 +465,19 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 </head>
 <body>
 
+  <!-- Floating Pill Navbar -->
+  <header class="nav-wrapper">
+    <nav class="nav-island">
+      <a href="/" class="logo-wrap">
+        <span>>_</span> tdrop
+      </a>
+      <a href="/" class="nav-action">Upload New File</a>
+    </nav>
+  </header>
+
   <div class="site-wrapper">
 
-    <!-- Left Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <!-- Left Sticky Ad Rail (Desktop >= 1220px only, 160x600) -->
     <aside class="ad-rail">
       <div class="ad-sticky">
         <span class="ad-tag">Sponsor</span>
@@ -464,17 +492,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       </div>
     </aside>
 
-    <!-- Center Content: Always Centered & Never Squished -->
+    <!-- Center Column -->
     <div class="content-container">
-
-      <!-- Navigation Header -->
-      <header class="nav">
-        <a href="/" class="logo">
-          <span>>_ tdrop</span>
-          <span class="logo-badge">v1.0</span>
-        </a>
-        <a href="/" class="nav-action">Upload New File</a>
-      </header>
 
       <!-- Top Horizontal In-Flow Ad Banner -->
       <div class="ad-banner-inline">
@@ -489,63 +508,61 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
         <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
       </div>
 
-      <!-- Main Download Card Container -->
-      <main class="download-container">
-
-        <div class="download-card">
-          <div class="file-header">
-            <div class="file-icon">${icon}</div>
-            <div class="file-details">
-              <h1 class="file-name">${meta.sanitizedFilename}</h1>
-              <div class="file-meta">
-                <span class="file-size">${sizeFormatted}</span>
-                <span>•</span>
-                <span>Ephemeral File</span>
-              </div>
+      <!-- Main Download Card Console -->
+      <div class="download-card">
+        <div class="file-header">
+          <div class="file-icon">${icon}</div>
+          <div class="file-details">
+            <h1 class="file-name">${meta.sanitizedFilename}</h1>
+            <div class="file-meta">
+              <span class="file-size">${sizeFormatted}</span>
+              <span>•</span>
+              <span>Ephemeral File</span>
+              <span>•</span>
+              <span>$0 Egress</span>
             </div>
-          </div>
-
-          <!-- ClamAV Security Stamp -->
-          <div class="security-badge">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-            <span>ClamAV Engine: Clean & Verified</span>
-          </div>
-
-          <!-- Download Action Button -->
-          <a href="${downloadUrl}" class="download-btn">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Download File (${sizeFormatted})</span>
-          </a>
-
-          <!-- Terminal cURL Copy -->
-          <div class="curl-block">
-            <div class="curl-code-wrapper">
-              <div class="curl-code"><span>curl -O</span> https://${domain}/${meta.code}/${encodeURIComponent(meta.sanitizedFilename)}</div>
-            </div>
-            <button class="copy-btn" onclick="copyCurl()">Copy cURL</button>
-          </div>
-
-          <!-- Live Expiry Bar -->
-          <div class="expiry-bar">
-            <span>Retention: ${meta.retentionClass}</span>
-            <span id="countdown">Calculating...</span>
           </div>
         </div>
 
-        <!-- Bottom Horizontal In-Flow Ad Banner -->
-        <div class="ad-banner-inline" style="margin-top: 10px;">
-          <span class="ad-banner-tag">Advertisement</span>
-          <ins class="adsbygoogle"
-               style="display:block; width:100%; min-height:90px;"
-               data-ad-client="ca-pub-2876380604791121"
-               data-ad-slot="0987654321"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
+        <!-- ClamAV Security Stamp -->
+        <div class="security-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>ClamAV Engine: Clean & Verified</span>
         </div>
 
-      </main>
+        <!-- High-Contrast Download Button -->
+        <a href="${downloadUrl}" class="download-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download File (${sizeFormatted})</span>
+        </a>
+
+        <!-- Terminal cURL Copy -->
+        <div class="curl-block">
+          <div class="curl-code-wrapper">
+            <div class="curl-code"><span>curl -O</span> https://${domain}/${meta.code}/${encodeURIComponent(meta.sanitizedFilename)}</div>
+          </div>
+          <button class="copy-btn" onclick="copyCurl()">Copy cURL</button>
+        </div>
+
+        <!-- Live Expiry Bar -->
+        <div class="expiry-bar">
+          <span>Retention: ${meta.retentionClass}</span>
+          <span id="countdown">Calculating...</span>
+        </div>
+      </div>
+
+      <!-- Bottom Horizontal In-Flow Ad Banner -->
+      <div class="ad-banner-inline" style="margin-top: 10px;">
+        <span class="ad-banner-tag">Advertisement</span>
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; min-height:90px;"
+             data-ad-client="ca-pub-2876380604791121"
+             data-ad-slot="0987654321"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
+      </div>
 
       <footer>
         <p>Powered by <a href="/">tdrop</a> · Zero egress fees · Zero logs · End-to-end ephemeral</p>
@@ -553,7 +570,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     </div>
 
-    <!-- Right Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <!-- Right Sticky Ad Rail (Desktop >= 1220px only, 160x600) -->
     <aside class="ad-rail">
       <div class="ad-sticky">
         <span class="ad-tag">Sponsor</span>

@@ -12,8 +12,19 @@ import {
 import type { AppContext } from "../types.js";
 import { MetadataService } from "../services/redis.js";
 import { triggerScanner } from "../services/scanner-client.js";
+import { TelemetryService } from "../services/telemetry.js";
 
 export const uploadRoute = new Hono<AppContext>();
+
+function detectSource(c: any): string {
+  const ua = c.req.header("user-agent") || "";
+  const tdropHdr = c.req.header("x-tdrop-cli") || c.req.header("x-tdrop-version");
+  const isRaw = c.req.path.includes("/raw");
+  if (tdropHdr || ua.toLowerCase().includes("tdrop")) return "CLI (npx tdrop)";
+  if (isRaw) return "Stdin pipe";
+  if (ua.toLowerCase().includes("curl")) return "cURL";
+  return "Web Drop";
+}
 
 // Common upload processing helper
 async function processUpload(
@@ -121,6 +132,23 @@ async function processUpload(
     c.executionCtx.waitUntil(triggerScanner(c.env, { code: shortcode, objectKey, size: totalBytes }));
   } catch {
     triggerScanner(c.env, { code: shortcode, objectKey, size: totalBytes }).catch(console.error);
+  }
+
+  // Record real live telemetry event
+  const telemetry = new TelemetryService(c.env);
+  const telemetryPayload = {
+    code: shortcode,
+    filename: cleanFilename,
+    size: totalBytes,
+    retention,
+    ipHash: c.get("ipHash"),
+    cf: (c.req.raw as any)?.cf,
+    source: detectSource(c),
+  };
+  try {
+    c.executionCtx.waitUntil(telemetry.recordUpload(telemetryPayload));
+  } catch {
+    telemetry.recordUpload(telemetryPayload).catch(console.error);
   }
 
   const domain = c.env.APP_DOMAIN || "tdrop.link";

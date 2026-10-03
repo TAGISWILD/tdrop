@@ -15,17 +15,17 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
   <style>
     :root {
-      --bg: #06080c;
-      --surface: #0c0f16;
-      --surface-card: #11151f;
-      --surface-border: #1a2232;
-      --surface-border-subtle: rgba(255, 255, 255, 0.07);
-      --surface-hover: #151b27;
+      --bg: #07090e;
+      --surface: #0e111a;
+      --surface-card: #131722;
+      --surface-border: rgba(255, 255, 255, 0.08);
+      --surface-border-subtle: rgba(255, 255, 255, 0.04);
+      --surface-border-hover: rgba(0, 255, 136, 0.35);
       --accent-green: #00ff88;
       --accent-green-dim: rgba(0, 255, 136, 0.12);
-      --accent-green-glow: rgba(0, 255, 136, 0.25);
-      --accent-cyan: #00d9f5;
-      --accent-cyan-dim: rgba(0, 217, 245, 0.12);
+      --accent-green-glow: rgba(0, 255, 136, 0.22);
+      --accent-cyan: #00e5ff;
+      --accent-cyan-dim: rgba(0, 229, 255, 0.12);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
@@ -52,35 +52,47 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       min-height: 100dvh;
       width: 100%;
       overflow-x: hidden;
+      /* Architectural micro-grid + subtle ambient glow inspired by componentry.dev and spaceui */
       background-image: 
-        radial-gradient(ellipse 90% 50% at 50% -10%, rgba(0, 255, 136, 0.08), transparent 60%),
-        radial-gradient(circle at 10% 40%, rgba(0, 217, 245, 0.04), transparent 30%),
-        radial-gradient(circle at 90% 70%, rgba(0, 255, 136, 0.03), transparent 40%);
+        radial-gradient(ellipse 70% 40% at 50% -10%, rgba(0, 255, 136, 0.08), transparent 70%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
       background-attachment: fixed;
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
     }
 
-    /* Fixed Top Glass Navbar */
-    .nav-bar {
+    /* Floating Pill Navigation Header (Inspired by spaceui.one & componentry.dev) */
+    .nav-wrapper {
       position: sticky;
-      top: 0;
+      top: 16px;
       z-index: 100;
       width: 100%;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(6, 8, 12, 0.8);
-      border-bottom: 1px solid var(--surface-border-subtle);
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 16px;
+      pointer-events: none;
     }
 
-    .nav-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 14px 20px;
+    .nav-island {
+      pointer-events: auto;
+      background: rgba(14, 17, 26, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      padding: 8px 18px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      justify-content: space-between;
+      gap: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .nav-island:hover {
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     .brand-wrap {
@@ -94,18 +106,18 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     .brand-logo {
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       letter-spacing: -0.5px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .brand-logo span {
       color: var(--accent-green);
     }
 
-    .status-beacon {
+    .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
@@ -114,85 +126,93 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       color: var(--accent-green);
       font-size: 0.65rem;
       font-family: var(--font-mono);
-      padding: 3px 8px;
+      padding: 2px 8px;
       border-radius: 20px;
       font-weight: 600;
     }
 
-    .beacon-dot {
+    .status-dot {
       width: 6px;
       height: 6px;
       background: var(--accent-green);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--accent-green);
-      animation: pulse 2s infinite;
+      animation: pulse 2s infinite ease-in-out;
     }
 
     @keyframes pulse {
-      0% { opacity: 0.4; transform: scale(0.9); }
+      0%, 100% { opacity: 0.5; transform: scale(0.9); }
       50% { opacity: 1; transform: scale(1.15); }
-      100% { opacity: 0.4; transform: scale(0.9); }
     }
 
-    .nav-right {
+    .nav-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
     }
 
-    .cli-pill-nav {
+    .cli-copy-pill {
       display: none;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--surface-border);
-      border-radius: 8px;
-      padding: 6px 12px;
+      border-radius: 9999px;
+      padding: 6px 14px;
       font-family: var(--font-mono);
       font-size: 0.78rem;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
     }
 
-    .cli-pill-nav:hover {
+    .cli-copy-pill:hover {
       border-color: var(--accent-green);
       color: var(--text-main);
-      background: rgba(0, 255, 136, 0.05);
+      background: rgba(0, 255, 136, 0.06);
+      transform: translateY(-1px);
     }
 
-    .cli-pill-nav span {
+    .cli-copy-pill:active {
+      transform: scale(0.98);
+    }
+
+    .cli-copy-pill span {
       color: var(--accent-green);
+      font-weight: 700;
     }
 
     @media (min-width: 640px) {
-      .cli-pill-nav {
+      .cli-copy-pill {
         display: inline-flex;
       }
     }
 
-    .nav-link {
+    .nav-btn {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
       transition: color 0.15s;
     }
 
-    .nav-link:hover {
+    .nav-btn:hover {
       color: var(--accent-green);
     }
 
-    /* Master Layout: 3 Columns (Desktop Gutter Rails) */
+    /* Master Layout: 3 Columns with Desktop Gutter Rails */
     .site-wrapper {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 28px;
-      padding: 0 16px 80px;
+      gap: 32px;
+      padding: 30px 16px 80px;
       min-height: 100vh;
     }
 
@@ -203,7 +223,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       flex: 0 0 160px;
     }
 
-    @media (min-width: 1180px) {
+    @media (min-width: 1220px) {
       .ad-rail {
         display: block;
       }
@@ -211,10 +231,10 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     .ad-sticky {
       position: sticky;
-      top: 80px;
-      background: rgba(12, 15, 22, 0.75);
+      top: 96px;
+      background: rgba(14, 17, 26, 0.75);
       border: 1px dashed var(--surface-border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 16px 8px;
       min-height: 600px;
       display: flex;
@@ -223,7 +243,8 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       justify-content: center;
       gap: 12px;
       text-align: center;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     .ad-tag {
@@ -242,7 +263,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(255, 255, 255, 0.015);
       border-radius: 8px;
     }
 
@@ -251,25 +272,24 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       color: var(--text-dim);
     }
 
-    /* Main Central Application Area */
+    /* Center Main Application Area */
     .content-container {
       width: 100%;
-      max-width: 760px;
-      flex: 1 1 760px;
+      max-width: 780px;
+      flex: 1 1 780px;
       min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 24px;
     }
 
     /* In-Flow Horizontal Ad Banners */
     .ad-banner-inline {
       width: 100%;
       margin: 12px 0 28px;
-      background: rgba(12, 15, 22, 0.65);
+      background: rgba(14, 17, 26, 0.65);
       border: 1px dashed var(--surface-border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 12px 10px;
       text-align: center;
       min-height: 65px;
@@ -283,104 +303,91 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     .ad-banner-tag {
       position: absolute;
       top: 4px;
-      right: 10px;
+      right: 12px;
       font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-dim);
     }
 
-    /* Hero */
+    /* Hero Section */
     .hero {
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
+      gap: 20px;
       width: 100%;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      margin-top: 10px;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 6px 16px;
       background: rgba(0, 255, 136, 0.06);
       border: 1px solid rgba(0, 255, 136, 0.22);
-      border-radius: 30px;
+      border-radius: 9999px;
       font-size: clamp(0.72rem, 2.5vw, 0.8rem);
       font-weight: 600;
       color: var(--accent-green);
       line-height: 1.2;
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 24px rgba(0, 255, 136, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transition: all 0.2s;
+    }
+
+    .hero-badge:hover {
+      border-color: rgba(0, 255, 136, 0.4);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
     }
 
     .hero-title {
-      font-size: clamp(2rem, 6vw, 3.4rem);
+      font-size: clamp(2.1rem, 6.5vw, 3.6rem);
       font-weight: 800;
-      letter-spacing: -0.035em;
-      line-height: 1.12;
-      max-width: 720px;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      max-width: 740px;
       text-align: center;
     }
 
     .hero-title span {
-      background: linear-gradient(135deg, #ffffff 40%, var(--accent-green) 100%);
+      background: linear-gradient(180deg, #FFFFFF 30%, #a1a1aa 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
+    .hero-title .accent-text {
+      background: linear-gradient(135deg, var(--accent-green) 20%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
     .hero-subtitle {
-      font-size: clamp(0.92rem, 2.8vw, 1.12rem);
+      font-size: clamp(0.95rem, 2.8vw, 1.15rem);
       color: var(--text-muted);
-      max-width: 580px;
+      max-width: 600px;
       line-height: 1.6;
       text-align: center;
+      font-weight: 400;
     }
 
-    /* Modern Mode Pills */
-    .mode-pills {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 4px;
-      margin-top: 4px;
-    }
-
-    .mode-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .mode-btn.active {
-      background: rgba(0, 255, 136, 0.15);
-      color: var(--accent-green);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-    }
-
-    /* Uploader Card (World-Class Redesign) */
+    /* Tactile Physical Uploader Console (Inspired by useplanes.com & skecher-ui) */
     .uploader-card {
       width: 100%;
-      background: var(--surface);
+      background: linear-gradient(180deg, rgba(18, 22, 32, 0.85) 0%, rgba(10, 13, 20, 0.95) 100%);
       border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(20px, 4vw, 36px);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      border-radius: 24px;
+      padding: clamp(20px, 4.5vw, 38px);
+      box-shadow: 
+        0 30px 60px -15px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
-      margin-bottom: 36px;
+      margin-bottom: 40px;
     }
 
     .uploader-card::before {
@@ -391,13 +398,13 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       background: linear-gradient(90deg, transparent, var(--accent-green), var(--accent-cyan), transparent);
     }
 
-    /* Retention Options Inside Card */
+    /* Physical Segmented Control for Retention */
     .retention-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       padding-bottom: 16px;
       border-bottom: 1px solid var(--surface-border-subtle);
     }
@@ -414,11 +421,12 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     .retention-tabs {
       display: flex;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 3px;
-      border-radius: 8px;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 10px;
       border: 1px solid var(--surface-border);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .ttl-tab {
@@ -428,76 +436,87 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       font-size: 0.75rem;
       font-family: var(--font-mono);
       font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 6px 12px;
+      border-radius: 7px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .ttl-tab:hover {
+      color: var(--text-main);
     }
 
     .ttl-tab.active {
       background: rgba(0, 255, 136, 0.15);
       color: var(--accent-green);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(0, 255, 136, 0.3);
     }
 
+    /* Precision Drop Zone */
     .drop-zone {
-      border: 2px dashed rgba(255, 255, 255, 0.16);
-      border-radius: 16px;
-      padding: clamp(32px, 6vw, 48px) 20px;
+      border: 2px dashed rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      padding: clamp(34px, 6vw, 50px) 20px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(0, 0, 0, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 14px;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      position: relative;
     }
 
     .drop-zone:hover, .drop-zone:focus {
-      border-color: rgba(0, 255, 136, 0.6);
-      background: rgba(0, 255, 136, 0.03);
-      transform: translateY(-1px);
+      border-color: rgba(0, 255, 136, 0.55);
+      background: rgba(0, 255, 136, 0.025);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
 
     .drop-zone.dragover {
       border-color: var(--accent-green);
       background: rgba(0, 255, 136, 0.08);
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
-      transform: scale(1.01);
+      box-shadow: 0 0 35px rgba(0, 255, 136, 0.2);
+      transform: scale(1.015);
     }
 
     .drop-icon-wrap {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
       background: rgba(0, 255, 136, 0.08);
       border: 1px solid rgba(0, 255, 136, 0.25);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--accent-green);
-      font-size: 1.8rem;
-      transition: transform 0.2s ease;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s;
     }
 
     .drop-zone:hover .drop-icon-wrap {
-      transform: scale(1.08);
+      transform: scale(1.08) translateY(-2px);
       border-color: var(--accent-green);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.35);
     }
 
     .drop-title {
-      font-size: clamp(1.1rem, 3.2vw, 1.3rem);
+      font-size: clamp(1.15rem, 3.4vw, 1.35rem);
       font-weight: 700;
       color: var(--text-main);
+      letter-spacing: -0.01em;
     }
 
     .drop-subtitle {
-      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+      font-size: clamp(0.82rem, 2.5vw, 0.92rem);
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .file-input { display: none; }
@@ -523,6 +542,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       background: rgba(255, 255, 255, 0.06);
       border-radius: 4px;
       overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .progress-bar-fill {
@@ -530,18 +550,24 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       width: 0%;
       background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
       transition: width 0.15s ease-out;
-      box-shadow: 0 0 10px var(--accent-green);
+      box-shadow: 0 0 12px var(--accent-green);
     }
 
     /* Result State Card */
     .result-box {
       display: none;
       background: #080b11;
-      border: 1px solid rgba(0, 255, 136, 0.35);
-      border-radius: 14px;
-      padding: clamp(16px, 3.5vw, 24px);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      border-radius: 16px;
+      padding: clamp(18px, 3.5vw, 24px);
       margin-top: 24px;
-      box-shadow: 0 0 25px rgba(0, 255, 136, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 136, 0.12);
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .result-header {
@@ -550,7 +576,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       font-size: clamp(0.85rem, 2.5vw, 0.95rem);
       color: var(--accent-green);
       font-weight: 700;
@@ -562,8 +588,8 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       gap: 10px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 10px 14px;
+      border-radius: 12px;
+      padding: 12px 16px;
     }
 
     @media (min-width: 480px) {
@@ -575,7 +601,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     .result-url {
       font-family: var(--font-mono);
-      font-size: clamp(0.85rem, 2.6vw, 0.95rem);
+      font-size: clamp(0.88rem, 2.6vw, 0.98rem);
       color: var(--accent-cyan);
       flex: 1;
       overflow: hidden;
@@ -589,35 +615,41 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     }
 
     .copy-btn {
-      background: rgba(0, 255, 136, 0.15);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.1));
       color: var(--accent-green);
-      border: 1px solid rgba(0, 255, 136, 0.35);
-      padding: 8px 16px;
-      border-radius: 6px;
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      padding: 8px 18px;
+      border-radius: 8px;
       font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s;
-      min-height: 38px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 40px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       white-space: nowrap;
+      user-select: none;
     }
 
     .copy-btn:hover {
       background: var(--accent-green);
       color: #04140b;
-      box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .copy-btn:active {
+      transform: scale(0.97);
     }
 
     .result-details {
-      margin-top: 14px;
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      padding-top: 14px;
+      gap: 12px;
+      padding-top: 16px;
       border-top: 1px solid var(--surface-border-subtle);
     }
 
@@ -627,11 +659,11 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       justify-content: space-between;
       gap: 10px;
       background: rgba(0, 0, 0, 0.4);
-      padding: 8px 12px;
-      border-radius: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
       border: 1px solid var(--surface-border);
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.8rem;
     }
 
     .result-curl-text {
@@ -645,6 +677,24 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       color: var(--accent-cyan);
     }
 
+    .copy-sm {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .copy-sm:hover {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
     .result-meta-row {
       display: flex;
       justify-content: space-between;
@@ -653,13 +703,13 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       color: var(--text-dim);
     }
 
-    /* Interactive Terminal Demo Widget */
+    /* Interactive Terminal Demo Widget (Inspired by uiarc.dev & componentry.dev) */
     .terminal-section {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      margin-bottom: 40px;
+      margin-bottom: 48px;
     }
 
     .section-header {
@@ -670,22 +720,22 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     }
 
     .section-title {
-      font-size: clamp(1.2rem, 3.5vw, 1.45rem);
+      font-size: clamp(1.25rem, 3.5vw, 1.55rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
 
     .section-desc {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
       margin-top: 4px;
     }
 
     .terminal-box {
-      background: #080a0e;
+      background: #080a0f;
       border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border-radius: 18px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       overflow: hidden;
     }
 
@@ -693,14 +743,14 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
+      padding: 12px 18px;
       background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid var(--surface-border);
     }
 
     .terminal-dots {
       display: flex;
-      gap: 6px;
+      gap: 7px;
     }
 
     .terminal-dot {
@@ -715,6 +765,10 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     .terminal-tabs {
       display: flex;
       gap: 4px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-border);
     }
 
     .terminal-tab-btn {
@@ -724,22 +778,23 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       font-family: var(--font-mono);
       font-size: 0.75rem;
       font-weight: 600;
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .terminal-tab-btn.active {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
       color: var(--text-main);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
     }
 
     .terminal-body {
-      padding: 18px 20px;
+      padding: 20px 22px;
       font-family: var(--font-mono);
       font-size: clamp(0.75rem, 2.3vw, 0.88rem);
-      line-height: 1.6;
+      line-height: 1.65;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -755,70 +810,72 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     .terminal-dim { color: var(--text-dim); }
     .terminal-cyan { color: var(--accent-cyan); }
 
-    /* Features Grid (6 High-End Cards) */
+    /* Bento Grid Features (6 Developer Pillars) */
     .features-section {
       width: 100%;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      margin-bottom: 40px;
+      margin-bottom: 48px;
     }
 
     .features-grid {
       width: 100%;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 18px;
     }
 
     @media (min-width: 600px) {
       .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
+        gap: 20px;
       }
     }
 
     .feature-card {
       background: var(--surface);
       border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: clamp(20px, 4vw, 26px);
+      border-radius: 18px;
+      padding: clamp(22px, 4vw, 28px);
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
     .feature-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(0, 255, 136, 0.3);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border-color: rgba(0, 255, 136, 0.35);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .feature-icon-box {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--surface-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 2px;
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .feature-title {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text-main);
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
     }
 
     .feature-desc {
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
     /* API Reference Cheat Sheet Section */
@@ -826,18 +883,20 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       width: 100%;
       background: var(--surface);
       border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: clamp(20px, 4vw, 28px);
-      margin-bottom: 30px;
+      border-radius: 18px;
+      padding: clamp(22px, 4vw, 30px);
+      margin-bottom: 36px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
     .api-title {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: -0.02em;
     }
 
     .api-code-list {
@@ -850,10 +909,10 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 10px 14px;
+      border-radius: 12px;
+      padding: 12px 16px;
     }
 
     .api-row-label {
@@ -866,7 +925,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     .api-row-code {
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-main);
       display: flex;
       justify-content: space-between;
@@ -879,28 +938,12 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       color: var(--accent-cyan);
     }
 
-    .copy-sm {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .copy-sm:hover {
-      color: var(--accent-green);
-      border-color: var(--accent-green);
-    }
-
     /* Footer */
     footer {
       width: 100%;
       border-top: 1px solid var(--surface-border);
-      padding: 32px 16px;
-      font-size: 0.85rem;
+      padding: 36px 16px;
+      font-size: 0.88rem;
       color: var(--text-muted);
       text-align: center;
       display: flex;
@@ -920,34 +963,33 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 </head>
 <body>
 
-  <!-- Top Glass Navbar -->
-  <header class="nav-bar">
-    <div class="nav-container">
+  <!-- Floating Pill Navbar (spaceui.one & componentry.dev style) -->
+  <header class="nav-wrapper">
+    <nav class="nav-island">
       <a href="/" class="brand-wrap">
         <div class="brand-logo">
           <span>>_</span> tdrop
         </div>
-        <div class="status-beacon">
-          <div class="beacon-dot"></div>
+        <div class="status-badge">
+          <div class="status-dot"></div>
           <span>Edge Live</span>
         </div>
       </a>
-      <div class="nav-right">
-        <div class="cli-pill-nav" onclick="copySnippet('npx tdrop <file>')">
+      <div class="nav-actions">
+        <div class="cli-copy-pill" onclick="copySnippet('npx tdrop <file>')">
           <span>$</span> npx tdrop &lt;file&gt;
         </div>
-        <a href="#cli" class="nav-link">CLI</a>
-        <a href="#features" class="nav-link">Features</a>
-        <a href="/stats" class="nav-link" style="color:var(--accent-green);">Live Stats</a>
-        <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-link">GitHub</a>
+        <a href="#cli" class="nav-btn">CLI</a>
+        <a href="#features" class="nav-btn">Features</a>
+        <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-btn">GitHub</a>
       </div>
-    </div>
+    </nav>
   </header>
 
-  <!-- 3-Column Master Layout -->
+  <!-- 3-Column Master Layout (Desktop Gutter Rails) -->
   <div class="site-wrapper">
 
-    <!-- Left Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <!-- Left Sticky Ad Rail (Desktop >= 1220px only, 160x600) -->
     <aside class="ad-rail">
       <div class="ad-sticky">
         <span class="ad-tag">Sponsor</span>
@@ -962,7 +1004,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       </div>
     </aside>
 
-    <!-- Center Content: Always Centered & Never Squished -->
+    <!-- Center Content: Guaranteed Centered & Un-squashed -->
     <div class="content-container">
 
       <!-- Top Horizontal In-Flow Google AdSense Leaderboard -->
@@ -984,20 +1026,20 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
         <section class="hero">
           <div class="hero-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            <span>ClamAV Clean · $0 Egress · 10MB Free</span>
+            <span>v1.0.1 Ready · ClamAV Clean · $0 Egress</span>
           </div>
           <h1 class="hero-title">
-            Ephemeral file sharing for the <span>terminal generation</span>.
+            Ephemeral file sharing for the <span class="accent-text">terminal generation</span>.
           </h1>
           <p class="hero-subtitle">
-            Transfer files instantly from your terminal, cURL, or browser. Streamed directly to Cloudflare R2 edge with zero retention debt.
+            Transfer files instantly from your CLI, cURL, or browser. Streamed directly to Cloudflare R2 edge with zero retention debt and zero telemetry.
           </p>
         </section>
 
-        <!-- Interactive Drag-and-Drop & Tap Uploader -->
+        <!-- Tactile Uploader Console -->
         <div class="uploader-card">
           
-          <!-- Retention TTL Selector -->
+          <!-- Physical Retention Segmented Control -->
           <div class="retention-bar">
             <div class="retention-label">
               <span>⏳</span> Retention Duration
@@ -1009,14 +1051,14 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
             </div>
           </div>
 
-          <!-- Drop Target -->
+          <!-- Precision Drop Zone -->
           <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
             <input type="file" id="fileInput" class="file-input" onchange="handleFileSelect(this.files)">
             <div class="drop-icon-wrap">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             </div>
             <div class="drop-title">Drop your file here or tap to browse</div>
-            <div class="drop-subtitle">Strict 10MB free tier · Auto-expires after selected duration</div>
+            <div class="drop-subtitle">Strict 10MB free tier · Auto-expires after chosen retention · Encrypted at rest</div>
           </div>
 
           <!-- Live Upload Progress -->
@@ -1030,10 +1072,10 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
             </div>
           </div>
 
-          <!-- Result Card -->
+          <!-- Result State Card -->
           <div class="result-box" id="resultBox">
             <div class="result-header">
-              <span>✔ Upload Complete & Live</span>
+              <span>✔ Upload Complete & Distributed</span>
               <span style="color:var(--accent-green); font-size:0.75rem; font-family:var(--font-mono);">🛡️ ClamAV Verified Clean</span>
             </div>
             
@@ -1063,7 +1105,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
           <div class="section-header">
             <div>
               <h2 class="section-title">Terminal Native</h2>
-              <p class="section-desc">Command line first. Pipe stdin, upload files, or curl directly.</p>
+              <p class="section-desc">Drop files from your command line, pipe stdin, or cURL directly.</p>
             </div>
           </div>
 
@@ -1092,7 +1134,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
           </div>
         </section>
 
-        <!-- Features Grid (6 Developer Pillars) -->
+        <!-- Bento Grid Features (6 Developer Pillars) -->
         <section class="features-section" id="features">
           <div class="section-header">
             <div>
@@ -1186,13 +1228,13 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       </div>
 
       <footer>
-        <p>tdrop · Ephemeral File Sharing for Developers · <a href="/stats">Live Telemetry Dashboard</a> · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source (GitHub)</a></p>
+        <p>tdrop · Ephemeral File Sharing for Developers · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source (GitHub)</a></p>
         <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No trackers · RFC 5987 Compliant</p>
       </footer>
 
     </div>
 
-    <!-- Right Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <!-- Right Sticky Ad Rail (Desktop >= 1220px only, 160x600) -->
     <aside class="ad-rail">
       <div class="ad-sticky">
         <span class="ad-tag">Sponsor</span>
