@@ -32,7 +32,7 @@ export async function rateLimitMiddleware(c: Context<AppContext>, next: Next) {
 
   const secret = c.env.RATE_LIMIT_SECRET || "default_tdrop_secret_salt";
   const ipHash = await hashIp(rawIp, secret);
-  c.set("ipHash" as any, ipHash);
+  c.set("ipHash", ipHash);
 
   const redisService = new MetadataService(c.env);
 

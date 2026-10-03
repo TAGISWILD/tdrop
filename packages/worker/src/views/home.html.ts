@@ -938,6 +938,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
         </div>
         <a href="#cli" class="nav-link">CLI</a>
         <a href="#features" class="nav-link">Features</a>
+        <a href="/stats" class="nav-link" style="color:var(--accent-green);">Live Stats</a>
         <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-link">GitHub</a>
       </div>
     </div>
@@ -1185,7 +1186,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       </div>
 
       <footer>
-        <p>tdrop · Ephemeral File Sharing for Developers · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source (GitHub)</a></p>
+        <p>tdrop · Ephemeral File Sharing for Developers · <a href="/stats">Live Telemetry Dashboard</a> · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source (GitHub)</a></p>
         <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No trackers · RFC 5987 Compliant</p>
       </footer>
 

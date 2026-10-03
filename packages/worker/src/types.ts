@@ -11,4 +11,7 @@ export interface Bindings {
 
 export type AppContext = {
   Bindings: Bindings;
+  Variables: {
+    ipHash?: string;
+  };
 };

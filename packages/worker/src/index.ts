@@ -6,6 +6,7 @@ import { uploadRoute } from "./routes/upload.js";
 import { downloadRoute } from "./routes/download.js";
 import { blipRoute } from "./routes/blip.js";
 import { internalRoute } from "./routes/internal.js";
+import { statsRoute } from "./routes/stats.js";
 import { renderHomePage } from "./views/home.html.js";
 
 const app = new Hono<AppContext>();
@@ -50,9 +51,10 @@ SECURITY:
   );
 });
 
-// Mount internal routes (bypasses rate limiter)
+// Mount internal routes & public telemetry (bypasses code probe rate limiter)
 app.route("/", internalRoute);
 app.route("/", blipRoute);
+app.route("/", statsRoute);
 
 // Apply rate limiting & probe protection to public API routes
 app.use("/upload", rateLimitMiddleware);
