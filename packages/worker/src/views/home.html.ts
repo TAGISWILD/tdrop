@@ -10,6 +10,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
 
   <style>
@@ -18,7 +19,6 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       --surface: #0f1218;
       --surface-card: #131720;
       --surface-border: #1b2230;
-      --surface-border-subtle: rgba(255, 255, 255, 0.07);
       --surface-hover: #171d28;
       --accent-green: #00ff88;
       --accent-green-dim: rgba(0, 255, 136, 0.12);
@@ -58,51 +58,39 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       padding-right: env(safe-area-inset-right);
     }
 
-    /* Outer 3-Column Layout: Left Ads Column | Center Content | Right Ads Column */
-    .page-layout {
+    /* Outer Flexbox Centered Container: Left Rail | Center Main | Right Rail */
+    .site-wrapper {
       width: 100%;
-      max-width: 1480px;
+      max-width: 1280px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 0 16px 60px;
       min-height: 100vh;
     }
 
-    @media (min-width: 1240px) {
-      .page-layout {
-        grid-template-columns: 200px minmax(0, 1fr) 200px;
-        gap: 24px;
-        padding: 0 16px;
-      }
-    }
-
-    @media (min-width: 1440px) {
-      .page-layout {
-        grid-template-columns: 240px minmax(0, 880px) 240px;
-        justify-content: center;
-        gap: 36px;
-      }
-    }
-
-    /* Desktop Sticky Ad Sidebars */
-    .ad-column {
+    /* Desktop Sticky Ad Rails */
+    .ad-rail {
       display: none;
-      padding-top: 32px;
+      width: 160px;
+      flex: 0 0 160px;
     }
 
-    @media (min-width: 1240px) {
-      .ad-column {
+    @media (min-width: 1180px) {
+      .ad-rail {
         display: block;
       }
     }
 
-    .ad-sticky-box {
+    .ad-sticky {
       position: sticky;
       top: 24px;
-      background: rgba(15, 18, 24, 0.7);
+      background: rgba(15, 18, 24, 0.75);
       border: 1px dashed var(--surface-border);
       border-radius: 14px;
-      padding: 16px 10px;
+      padding: 16px 8px;
       min-height: 600px;
       display: flex;
       flex-direction: column;
@@ -113,15 +101,15 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       backdrop-filter: blur(8px);
     }
 
-    .ad-label {
-      font-size: 0.65rem;
+    .ad-tag {
+      font-size: 0.62rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: var(--text-dim);
     }
 
-    .ad-slot-skyscraper {
+    .ad-box-skyscraper {
       width: 100%;
       max-width: 160px;
       min-height: 600px;
@@ -133,27 +121,26 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       border-radius: 8px;
     }
 
-    /* Central Content Container */
-    .center-column {
+    .ad-fallback-label {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* Center Content Container: Always Centered & Never Squished */
+    .content-container {
       width: 100%;
+      max-width: 760px;
+      flex: 1 1 760px;
       min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 16px 60px;
-    }
-
-    @media (min-width: 640px) {
-      .center-column {
-        padding: 0 24px 80px;
-      }
     }
 
     /* Navigation */
     nav {
       width: 100%;
-      max-width: 880px;
-      padding: 18px 0;
+      padding: 20px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -166,7 +153,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       gap: 8px;
       font-family: var(--font-mono);
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       color: var(--text-main);
       text-decoration: none;
       white-space: nowrap;
@@ -183,7 +170,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     .nav-links {
       display: flex;
-      gap: 14px;
+      gap: 16px;
       align-items: center;
     }
 
@@ -205,17 +192,17 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
         display: inline-block;
       }
       .brand {
-        font-size: 1.3rem;
+        font-size: 1.35rem;
       }
     }
 
     .nav-cta {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--surface-border);
-      padding: 7px 12px;
+      padding: 7px 14px;
       border-radius: 8px;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--accent-cyan);
       text-decoration: none;
       white-space: nowrap;
@@ -227,10 +214,9 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       border-color: var(--accent-cyan);
     }
 
-    /* Horizontal Ad Banners (Top & Bottom) */
-    .ad-banner-horizontal {
+    /* Top & Bottom Horizontal Responsive In-Flow Banners */
+    .ad-banner-inline {
       width: 100%;
-      max-width: 880px;
       margin: 10px 0 24px;
       background: rgba(15, 18, 24, 0.6);
       border: 1px dashed var(--surface-border);
@@ -255,10 +241,9 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       color: var(--text-dim);
     }
 
-    /* Main Container Elements */
+    /* Main Section Flow */
     main {
       width: 100%;
-      max-width: 880px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -267,7 +252,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     @media (min-width: 640px) {
       main {
-        gap: 48px;
+        gap: 44px;
       }
     }
 
@@ -277,7 +262,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       width: 100%;
     }
 
@@ -285,7 +270,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 12px;
+      padding: 5px 14px;
       background: rgba(0, 255, 136, 0.06);
       border: 1px solid rgba(0, 255, 136, 0.2);
       border-radius: 20px;
@@ -296,12 +281,12 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     }
 
     .hero-title {
-      font-size: clamp(1.85rem, 5.5vw, 3.2rem);
+      font-size: clamp(1.85rem, 5.5vw, 3rem);
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.15;
-      max-width: 760px;
-      padding: 0 4px;
+      max-width: 720px;
+      text-align: center;
     }
 
     .hero-title span {
@@ -311,11 +296,11 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     }
 
     .hero-subtitle {
-      font-size: clamp(0.92rem, 2.8vw, 1.15rem);
+      font-size: clamp(0.92rem, 2.8vw, 1.1rem);
       color: var(--text-muted);
-      max-width: 580px;
+      max-width: 560px;
       line-height: 1.55;
-      padding: 0 8px;
+      text-align: center;
     }
 
     /* Interactive Drop Zone Card */
@@ -339,13 +324,13 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     }
 
     .drop-zone {
-      border: 2px dashed rgba(255, 255, 255, 0.14);
+      border: 2px dashed rgba(255, 255, 255, 0.16);
       border-radius: 14px;
-      padding: clamp(28px, 6vw, 48px) 16px;
+      padding: clamp(28px, 6vw, 44px) 16px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s ease;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.22);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -361,7 +346,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     .drop-zone.dragover {
       border-color: var(--accent-green);
-      background: rgba(0, 255, 136, 0.07);
+      background: rgba(0, 255, 136, 0.08);
       transform: scale(1.005);
     }
 
@@ -508,13 +493,42 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
       background: #080a0e;
       border: 1px solid var(--surface-border);
       border-radius: 14px;
-      padding: clamp(14px, 3.5vw, 20px);
+      padding: 0 0 16px 0;
       font-family: var(--font-mono);
       font-size: clamp(0.74rem, 2.3vw, 0.88rem);
       color: var(--text-main);
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--surface-border);
+      margin-bottom: 12px;
+    }
+
+    .terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .terminal-header-title {
+      margin-left: 8px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .terminal-body {
+      padding: 0 16px;
     }
 
     .terminal-line {
@@ -540,7 +554,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     @media (min-width: 600px) {
       .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 18px;
       }
     }
 
@@ -596,25 +610,25 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 </head>
 <body>
 
-  <div class="page-layout">
+  <div class="site-wrapper">
 
-    <!-- Left Sticky Ad Column (Desktop only, 160x600 Skyscraper) -->
-    <aside class="ad-column">
-      <div class="ad-sticky-box">
-        <span class="ad-label">Sponsor</span>
-        <div class="ad-slot-skyscraper">
+    <!-- Left Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <aside class="ad-rail">
+      <div class="ad-sticky">
+        <span class="ad-tag">Sponsor</span>
+        <div class="ad-box-skyscraper">
           <ins class="adsbygoogle"
                style="display:inline-block;width:160px;height:600px"
                data-ad-client="ca-pub-2876380604791121"
                data-ad-slot="1010101010"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <span style="font-size: 0.72rem; color: var(--text-dim);">[160x600 Skyscraper]</span>
+          <div class="ad-fallback-label">[160x600 Skyscraper]</div>
         </div>
       </div>
     </aside>
 
-    <!-- Center Main Content -->
-    <div class="center-column">
+    <!-- Center Content: Always Centered & Never Squished -->
+    <div class="content-container">
 
       <!-- Navigation Header -->
       <nav>
@@ -629,8 +643,8 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
         </div>
       </nav>
 
-      <!-- Top Horizontal Google AdSense Leaderboard -->
-      <div class="ad-banner-horizontal">
+      <!-- Top Horizontal In-Flow Google AdSense Leaderboard -->
+      <div class="ad-banner-inline">
         <span class="ad-banner-tag">Advertisement</span>
         <ins class="adsbygoogle"
              style="display:block; width:100%; min-height:60px;"
@@ -639,7 +653,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
              data-ad-format="horizontal"
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">[Google AdSense Responsive Leaderboard]</span>
+        <div class="ad-fallback-label">[Google AdSense Responsive Leaderboard]</div>
       </div>
 
       <main>
@@ -702,13 +716,21 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
             <span class="brand-pill">CLI Ready</span>
           </div>
           <div class="terminal-box">
-            <div class="terminal-line"><span class="terminal-prompt">$</span><span>npx tdrop release-v1.tar.gz</span></div>
-            <div class="terminal-line terminal-dim"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>
-            <div class="terminal-line"><span class="terminal-cyan">Uploading [████████████] 100% | 4.8 MB/s</span></div>
-            <div class="terminal-line" style="color:var(--accent-green); margin-top:4px;"><span>✔ Upload complete!</span></div>
-            <div class="terminal-line"><span class="terminal-dim">  🛡️ Malware Scan:</span> <span style="color:var(--accent-green);">Clean (ClamAV Engine)</span></div>
-            <div class="terminal-line"><span class="terminal-dim">  🔗 Link:</span> <span class="terminal-cyan">https://${domain}/a7kX9b2</span></div>
-            <div class="terminal-line" style="margin-top:12px;"><span class="terminal-prompt">$</span><span>cat production.log | npx tdrop --filename prod.log</span></div>
+            <div class="terminal-header">
+              <span class="terminal-dot dot-red"></span>
+              <span class="terminal-dot dot-yellow"></span>
+              <span class="terminal-dot dot-green"></span>
+              <span class="terminal-header-title">bash — tdrop</span>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-line"><span class="terminal-prompt">$</span><span>npx tdrop release-v1.tar.gz</span></div>
+              <div class="terminal-line terminal-dim"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>
+              <div class="terminal-line"><span class="terminal-cyan">Uploading [████████████] 100% | 4.8 MB/s</span></div>
+              <div class="terminal-line" style="color:var(--accent-green); margin-top:4px;"><span>✔ Upload complete!</span></div>
+              <div class="terminal-line"><span class="terminal-dim">  🛡️ Malware Scan:</span> <span style="color:var(--accent-green);">Clean (ClamAV Engine)</span></div>
+              <div class="terminal-line"><span class="terminal-dim">  🔗 Link:</span> <span class="terminal-cyan">https://${domain}/a7kX9b2</span></div>
+              <div class="terminal-line" style="margin-top:10px;"><span class="terminal-prompt">$</span><span>cat production.log | npx tdrop --filename prod.log</span></div>
+            </div>
           </div>
         </section>
 
@@ -738,8 +760,8 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
       </main>
 
-      <!-- Bottom Horizontal Google AdSense Banner -->
-      <div class="ad-banner-horizontal" style="margin-top: 36px;">
+      <!-- Bottom Horizontal In-Flow Google AdSense Unit -->
+      <div class="ad-banner-inline" style="margin-top: 36px;">
         <span class="ad-banner-tag">Advertisement</span>
         <ins class="adsbygoogle"
              style="display:block; width:100%; min-height:90px;"
@@ -748,7 +770,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">[Google AdSense Responsive Unit]</span>
+        <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
       </div>
 
       <footer>
@@ -757,17 +779,17 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
     </div>
 
-    <!-- Right Sticky Ad Column (Desktop only, 160x600 Skyscraper) -->
-    <aside class="ad-column">
-      <div class="ad-sticky-box">
-        <span class="ad-label">Sponsor</span>
-        <div class="ad-slot-skyscraper">
+    <!-- Right Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <aside class="ad-rail">
+      <div class="ad-sticky">
+        <span class="ad-tag">Sponsor</span>
+        <div class="ad-box-skyscraper">
           <ins class="adsbygoogle"
                style="display:inline-block;width:160px;height:600px"
                data-ad-client="ca-pub-2876380604791121"
                data-ad-slot="2020202020"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <span style="font-size: 0.72rem; color: var(--text-dim);">[160x600 Skyscraper]</span>
+          <div class="ad-fallback-label">[160x600 Skyscraper]</div>
         </div>
       </div>
     </aside>

@@ -34,6 +34,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
 
   <style>
@@ -80,51 +81,39 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       padding-right: env(safe-area-inset-right);
     }
 
-    /* 3-Column Layout: Left Ad Column | Center Content | Right Ad Column */
-    .page-layout {
+    /* Flexbox 3-Column Layout: Left Rail | Center Main | Right Rail */
+    .site-wrapper {
       width: 100%;
-      max-width: 1440px;
+      max-width: 1280px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 0 16px 60px;
       min-height: 100vh;
     }
 
-    @media (min-width: 1200px) {
-      .page-layout {
-        grid-template-columns: 190px minmax(0, 1fr) 190px;
-        gap: 20px;
-        padding: 0 16px;
-      }
-    }
-
-    @media (min-width: 1400px) {
-      .page-layout {
-        grid-template-columns: 220px minmax(0, 720px) 220px;
-        justify-content: center;
-        gap: 32px;
-      }
-    }
-
-    /* Desktop Sticky Ad Sidebars */
-    .ad-column {
+    /* Desktop Sticky Ad Rails */
+    .ad-rail {
       display: none;
-      padding-top: 32px;
+      width: 160px;
+      flex: 0 0 160px;
     }
 
-    @media (min-width: 1200px) {
-      .ad-column {
+    @media (min-width: 1180px) {
+      .ad-rail {
         display: block;
       }
     }
 
-    .ad-sticky-box {
+    .ad-sticky {
       position: sticky;
       top: 24px;
-      background: rgba(15, 18, 24, 0.7);
+      background: rgba(15, 18, 24, 0.75);
       border: 1px dashed var(--surface-border);
       border-radius: 14px;
-      padding: 16px 10px;
+      padding: 16px 8px;
       min-height: 600px;
       display: flex;
       flex-direction: column;
@@ -135,15 +124,15 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       backdrop-filter: blur(8px);
     }
 
-    .ad-label {
-      font-size: 0.65rem;
+    .ad-tag {
+      font-size: 0.62rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: var(--text-dim);
     }
 
-    .ad-slot-skyscraper {
+    .ad-box-skyscraper {
       width: 100%;
       max-width: 160px;
       min-height: 600px;
@@ -155,27 +144,26 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       border-radius: 8px;
     }
 
-    /* Central Content Column */
-    .center-column {
+    .ad-fallback-label {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* Central Content Column: Always Centered & Guaranteed Never Squished */
+    .content-container {
       width: 100%;
+      max-width: 680px;
+      flex: 1 1 680px;
       min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 16px 60px;
-    }
-
-    @media (min-width: 640px) {
-      .center-column {
-        padding: 0 20px 80px;
-      }
     }
 
     /* Header Nav */
     header.nav {
       width: 100%;
-      max-width: 680px;
-      padding: 18px 0;
+      padding: 20px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -188,7 +176,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       gap: 8px;
       font-family: var(--font-mono);
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       color: var(--text-main);
       text-decoration: none;
     }
@@ -207,8 +195,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       text-decoration: none;
       font-size: 0.85rem;
       font-weight: 600;
-      padding: 6px 12px;
-      background: rgba(255, 255, 255, 0.04);
+      padding: 7px 14px;
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--surface-border);
       border-radius: 8px;
       transition: all 0.15s;
@@ -219,10 +207,9 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       border-color: rgba(0, 255, 136, 0.3);
     }
 
-    /* Horizontal Ad Units */
-    .ad-banner-horizontal {
+    /* In-Flow Horizontal Ad Banners */
+    .ad-banner-inline {
       width: 100%;
-      max-width: 680px;
       margin: 8px 0 20px;
       background: rgba(15, 18, 24, 0.6);
       border: 1px dashed var(--surface-border);
@@ -247,10 +234,9 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       color: var(--text-dim);
     }
 
-    /* Main Container */
+    /* Main Download Container */
     main.download-container {
       width: 100%;
-      max-width: 680px;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -265,6 +251,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
 
     .download-card::before {
@@ -460,25 +447,25 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 </head>
 <body>
 
-  <div class="page-layout">
+  <div class="site-wrapper">
 
-    <!-- Left Sticky Ad Column (Desktop only, 160x600 Skyscraper) -->
-    <aside class="ad-column">
-      <div class="ad-sticky-box">
-        <span class="ad-label">Sponsor</span>
-        <div class="ad-slot-skyscraper">
+    <!-- Left Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <aside class="ad-rail">
+      <div class="ad-sticky">
+        <span class="ad-tag">Sponsor</span>
+        <div class="ad-box-skyscraper">
           <ins class="adsbygoogle"
                style="display:inline-block;width:160px;height:600px"
                data-ad-client="ca-pub-2876380604791121"
                data-ad-slot="3030303030"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <span style="font-size: 0.72rem; color: var(--text-dim);">[160x600 Skyscraper]</span>
+          <div class="ad-fallback-label">[160x600 Skyscraper]</div>
         </div>
       </div>
     </aside>
 
-    <!-- Center Column -->
-    <div class="center-column">
+    <!-- Center Content: Always Centered & Never Squished -->
+    <div class="content-container">
 
       <!-- Navigation Header -->
       <header class="nav">
@@ -489,8 +476,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
         <a href="/" class="nav-action">Upload New File</a>
       </header>
 
-      <!-- Top Horizontal Ad Banner -->
-      <div class="ad-banner-horizontal">
+      <!-- Top Horizontal In-Flow Ad Banner -->
+      <div class="ad-banner-inline">
         <span class="ad-banner-tag">Advertisement</span>
         <ins class="adsbygoogle"
              style="display:block; width:100%; min-height:60px;"
@@ -499,7 +486,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
              data-ad-format="horizontal"
              data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        <span style="font-size: 0.75rem; color: var(--text-dim);">[Google AdSense Responsive Unit]</span>
+        <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
       </div>
 
       <!-- Main Download Card Container -->
@@ -545,8 +532,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
           </div>
         </div>
 
-        <!-- Bottom Horizontal Ad Banner -->
-        <div class="ad-banner-horizontal" style="margin-top: 10px;">
+        <!-- Bottom Horizontal In-Flow Ad Banner -->
+        <div class="ad-banner-inline" style="margin-top: 10px;">
           <span class="ad-banner-tag">Advertisement</span>
           <ins class="adsbygoogle"
                style="display:block; width:100%; min-height:90px;"
@@ -555,7 +542,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
                data-ad-format="auto"
                data-full-width-responsive="true"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <span style="font-size: 0.75rem; color: var(--text-dim);">[Google AdSense Responsive Unit]</span>
+          <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
         </div>
 
       </main>
@@ -566,17 +553,17 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     </div>
 
-    <!-- Right Sticky Ad Column (Desktop only, 160x600 Skyscraper) -->
-    <aside class="ad-column">
-      <div class="ad-sticky-box">
-        <span class="ad-label">Sponsor</span>
-        <div class="ad-slot-skyscraper">
+    <!-- Right Sticky Ad Rail (Desktop >= 1180px only, 160x600) -->
+    <aside class="ad-rail">
+      <div class="ad-sticky">
+        <span class="ad-tag">Sponsor</span>
+        <div class="ad-box-skyscraper">
           <ins class="adsbygoogle"
                style="display:inline-block;width:160px;height:600px"
                data-ad-client="ca-pub-2876380604791121"
                data-ad-slot="4040404040"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <span style="font-size: 0.72rem; color: var(--text-dim);">[160x600 Skyscraper]</span>
+          <div class="ad-fallback-label">[160x600 Skyscraper]</div>
         </div>
       </div>
     </aside>
