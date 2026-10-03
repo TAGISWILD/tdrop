@@ -1,6 +1,6 @@
 {
   "name": "tdrop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ultra-fast, ephemeral, authless file-sharing from your terminal",
   "bin": {
     "tdrop": "./dist/bin.js"

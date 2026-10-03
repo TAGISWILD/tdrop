@@ -14,7 +14,7 @@ const program = new Command();
 program
   .name("tdrop")
   .description("Ultra-fast, ephemeral, authless file-sharing from your terminal")
-  .version("1.0.0")
+  .version("1.0.1")
   .argument("[file]", "Path to the file to upload")
   .option("-t, --ttl <retention>", "Retention duration: 1h, 24h, 7d", DEFAULT_RETENTION)
   .option("-n, --filename <name>", "Custom filename (especially for piped stdin)")
