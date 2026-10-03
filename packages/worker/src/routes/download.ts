@@ -3,6 +3,7 @@ import { isValidShortcode, formatContentDisposition } from "@tdrop/shared";
 import type { AppContext } from "../types.js";
 import { MetadataService } from "../services/redis.js";
 import { renderDownloadPage } from "../views/download.html.js";
+import { TelemetryService } from "../services/telemetry.js";
 
 export const downloadRoute = new Hono<AppContext>();
 
@@ -111,6 +112,22 @@ async function handleDownload(c: any, isHead: boolean) {
   r2Object = await c.env.BUCKET.get(metadata.objectKey);
   if (!r2Object || !("body" in r2Object)) {
     return c.json({ error: "Not Found", message: "Underlying storage object not found." }, 404);
+  }
+
+  // Record real download telemetry
+  const telemetry = new TelemetryService(c.env);
+  const downloadPayload = {
+    code,
+    filename: metadata.filename,
+    size: metadata.size,
+    retention: metadata.retentionClass,
+    ipHash,
+    cf: (c.req.raw as any)?.cf,
+  };
+  try {
+    c.executionCtx.waitUntil(telemetry.recordDownload(downloadPayload));
+  } catch {
+    telemetry.recordDownload(downloadPayload).catch(console.error);
   }
 
   return new Response(r2Object.body, { status: 200, headers });

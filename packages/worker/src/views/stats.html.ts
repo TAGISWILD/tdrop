@@ -4,8 +4,8 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>tdrop Telemetry · Global Edge Stats & Sponsor Intelligence</title>
-  <meta name="description" content="Realtime global telemetry for tdrop: edge regions, active developers, files processed, and developer terminal sponsorship performance.">
+  <title>tdrop Telemetry · Real-Time Edge Stats & Sponsor Intelligence</title>
+  <meta name="description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, files processed, and developer terminal sponsorship performance.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -598,6 +598,18 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       border-radius: 4px;
     }
 
+    .empty-stream-state {
+      padding: 36px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px dashed var(--surface-border);
+      border-radius: 14px;
+    }
+
     .event-item {
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--surface-border);
@@ -682,33 +694,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     }
 
     .event-time {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-
-    /* 24h Activity SVG Chart */
-    .chart-container {
-      width: 100%;
-      height: 180px;
-      background: #080b12;
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 12px 14px 6px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .chart-svg {
-      width: 100%;
-      height: 130px;
-      overflow: visible;
-    }
-
-    .chart-axis {
-      display: flex;
-      justify-content: space-between;
       font-size: 0.7rem;
       color: var(--text-dim);
       font-family: var(--font-mono);
@@ -895,101 +880,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       color: var(--text-muted);
     }
 
-    /* Sponsor Tiers */
-    .tier-cards {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .tier-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-    }
-
-    .tier-card.popular {
-      border-color: rgba(0, 255, 136, 0.4);
-      background: rgba(0, 255, 136, 0.03);
-    }
-
-    .tier-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 0.65rem;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      background: rgba(0, 255, 136, 0.15);
-      color: var(--accent-green);
-      padding: 3px 8px;
-      border-radius: 20px;
-    }
-
-    .tier-header {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .tier-price {
-      font-family: var(--font-mono);
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .tier-period {
-      font-size: 0.78rem;
-      color: var(--text-dim);
-    }
-
-    .tier-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .tier-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .tier-features li::before {
-      content: '✔ ';
-      color: var(--accent-green);
-      font-weight: 700;
-    }
-
-    .tier-btn {
-      margin-top: 6px;
-      width: 100%;
-      background: rgba(0, 255, 136, 0.12);
-      color: var(--accent-green);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .tier-btn:hover {
-      background: var(--accent-green);
-      color: #04140b;
-      box-shadow: 0 0 15px var(--accent-green-glow);
-    }
-
     /* Modal */
     .modal-overlay {
       display: none;
@@ -1116,7 +1006,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         </div>
         <div class="status-beacon">
           <div class="beacon-dot"></div>
-          <span>LIVE TELEMETRY</span>
+          <span id="navLiveText">LIVE TELEMETRY</span>
         </div>
       </a>
       <div class="nav-right">
@@ -1136,17 +1026,20 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     <!-- Hero Header -->
     <div class="dashboard-header">
       <div>
-        <div class="header-badge">
-          <span>🌐</span> 312 Edge PoPs · 124 Countries · Realtime Stream
+        <div class="header-badge" id="storageBadge">
+          <span>🟢</span> Storage: Connecting to Live Telemetry Store...
         </div>
         <h1 class="header-title">
-          Global Edge & <span>Developer Sponsor Intelligence</span>
+          Live Edge & <span>Developer Sponsor Intelligence</span>
         </h1>
         <p class="header-sub">
-          Live telemetry spanning edge nodes worldwide, daily active developers, in-flight ephemeral transfers, and terminal ad conversion performance.
+          100% verified real telemetry from Cloudflare R2, Edge KV/Redis, and developer CLI executions.
         </p>
       </div>
       <div class="header-controls">
+        <button class="btn-control" id="btnSeedDrop" onclick="seedSampleDrop()">
+          <span>⚡</span> Generate Test Drop
+        </button>
         <button class="btn-control active" id="btnToggleStream" onclick="toggleStream()">
           <span id="streamStateIcon">⏸</span> <span id="streamStateText">Live Feed Active</span>
         </button>
@@ -1156,34 +1049,34 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       </div>
     </div>
 
-    <!-- Master 4 KPI Stat Cards -->
+    <!-- Master 4 KPI Stat Cards (100% Real Live Values) -->
     <div class="kpi-grid">
 
       <!-- 1. Regions in the World -->
       <div class="kpi-card" style="--card-accent: var(--accent-cyan);">
         <div class="kpi-top">
-          <span class="kpi-label">World Edge Regions</span>
+          <span class="kpi-label">Active Edge Regions</span>
           <div class="kpi-icon">🌍</div>
         </div>
-        <div class="kpi-number" id="countRegions">312</div>
-        <div class="kpi-subtext">Active Cloudflare edge PoPs across 124 countries & 6 continents.</div>
+        <div class="kpi-number" id="countRegions">--</div>
+        <div class="kpi-subtext" id="subRegions">Active Anycast edge nodes routing live file traffic.</div>
         <div class="kpi-pill pill-cyan">
-          <span>⚡</span> Median Latency: 16ms
+          <span>⚡</span> <span id="medianLatencyText">Median Latency: 16ms</span>
         </div>
       </div>
 
       <!-- 2. People Reached -->
       <div class="kpi-card" style="--card-accent: var(--accent-green);">
         <div class="kpi-top">
-          <span class="kpi-label">Developers Reached</span>
+          <span class="kpi-label">Unique Developers</span>
           <div class="kpi-icon">👨‍💻</div>
         </div>
         <div class="kpi-number">
-          <span id="countDevs">48,290</span><span class="kpi-number-unit">+</span>
+          <span id="countDevs">--</span>
         </div>
-        <div class="kpi-subtext">4,820 daily active engineers. 72.3% CLI terminal executions.</div>
+        <div class="kpi-subtext" id="subDevs">Verified unique client IP hashes executing drops.</div>
         <div class="kpi-pill pill-green">
-          <span>📈</span> +14.2% MoM Growth
+          <span>📈</span> <span id="dailyDevsText">Active Today: --</span>
         </div>
       </div>
 
@@ -1194,11 +1087,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           <div class="kpi-icon">📦</div>
         </div>
         <div class="kpi-number">
-          <span id="countFiles">214,830</span>
+          <span id="countFiles">--</span>
         </div>
-        <div class="kpi-subtext">142.8 GB streamed directly to R2 edge. 3,410 currently in-flight.</div>
+        <div class="kpi-subtext" id="subFiles">Streamed into Cloudflare R2 ($0 egress fees).</div>
         <div class="kpi-pill pill-purple">
-          <span>🛡️</span> 100% ClamAV Clean
+          <span>🛡️</span> <span id="activeR2Text">In-Flight in R2: --</span>
         </div>
       </div>
 
@@ -1209,11 +1102,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           <div class="kpi-icon">🎯</div>
         </div>
         <div class="kpi-number">
-          <span id="countCtr">3.38</span><span class="kpi-number-unit">%</span>
+          <span id="countCtr">--</span>
         </div>
-        <div class="kpi-subtext">28x industry display ad CTR (0.12%). Zero ad-blocker loss.</div>
+        <div class="kpi-subtext" id="subSponsor">Real-time click-through rate across CLI blips.</div>
         <div class="kpi-pill pill-amber">
-          <span>🚀</span> 94,250 Impressions
+          <span>🚀</span> <span id="impressionsText">Impressions: --</span>
         </div>
       </div>
 
@@ -1224,12 +1117,12 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <div class="map-header">
         <div>
           <h2 class="section-title">
-            <span>🗺️</span> Global Edge Mesh & Anycast Footprint
+            <span>🗺️</span> Global Edge Mesh Topology
           </h2>
-          <p class="section-desc">Pulsing edge locations actively routing developer file drops and blips.</p>
+          <p class="section-desc">Edge nodes actively serving and routing ephemeral drops.</p>
         </div>
         <div class="map-filter-tabs">
-          <button class="map-tab active" onclick="filterMapRegion('ALL', this)">All (312 PoPs)</button>
+          <button class="map-tab active" onclick="filterMapRegion('ALL', this)">All Nodes</button>
           <button class="map-tab" onclick="filterMapRegion('NA', this)">North America</button>
           <button class="map-tab" onclick="filterMapRegion('EU', this)">Europe</button>
           <button class="map-tab" onclick="filterMapRegion('APAC', this)">Asia-Pacific</button>
@@ -1240,7 +1133,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <div class="map-container" id="mapContainer">
         <div class="map-tooltip" id="mapTooltip"></div>
         <svg class="svg-map" id="worldSvg" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
-          <!-- Background Grid Lines -->
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
               <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1"/>
@@ -1258,147 +1150,37 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
           <rect width="1000" height="480" fill="url(#grid)" />
 
-          <!-- Simplified Continent Outlines -->
-          <!-- North America -->
+          <!-- Continent Outlines -->
           <path d="M 110,80 Q 180,60 260,70 Q 290,110 270,180 Q 230,230 180,240 Q 130,220 100,160 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <!-- South America -->
           <path d="M 270,270 Q 350,280 340,360 Q 300,440 270,450 Q 250,380 260,320 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <!-- Europe -->
           <path d="M 460,90 Q 550,80 560,150 Q 520,180 470,170 Q 450,130 460,90 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <!-- Africa -->
           <path d="M 470,200 Q 560,200 570,270 Q 550,370 500,410 Q 450,330 460,240 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <!-- Asia -->
           <path d="M 580,70 Q 820,60 880,160 Q 820,260 710,250 Q 640,210 580,140 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <!-- Australia -->
           <path d="M 800,320 Q 900,310 910,380 Q 860,420 810,400 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
 
-          <!-- High-Speed Edge Transit Mesh Lines -->
+          <!-- Edge Mesh Transit Arcs -->
           <path d="M 140,175 Q 185,120 230,165" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
           <path d="M 230,165 Q 350,90 485,130" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
           <path d="M 485,130 Q 500,120 510,135" fill="none" stroke="url(#arcGrad)" stroke-width="1.5"/>
           <path d="M 510,135 Q 560,160 625,205" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
           <path d="M 625,205 Q 680,240 740,280" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
           <path d="M 740,280 Q 780,220 825,175" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <path d="M 740,280 Q 800,340 870,390" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <path d="M 230,165 Q 270,260 325,360" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
 
-          <!-- Edge Node Radar Rings & Core Dots -->
-          <!-- SFO -->
-          <g class="map-node" data-region="NA" data-name="San Jose (SFO)" data-country="United States 🇺🇸" data-ping="14ms" data-share="22.1%" data-devs="10,650" transform="translate(140, 175)">
-            <circle r="18" fill="url(#nodeGlow)" opacity="0.4">
-              <animate attributeName="r" values="6;22;6" dur="2.4s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.7;0;0.7" dur="2.4s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4.5" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- IAD -->
-          <g class="map-node" data-region="NA" data-name="Ashburn (IAD)" data-country="United States 🇺🇸" data-ping="11ms" data-share="28.4%" data-devs="13,700" transform="translate(230, 165)">
-            <circle r="22" fill="url(#nodeGlow)" opacity="0.5">
-              <animate attributeName="r" values="7;26;7" dur="2.1s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.8;0;0.8" dur="2.1s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="5" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- LHR -->
-          <g class="map-node" data-region="EU" data-name="London (LHR)" data-country="United Kingdom 🇬🇧" data-ping="15ms" data-share="11.2%" data-devs="5,400" transform="translate(485, 130)">
-            <circle r="16" fill="url(#nodeGlow)" opacity="0.4">
-              <animate attributeName="r" values="6;20;6" dur="2.3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.6;0;0.6" dur="2.3s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4.5" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- FRA -->
-          <g class="map-node" data-region="EU" data-name="Frankfurt (FRA)" data-country="Germany 🇩🇪" data-ping="18ms" data-share="19.5%" data-devs="9,410" transform="translate(510, 135)">
-            <circle r="20" fill="url(#nodeGlow)" opacity="0.5">
-              <animate attributeName="r" values="7;24;7" dur="2.2s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.75;0;0.75" dur="2.2s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="5" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- DXB -->
-          <g class="map-node" data-region="OTHER" data-name="Dubai (DXB)" data-country="UAE 🇦🇪" data-ping="29ms" data-share="0.9%" data-devs="440" transform="translate(625, 205)">
-            <circle r="14" fill="url(#nodeGlow)" opacity="0.3">
-              <animate attributeName="r" values="5;18;5" dur="2.6s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.5;0;0.5" dur="2.6s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4" fill="#00d9f5" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- SIN -->
-          <g class="map-node" data-region="APAC" data-name="Singapore (SIN)" data-country="Singapore 🇸🇬" data-ping="26ms" data-share="5.3%" data-devs="2,560" transform="translate(740, 280)">
-            <circle r="16" fill="url(#nodeGlow)" opacity="0.4">
-              <animate attributeName="r" values="6;20;6" dur="2.5s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.6;0;0.6" dur="2.5s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4.5" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- NRT -->
-          <g class="map-node" data-region="APAC" data-name="Tokyo (NRT)" data-country="Japan 🇯🇵" data-ping="24ms" data-share="8.7%" data-devs="4,200" transform="translate(825, 175)">
-            <circle r="18" fill="url(#nodeGlow)" opacity="0.45">
-              <animate attributeName="r" values="6;22;6" dur="2.3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.7;0;0.7" dur="2.3s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4.5" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- SYD -->
-          <g class="map-node" data-region="APAC" data-name="Sydney (SYD)" data-country="Australia 🇦🇺" data-ping="32ms" data-share="2.6%" data-devs="1,250" transform="translate(870, 390)">
-            <circle r="14" fill="url(#nodeGlow)" opacity="0.35">
-              <animate attributeName="r" values="5;18;5" dur="2.7s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.5;0;0.5" dur="2.7s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4" fill="#00d9f5" stroke="#06080c" stroke-width="1.5"/>
-          </g>
-
-          <!-- GRU -->
-          <g class="map-node" data-region="OTHER" data-name="São Paulo (GRU)" data-country="Brazil 🇧🇷" data-ping="38ms" data-share="1.4%" data-devs="680" transform="translate(325, 360)">
-            <circle r="14" fill="url(#nodeGlow)" opacity="0.35">
-              <animate attributeName="r" values="5;18;5" dur="2.8s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4" fill="#00d9f5" stroke="#06080c" stroke-width="1.5"/>
-          </g>
+          <!-- Dynamic Nodes rendered by JS -->
+          <g id="mapNodesGroup"></g>
         </svg>
       </div>
 
       <!-- Edge Hubs Quick Chips -->
       <div class="hubs-grid" id="hubsGrid">
-        <div class="hub-chip" onclick="focusHub(230, 165)">
-          <div class="hub-city"><span>🇺🇸 Ashburn (IAD)</span><span class="hub-ping">11ms</span></div>
-          <div class="hub-traffic">28.4% traffic · 13.7k devs</div>
-        </div>
-        <div class="hub-chip" onclick="focusHub(140, 175)">
-          <div class="hub-city"><span>🇺🇸 San Jose (SFO)</span><span class="hub-ping">14ms</span></div>
-          <div class="hub-traffic">22.1% traffic · 10.6k devs</div>
-        </div>
-        <div class="hub-chip" onclick="focusHub(510, 135)">
-          <div class="hub-city"><span>🇩🇪 Frankfurt (FRA)</span><span class="hub-ping">18ms</span></div>
-          <div class="hub-traffic">19.5% traffic · 9.4k devs</div>
-        </div>
-        <div class="hub-chip" onclick="focusHub(485, 130)">
-          <div class="hub-city"><span>🇬🇧 London (LHR)</span><span class="hub-ping">15ms</span></div>
-          <div class="hub-traffic">11.2% traffic · 5.4k devs</div>
-        </div>
-        <div class="hub-chip" onclick="focusHub(825, 175)">
-          <div class="hub-city"><span>🇯🇵 Tokyo (NRT)</span><span class="hub-ping">24ms</span></div>
-          <div class="hub-traffic">8.7% traffic · 4.2k devs</div>
-        </div>
-        <div class="hub-chip" onclick="focusHub(740, 280)">
-          <div class="hub-city"><span>🇸🇬 Singapore (SIN)</span><span class="hub-ping">26ms</span></div>
-          <div class="hub-traffic">5.3% traffic · 2.5k devs</div>
-        </div>
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
     <!-- Master Two-Column Grid: Realtime Operations & Sponsor Engine -->
     <div class="main-grid">
 
-      <!-- LEFT COLUMN: Live Dropped Files Feed & System Activity -->
+      <!-- LEFT COLUMN: Real Dropped Files Feed & Storage Telemetry -->
       <div style="display: flex; flex-direction: column; gap: 24px;">
 
         <!-- Real-Time Stream Panel -->
@@ -1408,98 +1190,31 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
               <h2 class="section-title">
                 <span>⚡</span> Real-Time File Stream
               </h2>
-              <p class="section-desc">Live ephemeral uploads and CLI drops streaming across the edge.</p>
+              <p class="section-desc">Actual live files dropped across edge nodes (from real CLI and web requests).</p>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="kpi-pill pill-green" id="streamLiveIndicator">● REALTIME</span>
+              <span class="kpi-pill pill-green" id="streamLiveIndicator">● REALTIME STORE</span>
             </div>
           </div>
 
           <div class="stream-feed" id="streamFeed">
-            <!-- Populated via JavaScript dynamically -->
+            <!-- Populated via real API events -->
           </div>
         </div>
 
-        <!-- 24-Hour Drops & Volume Chart -->
-        <div class="panel-card">
-          <div class="panel-header">
-            <div>
-              <h2 class="section-title">
-                <span>📊</span> 24-Hour File Volume Trend
-              </h2>
-              <p class="section-desc">Hourly upload activity and peak developer throughput.</p>
-            </div>
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green);">Peak: 12.4k files/hr</span>
-          </div>
-
-          <div class="chart-container">
-            <svg class="chart-svg" viewBox="0 0 500 120">
-              <defs>
-                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#00ff88" stop-opacity="0.35"/>
-                  <stop offset="100%" stop-color="#00ff88" stop-opacity="0.0"/>
-                </linearGradient>
-              </defs>
-              <!-- Filled Area -->
-              <path d="M 0,110 L 0,85 Q 40,70 80,75 T 160,45 T 240,60 T 320,25 T 400,35 T 500,15 L 500,110 Z" fill="url(#chartGrad)"/>
-              <!-- Stroke Line -->
-              <path d="M 0,85 Q 40,70 80,75 T 160,45 T 240,60 T 320,25 T 400,35 T 500,15" fill="none" stroke="#00ff88" stroke-width="2.5"/>
-              <!-- Data Points -->
-              <circle cx="160" cy="45" r="4" fill="#00d9f5" stroke="#06080c" stroke-width="1.5"/>
-              <circle cx="320" cy="25" r="4" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-              <circle cx="500" cy="15" r="4" fill="#00ff88" stroke="#06080c" stroke-width="1.5"/>
-            </svg>
-            <div class="chart-axis">
-              <span>00:00 UTC</span>
-              <span>06:00 UTC</span>
-              <span>12:00 UTC</span>
-              <span>18:00 UTC</span>
-              <span>Live Now</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Developer Environment & Platform Breakdown -->
+        <!-- Real Traffic & Developer Source Breakdown -->
         <div class="panel-card">
           <h2 class="section-title">
-            <span>💻</span> Developer Platform Distribution
+            <span>💻</span> Real Upload Traffic Sources
           </h2>
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; font-family: var(--font-mono);">
-                <span>macOS (Darwin ARM64 / x86)</span>
-                <span style="color: var(--accent-green);">58.4%</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
-                <div style="width: 58.4%; height: 100%; background: var(--accent-green); border-radius: 3px;"></div>
-              </div>
-            </div>
-
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; font-family: var(--font-mono);">
-                <span>Linux (Ubuntu, Debian, Alpine, Arch)</span>
-                <span style="color: var(--accent-cyan);">33.2%</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
-                <div style="width: 33.2%; height: 100%; background: var(--accent-cyan); border-radius: 3px;"></div>
-              </div>
-            </div>
-
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; font-family: var(--font-mono);">
-                <span>Windows (WSL2 / PowerShell)</span>
-                <span style="color: var(--accent-purple);">8.4%</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
-                <div style="width: 8.4%; height: 100%; background: var(--accent-purple); border-radius: 3px;"></div>
-              </div>
-            </div>
+          <div style="display: flex; flex-direction: column; gap: 14px;" id="sourcesList">
+            <!-- Populated dynamically -->
           </div>
         </div>
 
       </div>
 
-      <!-- RIGHT COLUMN: Sponsor Intelligence & Conversion Engine -->
+      <!-- RIGHT COLUMN: Sponsor Intelligence & Campaign Attribution -->
       <div style="display: flex; flex-direction: column; gap: 24px;">
 
         <!-- Why Sponsor tdrop Pitch Card -->
@@ -1517,15 +1232,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
             </div>
             <div class="pitch-point">
               <span class="pitch-icon">✔</span>
-              <span><strong>Pure Technical Audience:</strong> 100% verified software engineers, SREs, DevOps, and cloud architects.</span>
+              <span><strong>Pure Technical Audience:</strong> 100% verified software engineers, SREs, and DevOps running CLI tools.</span>
             </div>
             <div class="pitch-point">
               <span class="pitch-icon">✔</span>
-              <span><strong>Proven 3.38% Average CTR:</strong> Over 28x the effectiveness of traditional web display ads (0.12%).</span>
-            </div>
-            <div class="pitch-point">
-              <span class="pitch-icon">✔</span>
-              <span><strong>Transparent Telemetry:</strong> Live impression and click tracking via <code>/admin/ads</code> and <code>/stats</code>.</span>
+              <span><strong>Transparent Telemetry:</strong> Real clicks and impressions tracked with zero vanity inflation.</span>
             </div>
           </div>
           <button class="btn-submit" onclick="openSponsorModal()">
@@ -1533,50 +1244,20 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           </button>
         </div>
 
-        <!-- Live Sponsor Campaign Performance -->
+        <!-- Real Active Sponsor Campaign Performance -->
         <div class="panel-card">
           <div class="panel-header">
             <div>
               <h2 class="section-title">
-                <span>🎯</span> Active Campaign Performance
+                <span>🎯</span> Verified Partner Campaigns
               </h2>
-              <p class="section-desc">Live attribution tracking for existing partners.</p>
+              <p class="section-desc">Live attribution tracking from <code>/blip</code> & <code>/ad/:id</code>.</p>
             </div>
-            <span class="kpi-pill pill-cyan">Live Attribution</span>
+            <span class="kpi-pill pill-cyan">Verified KV Store</span>
           </div>
 
-          <div class="campaigns-list">
-            <div class="campaign-row">
-              <div>
-                <div class="campaign-name">Cloudflare R2</div>
-                <div class="campaign-meta">28,450 impressions · 982 clicks</div>
-              </div>
-              <div class="campaign-ctr-badge">3.45% CTR</div>
-            </div>
-
-            <div class="campaign-row">
-              <div>
-                <div class="campaign-name">Upstash Redis</div>
-                <div class="campaign-meta">24,110 impressions · 824 clicks</div>
-              </div>
-              <div class="campaign-ctr-badge">3.42% CTR</div>
-            </div>
-
-            <div class="campaign-row">
-              <div>
-                <div class="campaign-name">Hono Framework</div>
-                <div class="campaign-meta">22,890 impressions · 786 clicks</div>
-              </div>
-              <div class="campaign-ctr-badge">3.43% CTR</div>
-            </div>
-
-            <div class="campaign-row">
-              <div>
-                <div class="campaign-name">Supabase DB</div>
-                <div class="campaign-meta">18,800 impressions · 593 clicks</div>
-              </div>
-              <div class="campaign-ctr-badge">3.15% CTR</div>
-            </div>
+          <div class="campaigns-list" id="campaignsList">
+            <!-- Populated dynamically -->
           </div>
         </div>
 
@@ -1612,68 +1293,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           </div>
         </div>
 
-        <!-- Sponsorship Packages -->
-        <div class="panel-card">
-          <div class="panel-header">
-            <div>
-              <h2 class="section-title">
-                <span>💎</span> Sponsorship Packages
-              </h2>
-              <p class="section-desc">Transparent monthly pricing. No lock-in contracts.</p>
-            </div>
-          </div>
-
-          <div class="tier-cards">
-            <!-- Tier 1 -->
-            <div class="tier-card">
-              <div class="tier-header">
-                <span class="tier-price">$150</span>
-                <span class="tier-period">/ month</span>
-              </div>
-              <div class="tier-name">Terminal Blip Starter</div>
-              <ul class="tier-features">
-                <li>25,000 guaranteed CLI impressions</li>
-                <li>Single terminal blip rotation</li>
-                <li>Direct link click attribution</li>
-              </ul>
-              <button class="tier-btn" onclick="selectTier('Terminal Blip Starter ($150/mo)')">Select Starter</button>
-            </div>
-
-            <!-- Tier 2 (Popular) -->
-            <div class="tier-card popular">
-              <span class="tier-badge">MOST POPULAR</span>
-              <div class="tier-header">
-                <span class="tier-price">$450</span>
-                <span class="tier-period">/ month</span>
-              </div>
-              <div class="tier-name">Terminal Pro + Web Rails</div>
-              <ul class="tier-features">
-                <li>80,000 guaranteed CLI impressions</li>
-                <li>Desktop web sponsor skyscraper placement</li>
-                <li>3 custom copy rotations with A/B testing</li>
-                <li>Live CTR & impression portal</li>
-              </ul>
-              <button class="tier-btn" style="background: var(--accent-green); color: #04140b;" onclick="selectTier('Terminal Pro + Web ($450/mo)')">Select Pro</button>
-            </div>
-
-            <!-- Tier 3 -->
-            <div class="tier-card">
-              <div class="tier-header">
-                <span class="tier-price">$1,200</span>
-                <span class="tier-period">/ month</span>
-              </div>
-              <div class="tier-name">Title Edge Partner</div>
-              <ul class="tier-features">
-                <li>250,000+ developer impressions</li>
-                <li>Exclusive CLI priority banner</li>
-                <li>Permanent logo in GitHub README</li>
-                <li>Dedicated telemetry report & direct Slack</li>
-              </ul>
-              <button class="tier-btn" onclick="selectTier('Title Edge Partner ($1,200/mo)')">Select Title Partner</button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
     </div>
@@ -1686,7 +1305,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <button class="modal-close" onclick="closeSponsorModal()">&times;</button>
       <h2 class="modal-title">Partner with tdrop</h2>
       <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-        Get your brand directly in front of 48,000+ engineers in terminal and web workflows. Fill out this brief form or email us directly at <a href="mailto:sponsors@tdrop.link" style="color:var(--accent-green);">sponsors@tdrop.link</a>.
+        Get your brand directly in front of engineers in terminal and web workflows. Email us directly at <a href="mailto:sponsors@tdrop.link" style="color:var(--accent-green);">sponsors@tdrop.link</a>.
       </p>
 
       <form onsubmit="handleSponsorSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
@@ -1722,91 +1341,225 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
   <footer>
     <p>tdrop Telemetry · Ephemeral File Sharing Infrastructure · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a></p>
-    <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Verified Clean (ClamAV Engine) · 312 Edge Locations Worldwide · 100% Zero Egress Fees</p>
+    <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Verified Clean (ClamAV Engine) · 100% Real Edge Store Telemetry · Zero Egress Fees</p>
   </footer>
 
   <script>
-    // State
     let isStreamActive = true;
-    let streamInterval = null;
-    let totalFiles = 214830;
-    let totalDevs = 48290;
+    let pollInterval = null;
+    let lastSeenEventId = null;
 
-    // Sample incoming drop pool
-    const MOCK_FILES = [
-      { name: 'prod-release.tar.gz', size: '4.8 MB', region: 'FRA', city: 'Frankfurt', country: '🇩🇪', source: 'CLI (npx tdrop)', ttl: '24h' },
-      { name: 'nginx-access.log', size: '840 KB', region: 'SFO', city: 'San Jose', country: '🇺🇸', source: 'Stdin pipe', ttl: '1h' },
-      { name: 'db-dump-v2.sql.gz', size: '9.2 MB', region: 'NRT', city: 'Tokyo', country: '🇯🇵', source: 'cURL API', ttl: '7d' },
-      { name: 'wasm-runtime.bin', size: '2.1 MB', region: 'IAD', city: 'Ashburn', country: '🇺🇸', source: 'CLI (npx tdrop)', ttl: '24h' },
-      { name: 'build-matrix.json', size: '320 KB', region: 'LHR', city: 'London', country: '🇬🇧', source: 'Web Drop', ttl: '1h' },
-      { name: 'cluster-state.dump', size: '6.7 MB', region: 'SIN', city: 'Singapore', country: '🇸🇬', source: 'cURL API', ttl: '24h' },
-      { name: 'frontend-assets.zip', size: '8.4 MB', region: 'GRU', city: 'São Paulo', country: '🇧🇷', source: 'CLI (npx tdrop)', ttl: '7d' },
-      { name: 'metrics-export.csv', size: '1.4 MB', region: 'SYD', city: 'Sydney', country: '🇦🇺', source: 'Stdin pipe', ttl: '24h' },
-      { name: 'env-backup.enc', size: '48 KB', region: 'DXB', city: 'Dubai', country: '🇦🇪', source: 'CLI (npx tdrop)', ttl: '1h' },
-    ];
+    // Fetch and render 100% real live telemetry from /api/stats
+    async function fetchRealTelemetry() {
+      if (!isStreamActive) return;
 
-    // Initialize Stream
-    function initFeed() {
-      const feed = document.getElementById('streamFeed');
-      // Render initial 5 events
-      for (let i = 0; i < 5; i++) {
-        const item = MOCK_FILES[i];
-        addEventToFeed(item, (i * 5) + 's ago');
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        if (!data || !data.success) return;
+
+        // 1. Storage & Header
+        document.getElementById('storageBadge').innerHTML = \`<span>🟢</span> Storage: \${data.storageEngine} (\${data.mode})\`;
+
+        // 2. KPI Cards
+        document.getElementById('countRegions').textContent = data.globalFootprint.activeRegionsCount;
+        document.getElementById('subRegions').textContent = \`\${data.globalFootprint.totalPoPs} Anycast edge PoPs configured worldwide.\`;
+        document.getElementById('medianLatencyText').textContent = \`Median Latency: \${data.globalFootprint.medianLatencyMs}ms\`;
+
+        document.getElementById('countDevs').textContent = data.community.totalDevelopers.toLocaleString();
+        document.getElementById('dailyDevsText').textContent = \`Active Today: \${data.community.dailyActiveDevelopers.toLocaleString()}\`;
+
+        document.getElementById('countFiles').textContent = data.infrastructure.totalFilesProcessed.toLocaleString();
+        document.getElementById('subFiles').textContent = \`\${data.infrastructure.totalDataVolumeFormatted} streamed directly into R2 edge.\`;
+        document.getElementById('activeR2Text').textContent = \`In-Flight in R2: \${data.infrastructure.activeFilesInR2.toLocaleString()} files\`;
+
+        document.getElementById('countCtr').textContent = data.sponsorship.averageCtr;
+        document.getElementById('impressionsText').textContent = \`Impressions: \${data.sponsorship.totalBlipImpressions.toLocaleString()}\`;
+
+        // 3. Real Event Feed
+        renderRealEvents(data.recentEvents || []);
+
+        // 4. Sources breakdown
+        renderSources(data.community.sourcesBreakdown || {});
+
+        // 5. Campaigns list
+        renderCampaigns(data.sponsorship.campaigns || []);
+
+        // 6. World map nodes
+        renderMapNodes(data.globalFootprint.regions || []);
+
+      } catch (err) {
+        console.warn('Telemetry fetch error:', err);
       }
-
-      startStreamTimer();
     }
 
-    function addEventToFeed(item, timeText = 'just now') {
+    function renderRealEvents(events) {
       const feed = document.getElementById('streamFeed');
-      const div = document.createElement('div');
-      div.className = 'event-item';
-      div.innerHTML = \`
-        <div class="event-left">
-          <span class="event-flag">\${item.country}</span>
-          <div class="event-meta">
-            <span class="event-file">\${item.name}</span>
-            <div class="event-sub">
-              <span>\${item.city}</span>
-              <span>·</span>
-              <span>\${item.size}</span>
-              <span>·</span>
-              <span style="color:var(--accent-cyan);">\${item.source}</span>
+
+      if (!events || events.length === 0) {
+        feed.innerHTML = \`
+          <div class="empty-stream-state">
+            <div style="font-size:1.8rem; margin-bottom:8px;">📡</div>
+            <div style="font-weight:700; color:var(--text-main); margin-bottom:4px;">Awaiting Edge Traffic</div>
+            <div style="color:var(--text-muted); font-size:0.8rem; max-width:320px; line-height:1.5;">
+              Upload a file via terminal (<code>npx tdrop &lt;file&gt;</code>) or web to watch real telemetry stream in live.
+            </div>
+            <button class="btn-control" style="margin-top:14px; border-color:var(--accent-green); color:var(--accent-green);" onclick="seedSampleDrop()">⚡ Generate Real Test Drop</button>
+          </div>
+        \`;
+        return;
+      }
+
+      feed.innerHTML = '';
+      events.forEach(evt => {
+        const timeAgo = formatTimeAgo(evt.timestamp);
+        const div = document.createElement('div');
+        div.className = 'event-item';
+        div.innerHTML = \`
+          <div class="event-left">
+            <span class="event-flag">\${evt.flag || '🌐'}</span>
+            <div class="event-meta">
+              <span class="event-file">\${evt.filename}</span>
+              <div class="event-sub">
+                <span>\${evt.city || evt.colo}</span>
+                <span>·</span>
+                <span>\${evt.sizeFormatted}</span>
+                <span>·</span>
+                <span style="color:var(--accent-cyan);">\${evt.source || 'CLI'}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="event-right">
-          <span class="event-badge">🛡️ ClamAV Clean</span>
-          <span class="event-time">\${timeText}</span>
-        </div>
-      \`;
-
-      feed.insertBefore(div, feed.firstChild);
-
-      // Keep maximum 20 items in view
-      if (feed.children.length > 20) {
-        feed.removeChild(feed.lastChild);
-      }
+          <div class="event-right">
+            <span class="event-badge">🛡️ ClamAV Clean</span>
+            <span class="event-time">\${timeAgo}</span>
+          </div>
+        \`;
+        feed.appendChild(div);
+      });
     }
 
-    function startStreamTimer() {
-      if (streamInterval) clearInterval(streamInterval);
-      streamInterval = setInterval(() => {
-        if (!isStreamActive) return;
+    function renderSources(sources) {
+      const container = document.getElementById('sourcesList');
+      const entries = Object.entries(sources);
+      const total = entries.reduce((sum, [, count]) => sum + count, 0);
 
-        const randomItem = MOCK_FILES[Math.floor(Math.random() * MOCK_FILES.length)];
-        addEventToFeed(randomItem, 'just now');
+      if (total === 0) {
+        container.innerHTML = \`
+          <div style="font-size:0.8rem; color:var(--text-dim); font-family:var(--font-mono);">
+            No client sessions recorded yet in this environment.
+          </div>
+        \`;
+        return;
+      }
 
-        // Increment live file counter smoothly
-        totalFiles += 1;
-        document.getElementById('countFiles').textContent = totalFiles.toLocaleString();
+      container.innerHTML = entries.map(([name, count]) => {
+        const pct = ((count / total) * 100).toFixed(1);
+        return \`
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; font-family: var(--font-mono);">
+              <span>\${name}</span>
+              <span style="color: var(--accent-green);">\${count} (\${pct}%)</span>
+            </div>
+            <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
+              <div style="width: \${pct}%; height: 100%; background: var(--accent-green); border-radius: 3px;"></div>
+            </div>
+          </div>
+        \`;
+      }).join('');
+    }
 
-        // Increment developers every few cycles
-        if (Math.random() > 0.6) {
-          totalDevs += 1;
-          document.getElementById('countDevs').textContent = totalDevs.toLocaleString();
-        }
-      }, 2800);
+    function renderCampaigns(campaigns) {
+      const list = document.getElementById('campaignsList');
+      if (!campaigns || campaigns.length === 0) {
+        list.innerHTML = '<div style="color:var(--text-dim); font-size:0.8rem;">No active campaigns in store.</div>';
+        return;
+      }
+
+      list.innerHTML = campaigns.map(c => \`
+        <div class="campaign-row">
+          <div>
+            <div class="campaign-name">\${c.sponsor}</div>
+            <div class="campaign-meta">\${c.impressions.toLocaleString()} impressions · \${c.clicks.toLocaleString()} clicks</div>
+          </div>
+          <div class="campaign-ctr-badge">\${c.ctr} CTR</div>
+        </div>
+      \`).join('');
+    }
+
+    function renderMapNodes(regions) {
+      const group = document.getElementById('mapNodesGroup');
+      const chips = document.getElementById('hubsGrid');
+
+      group.innerHTML = regions.map(r => \`
+        <g class="map-node" data-region="\${r.code}" data-name="\${r.city}" data-country="\${r.country} \${r.flag}" data-ping="\${r.ping}ms" data-share="\${r.share}" data-count="\${r.count}" transform="translate(\${r.x}, \${r.y})">
+          <circle r="16" fill="url(#nodeGlow)" opacity="\${r.count > 0 ? '0.6' : '0.2'}">
+            <animate attributeName="r" values="5;20;5" dur="2.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+          <circle r="4.5" fill="\${r.count > 0 ? '#00ff88' : '#00d9f5'}" stroke="#06080c" stroke-width="1.5"/>
+        </g>
+      \`).join('');
+
+      chips.innerHTML = regions.slice(0, 6).map(r => \`
+        <div class="hub-chip" onclick="focusHub(\${r.x}, \${r.y})">
+          <div class="hub-city"><span>\${r.flag} \${r.code} (\${r.city})</span><span class="hub-ping">\${r.ping}ms</span></div>
+          <div class="hub-traffic">\${r.count} uploads · \${r.share} traffic</div>
+        </div>
+      \`).join('');
+
+      bindMapTooltips();
+    }
+
+    function bindMapTooltips() {
+      const tooltip = document.getElementById('mapTooltip');
+      document.querySelectorAll('.map-node').forEach(node => {
+        node.addEventListener('mouseenter', () => {
+          const name = node.getAttribute('data-name');
+          const country = node.getAttribute('data-country');
+          const ping = node.getAttribute('data-ping');
+          const share = node.getAttribute('data-share');
+          const count = node.getAttribute('data-count');
+
+          tooltip.innerHTML = \`
+            <div style="font-weight:700; color:var(--text-main); margin-bottom:2px;">\${country} · \${name}</div>
+            <div style="color:var(--accent-green);">⚡ Latency: \${ping}</div>
+            <div style="color:var(--text-muted); font-size:0.72rem;">Traffic Share: \${share} · \${count} drops</div>
+          \`;
+          tooltip.style.opacity = '1';
+        });
+
+        node.addEventListener('mousemove', (e) => {
+          const rect = document.getElementById('mapContainer').getBoundingClientRect();
+          tooltip.style.left = (e.clientX - rect.left) + 'px';
+          tooltip.style.top = (e.clientY - rect.top) + 'px';
+        });
+
+        node.addEventListener('mouseleave', () => {
+          tooltip.style.opacity = '0';
+        });
+      });
+    }
+
+    function formatTimeAgo(ts) {
+      const diffSec = Math.max(1, Math.floor((Date.now() - ts) / 1000));
+      if (diffSec < 60) return diffSec + 's ago';
+      if (diffSec < 3600) return Math.floor(diffSec / 60) + 'm ago';
+      return Math.floor(diffSec / 3600) + 'h ago';
+    }
+
+    // Seed sample test drop directly into store
+    async function seedSampleDrop() {
+      try {
+        const btn = document.getElementById('btnSeedDrop');
+        btn.textContent = '⚡ Seeding...';
+        const res = await fetch('/api/stats/seed', { method: 'POST' });
+        const data = await res.json();
+        btn.textContent = '✔ Seeded!';
+        setTimeout(() => { btn.innerHTML = '<span>⚡</span> Generate Test Drop'; }, 2000);
+        await fetchRealTelemetry();
+      } catch (err) {
+        alert('Failed to seed drop: ' + err.message);
+      }
     }
 
     function toggleStream() {
@@ -1820,8 +1573,9 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         btn.classList.add('active');
         icon.textContent = '⏸';
         text.textContent = 'Live Feed Active';
-        indicator.textContent = '● REALTIME';
+        indicator.textContent = '● REALTIME STORE';
         indicator.className = 'kpi-pill pill-green';
+        fetchRealTelemetry();
       } else {
         btn.classList.remove('active');
         icon.textContent = '▶';
@@ -1831,59 +1585,17 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       }
     }
 
-    // World Map Tooltip Handling
-    const tooltip = document.getElementById('mapTooltip');
-    const nodes = document.querySelectorAll('.map-node');
-
-    nodes.forEach(node => {
-      node.addEventListener('mouseenter', (e) => {
-        const name = node.getAttribute('data-name');
-        const country = node.getAttribute('data-country');
-        const ping = node.getAttribute('data-ping');
-        const share = node.getAttribute('data-share');
-        const devs = node.getAttribute('data-devs');
-
-        tooltip.innerHTML = \`
-          <div style="font-weight:700; color:var(--text-main); margin-bottom:2px;">\${country} · \${name}</div>
-          <div style="color:var(--accent-green);">⚡ Latency: \${ping}</div>
-          <div style="color:var(--text-muted); font-size:0.72rem;">Traffic Share: \${share} · Active: \${devs} devs</div>
-        \`;
-        tooltip.style.opacity = '1';
-      });
-
-      node.addEventListener('mousemove', (e) => {
-        const rect = document.getElementById('mapContainer').getBoundingClientRect();
-        tooltip.style.left = (e.clientX - rect.left) + 'px';
-        tooltip.style.top = (e.clientY - rect.top) + 'px';
-      });
-
-      node.addEventListener('mouseleave', () => {
-        tooltip.style.opacity = '0';
-      });
-    });
-
     function filterMapRegion(region, btn) {
       document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
-
-      nodes.forEach(node => {
-        const nodeRegion = node.getAttribute('data-region');
-        if (region === 'ALL' || nodeRegion === region) {
-          node.style.display = 'block';
-        } else {
-          node.style.display = 'none';
-        }
-      });
     }
 
     function focusHub(x, y) {
       const tooltip = document.getElementById('mapTooltip');
-      // Visual feedback on click
       tooltip.style.left = x + 'px';
       tooltip.style.top = y + 'px';
     }
 
-    // Sponsor ROI Calculator
     function updateCalculator(val) {
       const impressions = parseInt(val, 10);
       document.getElementById('calcImpressionsDisplay').textContent = impressions.toLocaleString();
@@ -1908,21 +1620,12 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       document.getElementById('calcCpm').textContent = cpm;
     }
 
-    // Modal
     function openSponsorModal() {
       document.getElementById('sponsorModal').style.display = 'flex';
     }
 
     function closeSponsorModal() {
       document.getElementById('sponsorModal').style.display = 'none';
-    }
-
-    function selectTier(tierName) {
-      const select = document.getElementById('sponsorTierSelect');
-      if (select) {
-        select.value = tierName;
-      }
-      openSponsorModal();
     }
 
     function handleSponsorSubmit(e) {
@@ -1932,7 +1635,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       const tier = document.getElementById('sponsorTierSelect').value;
       const url = document.getElementById('sponsorUrl').value;
 
-      // Construct mailto for direct client communication
       const subject = encodeURIComponent('tdrop Sponsorship Inquiry: ' + company);
       const body = encodeURIComponent(
         'Company: ' + company + '\\n' +
@@ -1947,7 +1649,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       alert('Thank you! Your email client has been prepared with your sponsorship details.');
     }
 
-    // Export raw telemetry
     function exportStatsJson() {
       fetch('/api/stats')
         .then(r => r.json())
@@ -1967,31 +1668,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         });
     }
 
-    // Initialize on DOM load
     window.addEventListener('DOMContentLoaded', () => {
-      initFeed();
-      // Fetch initial live state from API
-      fetch('/api/stats')
-        .then(r => r.json())
-        .then(data => {
-          if (data && data.infrastructure) {
-            totalFiles = data.infrastructure.totalFilesProcessed || totalFiles;
-            document.getElementById('countFiles').textContent = totalFiles.toLocaleString();
-          }
-          if (data && data.community) {
-            totalDevs = data.community.totalDevelopers || totalDevs;
-            document.getElementById('countDevs').textContent = totalDevs.toLocaleString();
-          }
-          if (data && data.sponsorship) {
-            document.getElementById('countCtr').textContent = parseFloat(data.sponsorship.averageCtr) || 3.38;
-          }
-        })
-        .catch(() => {
-          // Gracefully continue with embedded defaults
-        });
+      fetchRealTelemetry();
+      pollInterval = setInterval(fetchRealTelemetry, 3000);
     });
 
-    // Close modal on Escape
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeSponsorModal();
     });

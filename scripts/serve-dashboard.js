@@ -4,10 +4,7 @@ import http from "node:http";
 import { exec } from "node:child_process";
 import { renderStatsPage } from "../packages/worker/dist/views/stats.html.js";
 import { getLiveStatsPayload } from "../packages/worker/dist/routes/stats.js";
-
-// Fallback in case typescript files are directly referenced
-let renderFn = renderStatsPage;
-let payloadFn = getLiveStatsPayload;
+import { TelemetryService } from "../packages/worker/dist/services/telemetry.js";
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3333;
 
@@ -16,7 +13,8 @@ const server = http.createServer(async (req, res) => {
 
   // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
     res.writeHead(204);
@@ -24,12 +22,27 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (url.pathname === "/api/stats") {
-    const dummyEnv = {
-      APP_DOMAIN: "localhost:3333",
-    };
+  const dummyEnv = {
+    APP_DOMAIN: `localhost:${PORT}`,
+  };
+
+  if (url.pathname === "/api/stats/seed" && req.method === "POST") {
     try {
-      const stats = await payloadFn(dummyEnv, "localhost:3333");
+      const telemetry = new TelemetryService(dummyEnv);
+      await telemetry.seedDemoActivity(3);
+      const stats = await telemetry.getRealStats();
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ success: true, stats }));
+    } catch (err) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
+  if (url.pathname === "/api/stats") {
+    try {
+      const stats = await getLiveStatsPayload(dummyEnv, `localhost:${PORT}`);
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(stats, null, 2));
     } catch (err) {
@@ -41,7 +54,7 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === "/" || url.pathname === "/stats" || url.pathname === "/dashboard") {
     try {
-      const html = renderFn("localhost:3333");
+      const html = renderStatsPage(`localhost:${PORT}`);
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(html);
     } catch (err) {
