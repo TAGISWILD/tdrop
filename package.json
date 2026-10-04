@@ -8,7 +8,8 @@
     "services/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build:shared": "npm run build --workspace=@tdrop/shared",
+    "build": "npm run build:shared && npm run build --workspaces --if-present",
     "stats": "npm run build --workspace=@tdrop/worker && node scripts/serve-dashboard.js",
     "publish:cli": "npm run build --workspace=tdrop && cd packages/cli && npm publish --access public",
     "test": "vitest run",
