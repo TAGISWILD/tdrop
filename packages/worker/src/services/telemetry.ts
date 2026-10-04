@@ -32,6 +32,22 @@ export interface RegionMetric {
   share: string;
 }
 
+export type TelemetrySubscriber = (data: { event: TelemetryEvent; stats: RealTelemetryData }) => void;
+const subscribers = new Set<TelemetrySubscriber>();
+
+export function subscribeTelemetry(fn: TelemetrySubscriber): () => void {
+  subscribers.add(fn);
+  return () => subscribers.delete(fn);
+}
+
+export function notifyTelemetrySubscribers(data: { event: TelemetryEvent; stats: RealTelemetryData }) {
+  for (const fn of subscribers) {
+    try {
+      fn(data);
+    } catch {}
+  }
+}
+
 export interface RealTelemetryData {
   success: boolean;
   mode: "production" | "local_development";
@@ -258,6 +274,11 @@ export class TelemetryService {
         console.warn("[tdrop:telemetry] KV update failed:", err);
       }
     }
+
+    try {
+      const stats = await this.getRealStats();
+      notifyTelemetrySubscribers({ event, stats });
+    } catch {}
   }
 
   async recordDownload(params: {
@@ -309,6 +330,11 @@ export class TelemetryService {
         console.warn("[tdrop:telemetry] Redis update failed:", err);
       }
     }
+
+    try {
+      const stats = await this.getRealStats();
+      notifyTelemetrySubscribers({ event, stats });
+    } catch {}
   }
 
   async getRealStats(): Promise<RealTelemetryData> {

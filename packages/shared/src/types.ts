@@ -28,6 +28,7 @@ export interface UploadResponse {
   expiresAt: string;
   expiresIn: string;
   malwareScan: "Verified Clean (ClamAV Engine)" | "Verification In Progress";
+  qrSvg?: string;
 }
 
 export interface BlipAd {

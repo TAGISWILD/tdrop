@@ -8,6 +8,7 @@ import { DEFAULT_DOMAIN, DEFAULT_RETENTION } from "@tdrop/shared";
 import { uploadFile, uploadStdin } from "./uploader.js";
 import { fetchAndFormatBlip } from "./ui/blip.js";
 import { createProgressBar, formatBytes } from "./ui/progress.js";
+import { renderUnicodeCompact } from "uqr";
 
 const program = new Command();
 
@@ -19,6 +20,7 @@ program
   .option("-t, --ttl <retention>", "Retention duration: 1h, 24h, 7d", DEFAULT_RETENTION)
   .option("-n, --filename <name>", "Custom filename (especially for piped stdin)")
   .option("-u, --url <url>", "Backend API URL", process.env.TDROP_SERVER || `https://${DEFAULT_DOMAIN}`)
+  .option("--no-qr", "Disable rendering QR code in terminal output")
   .option("--json", "Output response as raw JSON")
   .action(async (fileArg, options) => {
     const isPiped = !process.stdin.isTTY;
@@ -39,6 +41,9 @@ program
       if (blipText) {
         console.log(`\n${blipText}\n`);
       }
+      console.log(`\x1b[90mBy uploading, you have already accepted the Terms of Service and Privacy Policy.\x1b[0m`);
+      console.log(`\x1b[90m• Terms:   ${apiUrl}/terms\x1b[0m`);
+      console.log(`\x1b[90m• Privacy: ${apiUrl}/privacy\x1b[0m\n`);
     }
 
     const spinner = ora({
@@ -124,7 +129,25 @@ program
       console.log(`  \x1b[1m🛡️  Malware Scan:\x1b[0m \x1b[32m${result.malwareScan}\x1b[0m`);
       console.log(`  \x1b[1m🔗 Link:\x1b[0m         \x1b[36m\x1b[4m${result.url}\x1b[0m`);
       console.log(`  \x1b[1m📥 Direct Curl:\x1b[0m  curl -O ${result.url}/${result.filename}`);
-      console.log(`  \x1b[1m⏳ Retention:\x1b[0m    ${result.expiresIn} (Expires ${new Date(result.expiresAt).toLocaleTimeString()})\n`);
+      console.log(`  \x1b[1m⏳ Retention:\x1b[0m    ${result.expiresIn} (Expires ${new Date(result.expiresAt).toLocaleTimeString()})`);
+      console.log(`  \x1b[90mℹ  By uploading, you have already accepted the Terms of Service & Privacy Policy:\x1b[0m`);
+      console.log(`  \x1b[90m   • Terms:   ${apiUrl}/terms\x1b[0m`);
+      console.log(`  \x1b[90m   • Privacy: ${apiUrl}/privacy\x1b[0m\n`);
+
+      if (options.qr) {
+        try {
+          const qrCode = renderUnicodeCompact(result.url, { border: 2 });
+          const indentedQr = qrCode
+            .split("\n")
+            .map((line) => "  " + line)
+            .join("\n");
+          console.log("  \x1b[1m📱 Scan to open on mobile:\x1b[0m\n");
+          console.log(indentedQr);
+          console.log("");
+        } catch {
+          // Gracefully omit QR if rendering fails
+        }
+      }
 
       process.exit(0);
     } catch (err: any) {

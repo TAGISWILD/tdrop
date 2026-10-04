@@ -2,20 +2,54 @@ import { Hono } from "hono";
 import { isValidShortcode, formatContentDisposition } from "@tdrop/shared";
 import type { AppContext } from "../types.js";
 import { MetadataService } from "../services/redis.js";
+import { AdsService } from "../services/ads.js";
 import { renderDownloadPage } from "../views/download.html.js";
+import { renderErrorPage } from "../views/error.html.js";
 import { TelemetryService } from "../services/telemetry.js";
 
 export const downloadRoute = new Hono<AppContext>();
+
+const RESERVED_CODES = new Set([
+  "sponsor",
+  "sponsorship",
+  "privacy",
+  "terms",
+  "health",
+  "upload",
+  "blip",
+  "stats",
+  "api",
+  "admin",
+  "dashboard",
+]);
 
 // Common handler for GET and HEAD
 async function handleDownload(c: any, isHead: boolean) {
   const code = c.req.param("code");
   const redisService = new MetadataService(c.env);
   const ipHash = c.get("ipHash") || "unknown";
+  const domain = c.env.APP_DOMAIN || "tdrop.link";
+  const ua = (c.req.header("user-agent") || "").toLowerCase();
+  const acceptHeader = (c.req.header("accept") || "").toLowerCase();
+  const isTerminalClient =
+    (ua.startsWith("curl/") || ua.startsWith("wget/") || ua.startsWith("httpie/") || ua.includes("libcurl")) &&
+    !acceptHeader.includes("text/html");
+  const shouldServeHtml = !isTerminalClient;
+
+  // Check reserved routes
+  if (RESERVED_CODES.has(code.toLowerCase())) {
+    if (shouldServeHtml) {
+      return c.html(renderErrorPage(404, "Page Not Found", "The requested link or route does not exist.", domain), 404);
+    }
+    return c.json({ error: "Not Found", message: "Route is reserved." }, 404);
+  }
 
   // Validate format
   if (!isValidShortcode(code)) {
     await redisService.recordFailedProbe(ipHash);
+    if (shouldServeHtml) {
+      return c.html(renderErrorPage(404, "Invalid Shortcode", "The file link format is invalid.", domain), 404);
+    }
     return c.json({ error: "Not Found", message: "Invalid or nonexistent shortcode." }, 404);
   }
 
@@ -24,12 +58,29 @@ async function handleDownload(c: any, isHead: boolean) {
   if (!metadata) {
     const isNowBlocked = await redisService.recordFailedProbe(ipHash);
     if (isNowBlocked) {
+      if (shouldServeHtml) {
+        return c.html(
+          renderErrorPage(429, "Too Many Requests", "Repeated invalid probes detected. Your IP is blocked for 30 minutes.", domain),
+          429
+        );
+      }
       return c.json(
         {
           error: "Too Many Requests",
           message: "Repeated invalid probes detected. Your IP is blocked for 30 minutes.",
         },
         429
+      );
+    }
+    if (shouldServeHtml) {
+      return c.html(
+        renderErrorPage(
+          404,
+          "File Expired or Not Found",
+          "This file has reached its retention expiration (1h, 24h, or 7d) and was permanently incinerated from Cloudflare R2 edge storage.",
+          domain
+        ),
+        404
       );
     }
     return c.json({ error: "Not Found", message: "File has expired or does not exist." }, 404);
@@ -39,11 +90,28 @@ async function handleDownload(c: any, isHead: boolean) {
   if (Date.now() > metadata.expiresAt) {
     await redisService.deleteMetadata(code);
     await c.env.BUCKET.delete(metadata.objectKey);
+    if (shouldServeHtml) {
+      return c.html(
+        renderErrorPage(
+          410,
+          "File Expired",
+          "This ephemeral file has reached its retention window and was permanently incinerated.",
+          domain
+        ),
+        410
+      );
+    }
     return c.json({ error: "Gone", message: "This file has expired and been purged." }, 410);
   }
 
   // Check malware quarantine verdict
   if (metadata.status === "INFECTED") {
+    if (shouldServeHtml) {
+      return c.html(
+        renderErrorPage(410, "File Quarantined", "This file was flagged by ClamAV security inspection and purged.", domain),
+        410
+      );
+    }
     return c.json(
       {
         error: "Unavailable",
@@ -53,13 +121,10 @@ async function handleDownload(c: any, isHead: boolean) {
     );
   }
 
-  // BROWSER DETECTION: If opened in Chrome / Web Browser and not explicitly downloading
-  const acceptHeader = c.req.header("accept") || "";
-  const isHtmlRequest = acceptHeader.includes("text/html");
+  // BROWSER & CRAWLER DETECTION: If opened in Chrome, Googlebot, or preview tools and not explicitly downloading
   const forceDownload = Boolean(c.req.query("download"));
 
-  if (!isHead && isHtmlRequest && !forceDownload) {
-    const domain = c.env.APP_DOMAIN || "tdrop.link";
+  if (!isHead && !forceDownload && !isTerminalClient) {
     return c.html(renderDownloadPage(metadata, domain));
   }
 

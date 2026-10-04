@@ -1,4 +1,5 @@
 import type { FileMetadata } from "@tdrop/shared";
+import { renderSVG } from "uqr";
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -21,7 +22,13 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   const sizeFormatted = formatBytes(meta.size);
   const icon = getFileIcon(meta.filename);
   const downloadUrl = `https://${domain}/${meta.code}?download=1`;
+  const pageUrl = `https://${domain}/${meta.code}`;
   const curlCmd = `curl -O https://${domain}/${meta.code}/${encodeURIComponent(meta.sanitizedFilename)}`;
+  const qrSvg = renderSVG(pageUrl, {
+    border: 1,
+    whiteColor: "#ffffff",
+    blackColor: "#09090b",
+  });
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -29,31 +36,37 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Download ${meta.sanitizedFilename} · tdrop</title>
-  <meta name="description" content="Secure, ephemeral file transfer. Verified clean with ClamAV.">
+  <meta name="description" content="Secure, ephemeral file transfer. Streamed from Cloudflare R2 edge. ClamAV clean.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M988VVTPWK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M988VVTPWK');
+  </script>
+
   <style>
     :root {
-      --bg: #07090e;
-      --surface: #0e111a;
-      --surface-card: #131722;
+      --bg: #09090b;
+      --surface: #111216;
+      --surface-raised: #18191f;
       --surface-border: rgba(255, 255, 255, 0.08);
       --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --accent-green: #00ff88;
-      --accent-green-dim: rgba(0, 255, 136, 0.12);
-      --accent-cyan: #00e5ff;
-      --accent-cyan-dim: rgba(0, 229, 255, 0.12);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      --danger: #ef4444;
+      --surface-border-hover: rgba(255, 255, 255, 0.18);
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --status-green: #10b981;
       --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     }
 
     *, *::before, *::after {
@@ -64,6 +77,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     html {
       -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
     }
 
     body {
@@ -75,22 +89,19 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       width: 100%;
       overflow-x: hidden;
       background-image: 
-        radial-gradient(ellipse 70% 40% at 50% -10%, rgba(0, 255, 136, 0.08), transparent 70%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: 100% 100%, 36px 36px, 36px 36px;
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
       background-attachment: fixed;
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
     }
 
-    /* Floating Pill Navbar */
+    /* Floating Island Navbar */
     .nav-wrapper {
       position: sticky;
       top: 16px;
       z-index: 100;
       width: 100%;
-      max-width: 720px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0 16px;
       pointer-events: none;
@@ -98,201 +109,249 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .nav-island {
       pointer-events: auto;
-      background: rgba(14, 17, 26, 0.75);
+      background: rgba(14, 15, 20, 0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--surface-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       border-radius: 9999px;
       padding: 8px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      transition: border-color 0.2s;
     }
 
-    .logo-wrap {
+    .nav-island:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .brand-wrap {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 1.15rem;
-      color: var(--text-main);
+      gap: 10px;
       text-decoration: none;
+      color: var(--text-main);
     }
 
-    .logo-wrap span {
-      color: var(--accent-green);
+    .brand-logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
     }
 
-    .nav-action {
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--status-green);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--status-green);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-sm-ghost {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 5px 12px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--surface-border);
       border-radius: 9999px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .nav-action:hover {
-      color: var(--accent-green);
-      border-color: rgba(0, 255, 136, 0.4);
-      background: rgba(0, 255, 136, 0.08);
+    .btn-sm-ghost:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-sponsor-nav {
+      background: #ffffff;
+      color: #09090b !important;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-sponsor-nav:hover {
+      background: #f4f4f5;
       transform: translateY(-1px);
     }
 
-    /* Master Layout: 3 Columns */
+    /* Master Layout: Center Content with Right Sponsor Rail */
     .site-wrapper {
       width: 100%;
-      max-width: 1320px;
+      max-width: 1040px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 32px;
-      padding: 30px 16px 80px;
+      gap: 36px;
+      padding: 36px 16px 80px;
       min-height: 100vh;
     }
 
-    /* Desktop Sticky Ad Rails */
-    .ad-rail {
-      display: none;
-      width: 160px;
-      flex: 0 0 160px;
-    }
-
-    @media (min-width: 1220px) {
-      .ad-rail {
-        display: block;
-      }
-    }
-
-    .ad-sticky {
-      position: sticky;
-      top: 96px;
-      background: rgba(14, 17, 26, 0.75);
-      border: 1px dashed var(--surface-border);
-      border-radius: 16px;
-      padding: 16px 8px;
-      min-height: 600px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      text-align: center;
-      backdrop-filter: blur(12px);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .ad-tag {
-      font-size: 0.62rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-dim);
-    }
-
-    .ad-box-skyscraper {
-      width: 100%;
-      max-width: 160px;
-      min-height: 600px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.015);
-      border-radius: 8px;
-    }
-
-    .ad-fallback-label {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-    }
-
-    /* Central Content Area */
+    /* Center Content Container */
     .content-container {
       width: 100%;
-      max-width: 700px;
-      flex: 1 1 700px;
+      max-width: 640px;
+      flex: 1 1 640px;
       min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* In-Flow Horizontal Ad Banners */
-    .ad-banner-inline {
-      width: 100%;
-      margin: 10px 0 24px;
-      background: rgba(14, 17, 26, 0.65);
-      border: 1px dashed var(--surface-border);
-      border-radius: 14px;
-      padding: 12px 10px;
-      text-align: center;
-      min-height: 65px;
+    /* Right Sticky Sponsor Rail */
+    .sponsor-rail {
+      display: none;
+      width: 240px;
+      flex: 0 0 240px;
+    }
+
+    @media (min-width: 1040px) {
+      .sponsor-rail {
+        display: block;
+      }
+    }
+
+    .sponsor-sticky-card {
+      position: sticky;
+      top: 96px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 18px;
+      padding: 22px 18px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      gap: 14px;
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
-    .ad-banner-tag {
-      position: absolute;
-      top: 4px;
-      right: 12px;
-      font-size: 0.6rem;
+    .sponsor-rail-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: var(--text-dim);
+      font-family: var(--font-mono);
     }
 
-    /* Download Card Console */
+    .sponsor-rail-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .sponsor-rail-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .sponsor-rail-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--surface-border-subtle);
+    }
+
+    .sponsor-stat-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sponsor-stat-pill::before {
+      content: '•';
+      color: var(--status-green);
+    }
+
+    .btn-sponsor-rail {
+      background: #ffffff;
+      color: #09090b;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.12);
+      transition: all 0.2s;
+    }
+
+    .btn-sponsor-rail:hover {
+      background: #f4f4f5;
+      transform: translateY(-1px);
+    }
+
+    /* Download Card (Monochrome, Tactile, High-Craft) */
     .download-card {
-      background: linear-gradient(180deg, rgba(18, 22, 32, 0.85) 0%, rgba(10, 13, 20, 0.95) 100%);
-      border: 1px solid var(--surface-border);
-      border-radius: 24px;
-      padding: clamp(24px, 5vw, 40px);
-      box-shadow: 
-        0 30px 60px -15px rgba(0, 0, 0, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
-      position: relative;
-      overflow: hidden;
       width: 100%;
-      margin-bottom: 24px;
-    }
-
-    .download-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent-green), var(--accent-cyan), transparent);
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 20px;
+      padding: clamp(22px, 4.5vw, 36px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
     }
 
     /* File Header */
     .file-header {
       display: flex;
       align-items: flex-start;
-      gap: 18px;
-      margin-bottom: 24px;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
     .file-icon {
-      font-size: clamp(2.4rem, 5vw, 3rem);
+      font-size: clamp(2rem, 4.5vw, 2.5rem);
       line-height: 1;
-      padding: clamp(12px, 3vw, 18px);
+      padding: clamp(10px, 2.5vw, 14px);
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--surface-border);
-      border-radius: 18px;
+      border-radius: 14px;
       flex-shrink: 0;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .file-details {
@@ -301,91 +360,241 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     }
 
     .file-name {
-      font-size: clamp(1.25rem, 4vw, 1.6rem);
-      font-weight: 800;
-      color: var(--text-main);
+      font-size: clamp(1.2rem, 3.8vw, 1.5rem);
+      font-weight: 700;
+      color: #ffffff;
       overflow-wrap: anywhere;
       word-break: break-word;
-      line-height: 1.25;
+      line-height: 1.3;
       margin-bottom: 6px;
       letter-spacing: -0.02em;
     }
 
-    .file-meta {
+    .file-meta-row {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px 12px;
-      font-size: clamp(0.8rem, 2.5vw, 0.88rem);
+      gap: 6px 10px;
+      font-size: 0.78rem;
       color: var(--text-muted);
       font-family: var(--font-mono);
     }
 
-    .file-size {
-      color: var(--accent-cyan);
-      font-weight: 700;
+    .file-meta-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--surface-border);
+      border-radius: 6px;
+      padding: 2px 7px;
+      color: #ffffff;
+      font-weight: 600;
     }
 
-    /* Security Stamp */
-    .security-badge {
+    .file-meta-sep {
+      color: var(--surface-border);
+    }
+
+    /* ClamAV Verification Chip */
+    .security-chip {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.28);
-      color: var(--accent-green);
-      padding: 8px 16px;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--surface-border);
+      padding: 5px 12px;
       border-radius: 9999px;
-      font-size: clamp(0.76rem, 2.4vw, 0.84rem);
-      font-weight: 600;
-      margin-bottom: 24px;
-      width: fit-content;
-      max-width: 100%;
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-bottom: 22px;
     }
 
-    /* High-contrast Download Action Button */
+    .security-chip .status-dot {
+      width: 5px;
+      height: 5px;
+    }
+
+    .security-chip span.clean-text {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Solid White Primary Download Button */
     .download-btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       width: 100%;
-      min-height: 56px;
-      background: linear-gradient(135deg, var(--accent-green), #00cc6a);
-      color: #04140b;
+      min-height: 50px;
+      background: #ffffff;
+      color: #09090b;
       font-family: var(--font-sans);
-      font-size: clamp(1rem, 3vw, 1.1rem);
-      font-weight: 800;
-      padding: 16px 24px;
-      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 22px;
+      border-radius: 12px;
       text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 25px rgba(0, 255, 136, 0.35);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
 
     .download-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
+      background: #f4f4f5;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
     }
 
     .download-btn:active {
       transform: scale(0.98);
-      opacity: 0.95;
     }
 
-    /* Terminal cURL Block */
-    .curl-block {
-      margin-top: 24px;
-      background: #080a0f;
+    /* Instant Mobile Transfer & QR Box */
+    .transfer-box {
+      margin-top: 16px;
+      background: #090a0d;
       border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 12px 16px;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .transfer-box:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    @media (min-width: 480px) {
+      .transfer-box {
+        flex-direction: row;
+        align-items: center;
+        gap: 18px;
+      }
+    }
+
+    .qr-frame {
+      width: 104px;
+      height: 104px;
+      min-width: 104px;
+      min-height: 104px;
+      background: #ffffff;
+      padding: 7px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      margin: 0 auto;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .qr-frame:hover {
+      transform: scale(1.04);
+    }
+
+    .qr-frame svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 2px;
+    }
+
+    .transfer-info {
+      flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
+    }
+
+    .transfer-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .transfer-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .transfer-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .transfer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--surface-border-hover);
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .btn-action-primary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .btn-action-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .btn-action-secondary:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    /* cURL Terminal Block */
+    .curl-block {
+      margin-top: 18px;
+      background: #090a0d;
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     @media (min-width: 480px) {
@@ -405,141 +614,338 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .curl-code {
       font-family: var(--font-mono);
-      font-size: clamp(0.76rem, 2.4vw, 0.86rem);
+      font-size: 0.8rem;
       color: var(--text-muted);
       white-space: nowrap;
     }
 
-    .curl-code span { color: var(--accent-cyan); }
+    .curl-code code {
+      color: #ffffff;
+    }
 
     .copy-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--surface-border);
       color: var(--text-main);
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
-      min-height: 38px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
     }
 
     .copy-btn:hover {
-      background: rgba(0, 255, 136, 0.15);
-      color: var(--accent-green);
-      border-color: rgba(0, 255, 136, 0.35);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .copy-btn:active {
+      transform: scale(0.97);
     }
 
     /* Expiry & Retention Bar */
     .expiry-bar {
-      margin-top: 20px;
+      margin-top: 18px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 8px;
-      font-size: clamp(0.74rem, 2.3vw, 0.82rem);
+      font-size: 0.76rem;
       color: var(--text-dim);
       font-family: var(--font-mono);
-      padding-top: 16px;
+      padding-top: 14px;
       border-top: 1px solid var(--surface-border-subtle);
+    }
+
+    /* Sponsored Ad Banner */
+    .sponsored-ad-banner {
+      width: 100%;
+      margin-top: 20px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color 0.2s;
+    }
+
+    .sponsored-ad-banner:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .ad-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ad-badge-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .ad-badge-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--surface-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .ad-sponsor-tag {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .ad-promote-link {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .ad-promote-link:hover {
+      color: #ffffff;
+    }
+
+    .ad-content-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 480px) {
+      .ad-content-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .ad-main-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ad-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .ad-text-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ad-headline {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+
+    .ad-copy {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-ad-visit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #ffffff;
+      color: #09090b !important;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.12);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-ad-visit:hover {
+      background: #f4f4f5;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Google AdSense Wrapper */
+    .adsense-container {
+      width: 100%;
+      margin-top: 18px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--surface-border-subtle);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: center;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .adsense-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
 
     /* Footer */
     footer {
       width: 100%;
-      margin-top: 24px;
-      padding: 28px 16px;
-      font-size: 0.82rem;
+      margin-top: 36px;
+      padding: 24px 16px;
+      font-size: 0.8rem;
       color: var(--text-dim);
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    footer a { color: var(--text-muted); text-decoration: none; }
-    footer a:hover { color: var(--accent-green); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Floating Pill Navbar -->
+  <!-- Floating Island Navbar -->
   <header class="nav-wrapper">
     <nav class="nav-island">
-      <a href="/" class="logo-wrap">
-        <span>>_</span> tdrop
+      <a href="/" class="brand-wrap">
+        <div class="brand-logo">tdrop</div>
       </a>
-      <a href="/" class="nav-action">Upload New File</a>
+      <div class="nav-actions">
+        <a href="/" class="btn-sm-ghost">Upload New File</a>
+        <a href="/sponsor" class="btn-sponsor-nav">Sponsor Us</a>
+      </div>
     </nav>
   </header>
 
+  <!-- Layout: Main Content + Right Sponsor Rail -->
   <div class="site-wrapper">
-
-    <!-- Left Sticky Ad Rail (Desktop >= 1220px only, 160x600) -->
-    <aside class="ad-rail">
-      <div class="ad-sticky">
-        <span class="ad-tag">Sponsor</span>
-        <div class="ad-box-skyscraper">
-          <ins class="adsbygoogle"
-               style="display:inline-block;width:160px;height:600px"
-               data-ad-client="ca-pub-2876380604791121"
-               data-ad-slot="3030303030"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <div class="ad-fallback-label">[160x600 Skyscraper]</div>
-        </div>
-      </div>
-    </aside>
 
     <!-- Center Column -->
     <div class="content-container">
 
-      <!-- Top Horizontal In-Flow Ad Banner -->
-      <div class="ad-banner-inline">
-        <span class="ad-banner-tag">Advertisement</span>
-        <ins class="adsbygoogle"
-             style="display:block; width:100%; min-height:60px;"
-             data-ad-client="ca-pub-2876380604791121"
-             data-ad-slot="1234567890"
-             data-ad-format="horizontal"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
-      </div>
-
-      <!-- Main Download Card Console -->
-      <div class="download-card">
+      <!-- Main Download Card -->
+      <main class="download-card">
+        
         <div class="file-header">
           <div class="file-icon">${icon}</div>
           <div class="file-details">
             <h1 class="file-name">${meta.sanitizedFilename}</h1>
-            <div class="file-meta">
-              <span class="file-size">${sizeFormatted}</span>
-              <span>•</span>
-              <span>Ephemeral File</span>
-              <span>•</span>
+            <div class="file-meta-row">
+              <span class="file-meta-pill">${sizeFormatted}</span>
+              <span class="file-meta-sep">/</span>
+              <span>Ephemeral</span>
+              <span class="file-meta-sep">/</span>
               <span>$0 Egress</span>
             </div>
           </div>
         </div>
 
-        <!-- ClamAV Security Stamp -->
-        <div class="security-badge">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-          <span>ClamAV Engine: Clean & Verified</span>
+        <!-- ClamAV Security Chip -->
+        <div class="security-chip">
+          <div class="status-dot"></div>
+          <span>Security scan:</span>
+          <span class="clean-text">ClamAV Clean</span>
         </div>
 
-        <!-- High-Contrast Download Button -->
-        <a href="${downloadUrl}" class="download-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Download File (${sizeFormatted})</span>
+        <!-- Solid White Download Button -->
+        <a href="${downloadUrl}" class="download-btn" id="mainDownloadBtn" onclick="onDownloadClick()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="downloadBtnText">Download (${sizeFormatted})</span>
         </a>
+
+        <!-- Mobile QR Transfer & Quick Share -->
+        <div class="transfer-box">
+          <div class="qr-frame" onclick="copyLink()" title="Scan with camera or click to copy link">
+            ${qrSvg}
+          </div>
+          <div class="transfer-info">
+            <div class="transfer-header">
+              <div class="transfer-title-row">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <span>Instant Mobile Transfer</span>
+              </div>
+              <p class="transfer-desc">Scan with your phone camera to download directly on iOS/Android, or beam via native share sheet.</p>
+            </div>
+            <div class="transfer-actions">
+              <button class="btn-action-primary" onclick="triggerNativeShare()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span id="shareBtnText">Share Link</span>
+              </button>
+              <button class="btn-action-secondary" onclick="copyLink()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span id="copyLinkBtnText">Copy URL</span>
+              </button>
+            </div>
+          </div>
+        </div>
 
         <!-- Terminal cURL Copy -->
         <div class="curl-block">
           <div class="curl-code-wrapper">
-            <div class="curl-code"><span>curl -O</span> https://${domain}/${meta.code}/${encodeURIComponent(meta.sanitizedFilename)}</div>
+            <div class="curl-code"><code>curl -O</code> https://${domain}/${meta.code}/${encodeURIComponent(meta.sanitizedFilename)}</div>
           </div>
           <button class="copy-btn" onclick="copyCurl()">Copy cURL</button>
         </div>
@@ -549,45 +955,109 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
           <span>Retention: ${meta.retentionClass}</span>
           <span id="countdown">Calculating...</span>
         </div>
-      </div>
 
-      <!-- Bottom Horizontal In-Flow Ad Banner -->
-      <div class="ad-banner-inline" style="margin-top: 10px;">
-        <span class="ad-banner-tag">Advertisement</span>
+      </main>
+
+      <!-- Google AdSense Container -->
+      <div class="adsense-container" aria-label="Advertisement">
+        <div class="adsense-label">ADVERTISEMENT</div>
         <ins class="adsbygoogle"
-             style="display:block; width:100%; min-height:90px;"
+             style="display:block; width:100%;"
              data-ad-client="ca-pub-2876380604791121"
-             data-ad-slot="0987654321"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        <div class="ad-fallback-label">[Google AdSense Responsive Unit]</div>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
       </div>
 
       <footer>
-        <p>Powered by <a href="/">tdrop</a> · Zero egress fees · Zero logs · End-to-end ephemeral</p>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/sponsor">Sponsorship</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>Powered by <a href="/" style="color:var(--text-muted); text-decoration:none;">tdrop</a> · Zero egress fees · Zero logs · End-to-end ephemeral</p>
       </footer>
 
     </div>
 
-    <!-- Right Sticky Ad Rail (Desktop >= 1220px only, 160x600) -->
-    <aside class="ad-rail">
-      <div class="ad-sticky">
-        <span class="ad-tag">Sponsor</span>
-        <div class="ad-box-skyscraper">
-          <ins class="adsbygoogle"
-               style="display:inline-block;width:160px;height:600px"
-               data-ad-client="ca-pub-2876380604791121"
-               data-ad-slot="4040404040"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <div class="ad-fallback-label">[160x600 Skyscraper]</div>
+    <!-- Right Sticky Sponsor Rail -->
+    <aside class="sponsor-rail">
+      <div class="sponsor-sticky-card">
+        <div class="sponsor-rail-tag">Sponsorship</div>
+        <h3 class="sponsor-rail-title">Sponsor the Command Line</h3>
+        <p class="sponsor-rail-desc">Reach developer audiences directly on terminal stdout and edge downloads. 0% AdBlock and high CTR.</p>
+        <div class="sponsor-rail-stats">
+          <div class="sponsor-stat-pill">0% AdBlock in Terminal</div>
+          <div class="sponsor-stat-pill">3%–8% Average CTR</div>
+          <div class="sponsor-stat-pill">300+ Edge PoP Reach</div>
         </div>
+        <a href="/sponsor" class="btn-sponsor-rail">Sponsor Us →</a>
       </div>
     </aside>
 
   </div>
 
   <script>
+    // Immediate Download Feedback
+    function onDownloadClick() {
+      const btn = document.getElementById('downloadBtnText');
+      if (btn) {
+        btn.textContent = 'Streaming ${sizeFormatted}...';
+        setTimeout(() => {
+          btn.textContent = 'Download (${sizeFormatted})';
+        }, 3000);
+      }
+    }
+
+    // Native Web Share API with Clipboard Fallback
+    const shareData = {
+      title: "${meta.sanitizedFilename} · tdrop",
+      text: "Download ${meta.sanitizedFilename} (${sizeFormatted}) via tdrop",
+      url: "${pageUrl}"
+    };
+
+    async function triggerNativeShare() {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            copyLink();
+          }
+        }
+      } else {
+        copyLink();
+      }
+    }
+
+    function copyLink() {
+      const url = "${pageUrl}";
+      const updateLabel = () => {
+        const btn = document.getElementById('copyLinkBtnText');
+        if (btn) {
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = 'Copy URL', 2000);
+        }
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(updateLabel);
+      } else {
+        const temp = document.createElement('input');
+        temp.value = url;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        updateLabel();
+      }
+    }
+
     function copyCurl() {
       const text = "${curlCmd}";
       if (navigator.clipboard && navigator.clipboard.writeText) {

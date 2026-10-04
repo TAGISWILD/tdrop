@@ -46,6 +46,10 @@ export async function uploadFile(
 
   const res = await request(`${options.apiUrl}/upload`, {
     method: "POST",
+    headers: {
+      "user-agent": "tdrop-cli/1.0.1",
+      "x-tdrop-cli": "true",
+    },
     body: formData,
   });
 
@@ -89,6 +93,8 @@ export async function uploadStdin(
     const res = await request(`${options.apiUrl}/upload/raw`, {
       method: "POST",
       headers: {
+        "user-agent": "tdrop-cli/1.0.1",
+        "x-tdrop-cli": "true",
         "Content-Type": "application/octet-stream",
         "X-TDrop-Filename": options.filename,
         "X-TDrop-TTL": options.ttl,

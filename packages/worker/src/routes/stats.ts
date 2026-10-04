@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import type { AppContext } from "../types.js";
-import { TelemetryService } from "../services/telemetry.js";
+import { TelemetryService, subscribeTelemetry } from "../services/telemetry.js";
 import { renderStatsPage } from "../views/stats.html.js";
 
 export const statsRoute = new Hono<AppContext>();
@@ -29,7 +29,38 @@ statsRoute.get("/api/stats", async (c) => {
   return c.json(payload);
 });
 
-// 3. POST /api/stats/seed - Generate sample test drops for local testing / pitch demos
+// 3. GET /api/stats/live - Realtime Server-Sent Events (SSE) stream
+statsRoute.get("/api/stats/live", (c) => {
+  const { readable, writable } = new TransformStream();
+  const writer = writable.getWriter();
+  const encoder = new TextEncoder();
+
+  // Send initial ping to keep connection alive
+  writer.write(encoder.encode(`event: ping\ndata: ${Date.now()}\n\n`));
+
+  const unsubscribe = subscribeTelemetry(async (data) => {
+    try {
+      await writer.write(encoder.encode(`event: update\ndata: ${JSON.stringify(data)}\n\n`));
+    } catch {
+      unsubscribe();
+    }
+  });
+
+  c.req.raw.signal.addEventListener("abort", () => {
+    unsubscribe();
+  });
+
+  return new Response(readable, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+});
+
+// 4. POST /api/stats/seed - Generate sample test drops for local testing / pitch demos
 statsRoute.post("/api/stats/seed", async (c) => {
   const telemetry = new TelemetryService(c.env);
   await telemetry.seedDemoActivity(3);

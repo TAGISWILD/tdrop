@@ -20,12 +20,21 @@ describe("@tdrop/worker", () => {
       expect(data.service).toBe("tdrop-edge");
     });
 
-    it("should return documentation on GET /", async () => {
-      const res = await app.request("/", {}, mockEnv);
+    it("should return documentation on GET / for terminal clients", async () => {
+      const res = await app.request("/", { headers: { "User-Agent": "curl/8.4.0" } }, mockEnv);
       expect(res.status).toBe(200);
       const text = await res.text();
       expect(text).toContain("tdrop (Terminal Drop)");
       expect(text).toContain("npx tdrop");
+    });
+
+    it("should return rich HTML on GET / for browsers and crawlers", async () => {
+      const res = await app.request("/", { headers: { "User-Agent": "Mozilla/5.0", "Accept": "*/*" } }, mockEnv);
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("text/html");
+      const html = await res.text();
+      expect(html).toContain("<!DOCTYPE html>");
+      expect(html).toContain("Ephemeral file sharing");
     });
 
     it("should return a sponsored blip on GET /blip", async () => {

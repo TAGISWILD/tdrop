@@ -8,26 +8,36 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   <meta name="description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, files processed, and developer terminal sponsorship performance.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google AdSense Verification Tag -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M988VVTPWK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M988VVTPWK');
+  </script>
 
   <style>
     :root {
-      --bg: #06080c;
-      --surface: #0c0f16;
-      --surface-card: #11151f;
-      --surface-border: #1a2232;
-      --surface-border-subtle: rgba(255, 255, 255, 0.08);
-      --surface-hover: #151b27;
-      --accent-green: #00ff88;
-      --accent-green-dim: rgba(0, 255, 136, 0.12);
-      --accent-green-glow: rgba(0, 255, 136, 0.28);
-      --accent-cyan: #00d9f5;
-      --accent-cyan-dim: rgba(0, 217, 245, 0.12);
+      --bg: #09090b;
+      --surface: #111216;
+      --surface-card: #18191f;
+      --surface-border: rgba(255, 255, 255, 0.08);
+      --surface-border-subtle: rgba(255, 255, 255, 0.04);
+      --surface-hover: rgba(255, 255, 255, 0.06);
+      --accent-green: #10b981;
+      --accent-green-dim: rgba(16, 185, 129, 0.12);
+      --accent-green-glow: rgba(16, 185, 129, 0.2);
+      --accent-cyan: #38bdf8;
+      --accent-cyan-dim: rgba(56, 189, 248, 0.12);
       --accent-amber: #f59e0b;
       --accent-purple: #a855f7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
       --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     }
@@ -973,6 +983,107 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       transform: translateY(-1px);
     }
 
+    /* Live Testing Action Bar */
+    .test-bar {
+      background: rgba(12, 15, 22, 0.95);
+      border: 1px dashed rgba(0, 255, 136, 0.4);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (min-width: 860px) {
+      .test-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .test-bar-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .test-bar-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .test-bar-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .cmd-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .cmd-pill {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+
+    .cmd-pill:hover {
+      border-color: var(--accent-green);
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .cmd-pill span {
+      color: var(--accent-green);
+    }
+
+    .copy-hint {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .btn-instant-upload {
+      background: rgba(0, 255, 136, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+
+    .btn-instant-upload:hover {
+      background: var(--accent-green);
+      color: #04140b;
+      box-shadow: 0 0 20px var(--accent-green-glow);
+    }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--surface-border);
@@ -1045,6 +1156,34 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         </button>
         <button class="btn-control" onclick="exportStatsJson()">
           <span>📥</span> Export JSON
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Testing & Instant Ingestion Bar -->
+    <div class="test-bar">
+      <div class="test-bar-left">
+        <div class="test-bar-title">
+          <span>⚡</span> Live Ingestion Commands
+        </div>
+        <div class="test-bar-desc">
+          Upload any file from your terminal, curl, or mobile to watch real live telemetry stream in instantly:
+        </div>
+        <div class="cmd-pill-row">
+          <div class="cmd-pill" onclick="copySnippet('curl -F \\'file=@README.md\\' http://${domain}/upload')">
+            <span>$</span> curl -F "file=@README.md" http://${domain}/upload
+            <span class="copy-hint">Copy</span>
+          </div>
+          <div class="cmd-pill" onclick="copySnippet('npx tdrop README.md -u http://${domain}')">
+            <span>$</span> npx tdrop &lt;file&gt; -u http://${domain}
+            <span class="copy-hint">Copy</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-bar-right">
+        <input type="file" id="instantFileInput" style="display:none;" onchange="handleInstantUpload(this.files)">
+        <button class="btn-instant-upload" id="btnInstantUpload" onclick="document.getElementById('instantFileInput').click()">
+          <span>📤</span> Drop / Pick File to Test Realtime
         </button>
       </div>
     </div>
@@ -1305,7 +1444,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <button class="modal-close" onclick="closeSponsorModal()">&times;</button>
       <h2 class="modal-title">Partner with tdrop</h2>
       <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-        Get your brand directly in front of engineers in terminal and web workflows. Email us directly at <a href="mailto:sponsors@tdrop.link" style="color:var(--accent-green);">sponsors@tdrop.link</a>.
+        Get your brand directly in front of engineers in terminal and web workflows. Email us directly at <a href="mailto:support@ethiccode.in" style="color:var(--accent-green);">support@ethiccode.in</a>.
       </p>
 
       <form onsubmit="handleSponsorSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
@@ -1644,7 +1783,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         'Hello tdrop team, we would like to sponsor tdrop terminal blips and web placement.'
       );
 
-      window.location.href = 'mailto:sponsors@tdrop.link?subject=' + subject + '&body=' + body;
+      window.location.href = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
       closeSponsorModal();
       alert('Thank you! Your email client has been prepared with your sponsorship details.');
     }
@@ -1668,9 +1807,140 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         });
     }
 
+    // Audio feedback synth (Web Audio API)
+    let audioCtx = null;
+    function playChime() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.25);
+      } catch {}
+    }
+
+    // Direct Instant Upload from stats page
+    async function handleInstantUpload(files) {
+      if (!files || !files.length) return;
+      const file = files[0];
+      const btn = document.getElementById('btnInstantUpload');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>⏳</span> Uploading ' + file.name + '...';
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('ttl', '24h');
+
+      try {
+        const res = await fetch('/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          playChime();
+          btn.innerHTML = '<span>✔</span> Uploaded ' + json.code + '!';
+          setTimeout(() => { btn.innerHTML = originalText; }, 2500);
+          await fetchRealTelemetry();
+        } else {
+          const errText = await res.text();
+          alert('Upload failed: ' + errText);
+          btn.innerHTML = originalText;
+        }
+      } catch (err) {
+        alert('Network upload failed: ' + err.message);
+        btn.innerHTML = originalText;
+      }
+    }
+
+    function copySnippet(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      alert('Copied to clipboard: ' + text);
+    }
+
+    // Server-Sent Events (SSE) for sub-millisecond realtime updates
+    function initSSE() {
+      if (!window.EventSource) return;
+      try {
+        const sse = new EventSource('/api/stats/live');
+        sse.addEventListener('update', (e) => {
+          try {
+            const data = JSON.parse(e.data);
+            if (data && data.stats) {
+              playChime();
+              applyTelemetryData(data.stats);
+            }
+          } catch (err) {
+            console.warn('SSE parse error:', err);
+          }
+        });
+        sse.onerror = () => {
+          // Silent fallback to polling
+        };
+      } catch (err) {
+        console.warn('SSE error:', err);
+      }
+    }
+
+    // Shared UI update function
+    function applyTelemetryData(data) {
+      if (!data || !data.success) return;
+
+      document.getElementById('storageBadge').innerHTML = '<span>🟢</span> Storage: ' + data.storageEngine + ' (' + data.mode + ')';
+
+      document.getElementById('countRegions').textContent = data.globalFootprint.activeRegionsCount;
+      document.getElementById('subRegions').textContent = data.globalFootprint.totalPoPs + ' Anycast edge PoPs configured worldwide.';
+      document.getElementById('medianLatencyText').textContent = 'Median Latency: ' + data.globalFootprint.medianLatencyMs + 'ms';
+
+      document.getElementById('countDevs').textContent = data.community.totalDevelopers.toLocaleString();
+      document.getElementById('dailyDevsText').textContent = 'Active Today: ' + data.community.dailyActiveDevelopers.toLocaleString();
+
+      document.getElementById('countFiles').textContent = data.infrastructure.totalFilesProcessed.toLocaleString();
+      document.getElementById('subFiles').textContent = data.infrastructure.totalDataVolumeFormatted + ' streamed directly into R2 edge.';
+      document.getElementById('activeR2Text').textContent = 'In-Flight in R2: ' + data.infrastructure.activeFilesInR2.toLocaleString() + ' files';
+
+      document.getElementById('countCtr').textContent = data.sponsorship.averageCtr;
+      document.getElementById('impressionsText').textContent = 'Impressions: ' + data.sponsorship.totalBlipImpressions.toLocaleString();
+
+      renderRealEvents(data.recentEvents || []);
+      renderSources(data.community.sourcesBreakdown || {});
+      renderCampaigns(data.sponsorship.campaigns || []);
+      renderMapNodes(data.globalFootprint.regions || []);
+    }
+
+    async function fetchRealTelemetry() {
+      if (!isStreamActive) return;
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        applyTelemetryData(data);
+      } catch (err) {
+        console.warn('Telemetry fetch error:', err);
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       fetchRealTelemetry();
-      pollInterval = setInterval(fetchRealTelemetry, 3000);
+      initSSE();
+      pollInterval = setInterval(fetchRealTelemetry, 1500);
     });
 
     window.addEventListener('keydown', (e) => {

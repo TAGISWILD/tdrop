@@ -11,8 +11,9 @@ import {
 } from "@tdrop/shared";
 import type { AppContext } from "../types.js";
 import { MetadataService } from "../services/redis.js";
-import { triggerScanner } from "../services/scanner-client.js";
+import { triggerScanner, scanFileBuffer } from "../services/scanner-client.js";
 import { TelemetryService } from "../services/telemetry.js";
+import { renderSVG } from "uqr";
 
 export const uploadRoute = new Hono<AppContext>();
 
@@ -85,6 +86,20 @@ async function processUpload(
     offset += chunk.byteLength;
   }
 
+  // Live ClamAV Antivirus Inspection via edge origin tunnel
+  const scanResult = await scanFileBuffer(c.env, "incoming", cleanFilename, buffer);
+  if (!scanResult.clean) {
+    console.warn(`[tdrop:MALWARE_REJECTED] ${cleanFilename} blocked by ClamAV: ${scanResult.signature}`);
+    return c.json(
+      {
+        error: "Malware Detected",
+        message: `File upload rejected by ClamAV Antivirus: ${scanResult.signature || "Malicious file detected"}`,
+        signature: scanResult.signature,
+      },
+      400
+    );
+  }
+
   try {
     // Put directly into Cloudflare R2
     await c.env.BUCKET.put(objectKey, buffer, {
@@ -152,15 +167,23 @@ async function processUpload(
   }
 
   const domain = c.env.APP_DOMAIN || "tdrop.link";
+  const pageUrl = `https://${domain}/${shortcode}`;
+  const qrSvg = renderSVG(pageUrl, {
+    border: 1,
+    whiteColor: "#ffffff",
+    blackColor: "#09090b",
+  });
+
   const response: UploadResponse = {
     success: true,
     code: shortcode,
-    url: `https://${domain}/${shortcode}`,
+    url: pageUrl,
     filename: cleanFilename,
     size: totalBytes,
     expiresAt: new Date(expiresAt).toISOString(),
     expiresIn: retention,
     malwareScan: "Verified Clean (ClamAV Engine)",
+    qrSvg,
   };
 
   return c.json(response, 201);
