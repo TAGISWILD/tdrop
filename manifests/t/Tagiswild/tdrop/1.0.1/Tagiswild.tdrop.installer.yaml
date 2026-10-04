@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
+
+PackageIdentifier: Tagiswild.tdrop
+PackageVersion: 1.0.1
+InstallerType: zip
+NestedInstallerType: portable
+NestedInstallerFiles:
+  - RelativeFilePath: tdrop.exe
+    PortableCommandAlias: tdrop
+Commands:
+  - tdrop
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/TAGISWILD/tdrop/releases/download/v1.0.1/tdrop-windows-x64.zip
+    InstallerSha256: 45058781435f3e8d4b0c272a0743ca258f6b38855aa358d7565ce4cb644be14f
+ManifestType: installer
+ManifestVersion: 1.6.0

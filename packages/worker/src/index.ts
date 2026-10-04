@@ -12,6 +12,7 @@ import { renderSponsorPage } from "./views/sponsor.html.js";
 import { renderPrivacyPage } from "./views/privacy.html.js";
 import { renderTermsPage } from "./views/terms.html.js";
 import { renderErrorPage } from "./views/error.html.js";
+import { installRoute } from "./routes/install.js";
 import { AdsService } from "./services/ads.js";
 
 const app = new Hono<AppContext>();
@@ -109,6 +110,7 @@ SECURITY:
 app.route("/", internalRoute);
 app.route("/", blipRoute);
 app.route("/", statsRoute);
+app.route("/", installRoute);
 
 // Apply rate limiting & probe protection to public API routes
 app.use("/upload", rateLimitMiddleware);
