@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://tdrop.link/assets/preview.png" alt="tdrop — Ephemeral file sharing, built for the command line" width="100%" />
+</p>
+
 # tdrop (Terminal Drop)
 
 > Ultra-fast, ephemeral, authless file-sharing from your terminal.

@@ -11,6 +11,25 @@ export function renderErrorPage(
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>${statusCode} · ${title} · tdrop</title>
   <meta name="description" content="${message}">
+  
+  <!-- Favicons & App Icons -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+
+  <!-- Open Graph / Social Media Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${statusCode} · ${title} · tdrop">
+  <meta property="og:description" content="${message}">
+  <meta property="og:image" content="https://${domain}/assets/preview.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="537">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${statusCode} · ${title} · tdrop">
+  <meta name="twitter:description" content="${message}">
+  <meta name="twitter:image" content="https://${domain}/assets/preview.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -433,7 +452,10 @@ export function renderErrorPage(
   <header class="nav-wrapper">
     <nav class="nav-island">
       <a href="/" class="brand-wrap">
-        <div class="brand-logo">tdrop</div>
+        <div class="brand-logo">
+          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
+          tdrop
+        </div>
       </a>
       <div class="nav-actions">
         <a href="/" class="btn-sm-ghost">Home</a>

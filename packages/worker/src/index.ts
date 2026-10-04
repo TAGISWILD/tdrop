@@ -29,6 +29,38 @@ app.get("/health", (c) => {
   });
 });
 
+// Static Branding & Social Media Assets
+app.get("/assets/:filename", async (c) => {
+  const filename = c.req.param("filename");
+  if (c.env.BUCKET) {
+    const obj = await c.env.BUCKET.get(`_assets/${filename}`);
+    if (obj) {
+      const headers = new Headers();
+      headers.set("Content-Type", filename.endsWith(".png") ? "image/png" : "application/octet-stream");
+      headers.set("Cache-Control", "public, max-age=31536000, immutable");
+      return new Response(obj.body, { headers });
+    }
+  }
+  return c.redirect(`https://raw.githubusercontent.com/TAGISWILD/tdrop/main/assets/${filename}`);
+});
+
+app.get("/favicon.ico", async (c) => {
+  if (c.env.BUCKET) {
+    const obj = await c.env.BUCKET.get("_assets/favicon.png");
+    if (obj) {
+      const headers = new Headers();
+      headers.set("Content-Type", "image/png");
+      headers.set("Cache-Control", "public, max-age=86400");
+      return new Response(obj.body, { headers });
+    }
+  }
+  return c.redirect("/assets/favicon.png");
+});
+
+app.get("/logo.png", (c) => c.redirect("/assets/logo.png"));
+app.get("/preview.png", (c) => c.redirect("/assets/preview.png"));
+app.get("/og-image.png", (c) => c.redirect("/assets/preview.png"));
+
 // Dedicated Public Landing & Legal Pages (Before code router)
 app.get("/sponsor", (c) => {
   const domain = c.env.APP_DOMAIN || "tdrop.link";

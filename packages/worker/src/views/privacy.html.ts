@@ -6,6 +6,26 @@ export function renderPrivacyPage(domain: string = "tdrop.link"): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Privacy Policy · tdrop</title>
   <meta name="description" content="Privacy Policy for tdrop ephemeral file sharing. Learn how we handle your data, our zero-retention architecture, and Google AdSense disclosures.">
+  
+  <!-- Favicons & App Icons -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+
+  <!-- Open Graph / Social Media Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://${domain}/privacy">
+  <meta property="og:title" content="Privacy Policy · tdrop">
+  <meta property="og:description" content="Privacy Policy for tdrop ephemeral file sharing: zero-retention, encrypted at rest, and strictly ephemeral.">
+  <meta property="og:image" content="https://${domain}/assets/preview.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="537">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy Policy · tdrop">
+  <meta name="twitter:description" content="Privacy Policy for tdrop ephemeral file sharing: zero-retention, encrypted at rest, and strictly ephemeral.">
+  <meta name="twitter:image" content="https://${domain}/assets/preview.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -278,7 +298,10 @@ export function renderPrivacyPage(domain: string = "tdrop.link"): string {
   <header class="nav-wrapper">
     <nav class="nav-island">
       <a href="/" class="brand-wrap">
-        <div class="brand-logo">tdrop</div>
+        <div class="brand-logo">
+          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
+          tdrop
+        </div>
       </a>
       <div class="nav-links">
         <a href="/" class="nav-link">Home</a>

@@ -6,6 +6,28 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>tdrop · Fast, Private, Ephemeral File Sharing</title>
   <meta name="description" content="Fast, ephemeral, authless file sharing for everyone. Send files instantly from your browser, mobile, terminal, or cURL. 100% private, zero logs, encrypted at rest.">
+  
+  <!-- Favicons & App Icons -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://${domain}/">
+  <meta property="og:title" content="tdrop · Fast, Private, Ephemeral File Sharing">
+  <meta property="og:description" content="Ephemeral file sharing, built for the command line and everyone. Transfer files directly from your terminal, cURL, or browser.">
+  <meta property="og:image" content="https://${domain}/assets/preview.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="537">
+  <meta property="og:image:alt" content="tdrop - Ephemeral file sharing, built for the command line">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://${domain}/">
+  <meta name="twitter:title" content="tdrop · Fast, Private, Ephemeral File Sharing">
+  <meta name="twitter:description" content="Ephemeral file sharing, built for the command line and everyone. Transfer files directly from your terminal, cURL, or browser.">
+  <meta name="twitter:image" content="https://${domain}/assets/preview.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1282,6 +1304,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
     <nav class="nav-island">
       <a href="/" class="brand-wrap">
         <div class="brand-logo">
+          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
           tdrop
         </div>
       </a>

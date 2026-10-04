@@ -6,6 +6,26 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>tdrop Telemetry · Real-Time Edge Stats & Sponsor Intelligence</title>
   <meta name="description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, files processed, and developer terminal sponsorship performance.">
+  
+  <!-- Favicons & App Icons -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+
+  <!-- Open Graph / Social Media Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://${domain}/stats">
+  <meta property="og:title" content="tdrop Telemetry · Real-Time Edge Stats & Intelligence">
+  <meta property="og:description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, and files processed.">
+  <meta property="og:image" content="https://${domain}/assets/preview.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="537">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="tdrop Telemetry · Real-Time Edge Stats & Intelligence">
+  <meta name="twitter:description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, and files processed.">
+  <meta name="twitter:image" content="https://${domain}/assets/preview.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Google AdSense Verification Tag -->
@@ -1113,7 +1133,8 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     <div class="nav-container">
       <a href="/" class="brand-wrap">
         <div class="brand-logo">
-          <span>>_</span> tdrop
+          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
+          tdrop
         </div>
         <div class="status-beacon">
           <div class="beacon-dot"></div>

@@ -1,10 +1,21 @@
-# tdrop — Ephemeral File Sharing for Everyone
+<p align="center">
+  <img src="assets/preview.png" alt="tdrop — Ephemeral file sharing, built for the command line" width="100%" />
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![CI/CD](https://github.com/TAGISWILD/tdrop/actions/workflows/ci.yml/badge.svg)](https://github.com/TAGISWILD/tdrop/actions/workflows/ci.yml)
-[![dotvet verified](https://img.shields.io/badge/dotvet-verified-brightgreen.svg)](https://github.com/mrtag08/dotvet)
-[![NPM Version](https://img.shields.io/npm/v/tdrop)](https://www.npmjs.com/package/tdrop)
-[![WinGet Package](https://img.shields.io/badge/winget-Tagiswild.tdrop-blue.svg)](https://github.com/microsoft/winget-pkgs/pull/446668)
+<p align="center">
+  <img src="assets/logo-128.png" alt="tdrop logo" width="36" height="36" style="vertical-align: middle; border-radius: 8px;" />
+  <span style="font-size: 1.8rem; font-weight: 700; margin-left: 8px;">tdrop</span>
+  <br>
+  <em>Ephemeral file sharing for everyone — from your terminal, web browser, or command line.</em>
+</p>
+
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <a href="https://github.com/TAGISWILD/tdrop/actions/workflows/ci.yml"><img src="https://github.com/TAGISWILD/tdrop/actions/workflows/ci.yml/badge.svg" alt="CI/CD"></a>
+  <a href="https://github.com/mrtag08/dotvet"><img src="https://img.shields.io/badge/dotvet-verified-brightgreen.svg" alt="dotvet verified"></a>
+  <a href="https://www.npmjs.com/package/tdrop"><img src="https://img.shields.io/npm/v/tdrop" alt="NPM Version"></a>
+  <a href="https://github.com/microsoft/winget-pkgs/pull/446668"><img src="https://img.shields.io/badge/winget-Tagiswild.tdrop-blue.svg" alt="WinGet Package"></a>
+</p>
 
 **tdrop** (`tdrop.link`) is an ultra-fast, zero-friction ephemeral file sharing utility. Share files effortlessly from the command line, web browser, or any terminal — with instant link generation, automatic QR codes, and zero configuration.
 
