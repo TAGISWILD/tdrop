@@ -27,6 +27,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: Environment & Secret Security Audit (dotvet)
+        run: npx dotvet check --ci
+
       - name: Compile Cross-Platform Native Binaries
         run: |
           chmod +x scripts/build-binaries.sh

@@ -29,5 +29,5 @@ export const BLOCK_DURATION_SECONDS = 1800; // 30 minutes block
 // Service URLs & Branding
 export const APP_NAME = "tdrop";
 export const DEFAULT_DOMAIN = "tdrop.link";
-export const SCANNER_DEFAULT_HOST = "10.0.0.9";
+export const SCANNER_DEFAULT_HOST = "127.0.0.1";
 export const SCANNER_DEFAULT_PORT = 3310;

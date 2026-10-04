@@ -8,3 +8,5 @@ dist-release/
 *.log
 .DS_Store
 *.bun-build
+.dev.vars
+.dev.vars.*

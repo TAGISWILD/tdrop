@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit-and-test:
+    name: Security Audit, Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Environment & Secret Security Audit (dotvet)
+        run: npx dotvet check --ci
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build monorepo packages
+        run: npm run build
+
+      - name: Run test suite
+        run: npm test
