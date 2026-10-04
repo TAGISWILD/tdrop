@@ -7,20 +7,20 @@ class Tdrop < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/TAGISWILD/tdrop/releases/download/v1.0.1/tdrop-darwin-arm64.tar.gz"
-      sha256 "1348a2decdac41dadadd825d46297d772c21ba9a104296e2ffdd4b7f6032ba8b"
+      sha256 "de31fa3338e0bbcb44e51299856e5aa0df26b0d920e81523269d0f1c8984b4cb"
     else
       url "https://github.com/TAGISWILD/tdrop/releases/download/v1.0.1/tdrop-darwin-x64.tar.gz"
-      sha256 "f89c17b0fb1f9d5072cd84adb0e6ee32cfe0fc9bab8d8dcc383bfbdfea7e2f5d"
+      sha256 "46c19779d77a14cd8ecf122f4ca026b61aae3abd8f3dae00bcada238547eb080"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/TAGISWILD/tdrop/releases/download/v1.0.1/tdrop-linux-arm64.tar.gz"
-      sha256 "b38539f9a477e4b83d96224c3c297e47229bad68e90ba8648940bf2819ad6345"
+      sha256 "6811155f85162a2672276d518edd8b4e0e009af228d66a88defebaa8a844b791"
     else
       url "https://github.com/TAGISWILD/tdrop/releases/download/v1.0.1/tdrop-linux-x64.tar.gz"
-      sha256 "f957fe23b1f9fd0bd3f8013e54931864268f1c8334a608790049a50bca8e1ee1"
+      sha256 "b4c06d383de480e704f7a82a2a0ccd25f316c7ba24c1dfa70891ad431decd3d7"
     end
   end
 

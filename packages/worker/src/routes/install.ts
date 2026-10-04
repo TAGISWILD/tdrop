@@ -91,14 +91,12 @@ if [ "\$HTTP_CODE" != "200" ] && [ "\$HTTP_CODE" != "302" ]; then
   fi
 fi
 
-# Extract or copy
+# Extract
 if [ -f "\${TMP_DIR}/\${TAR_NAME}" ] && tar -tzf "\${TMP_DIR}/\${TAR_NAME}" >/dev/null 2>&1; then
   tar -xzf "\${TMP_DIR}/\${TAR_NAME}" -C "\$TMP_DIR"
-  EXTRACTED_BIN="\${TMP_DIR}/\${BINARY_NAME}"
-  if [ ! -f "\$EXTRACTED_BIN" ]; then
-    EXTRACTED_BIN="\${TMP_DIR}/\${ASSET_NAME}"
+  if [ -f "\${TMP_DIR}/\${ASSET_NAME}" ] && [ ! -f "\${TMP_DIR}/\${BINARY_NAME}" ]; then
+    mv "\${TMP_DIR}/\${ASSET_NAME}" "\${TMP_DIR}/\${BINARY_NAME}"
   fi
-  cp "\$EXTRACTED_BIN" "\${TMP_DIR}/\${BINARY_NAME}"
 fi
 
 if [ ! -f "\${TMP_DIR}/\${BINARY_NAME}" ]; then

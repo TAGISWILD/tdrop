@@ -23,25 +23,12 @@ export async function uploadFile(
     throw new Error(`File size (${(stats.size / 1024 / 1024).toFixed(1)}MB) exceeds the 10MB free tier limit.`);
   }
 
+  const fileBuffer = fs.readFileSync(filePath);
+  const blob = new Blob([fileBuffer]);
+  options.onProgress?.(fileBuffer.length);
+
   const formData = new FormData();
-  const fileStream = fs.createReadStream(filePath);
-
-  let uploaded = 0;
-  const progressTracker = new Transform({
-    transform(chunk, _encoding, callback) {
-      uploaded += chunk.length;
-      options.onProgress?.(uploaded);
-      callback(null, chunk);
-    },
-  });
-
-  const trackedStream = fileStream.pipe(progressTracker);
-  // @ts-ignore undici FormData supports stream blob
-  formData.append("file", {
-    [Symbol.toStringTag]: "File",
-    name: options.filename,
-    stream: () => trackedStream,
-  });
+  formData.append("file", blob, options.filename);
   formData.append("ttl", options.ttl);
 
   const res = await request(`${options.apiUrl}/upload`, {
