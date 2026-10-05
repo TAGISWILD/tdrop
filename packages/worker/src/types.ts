@@ -7,6 +7,7 @@ export interface Bindings {
   UPSTASH_REDIS_REST_TOKEN?: string;
   RATE_LIMIT_SECRET?: string;
   INTERNAL_SCAN_SECRET?: string;
+  GOOGLE_SITE_VERIFICATION?: string;
 }
 
 export type AppContext = {

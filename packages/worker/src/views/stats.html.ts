@@ -7,6 +7,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   <title>tdrop Telemetry · Real-Time Edge Stats & Sponsor Intelligence</title>
   <meta name="description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, files processed, and developer terminal sponsorship performance.">
   
+  <link rel="canonical" href="https://${domain}/stats">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#09090b">
+  <link rel="manifest" href="/manifest.json">
+
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
@@ -1500,6 +1505,15 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   </div>
 
   <footer>
+    <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:6px;">
+      <a href="/">Home</a>
+      <a href="/stats">Stats</a>
+      <a href="/sponsor">Sponsorship</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms</a>
+      <a href="/sitemap.xml">Sitemap</a>
+      <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
+    </div>
     <p>tdrop Telemetry · Ephemeral File Sharing Infrastructure · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a></p>
     <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Verified Clean (ClamAV Engine) · 100% Real Edge Store Telemetry · Zero Egress Fees</p>
   </footer>

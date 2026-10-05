@@ -13,6 +13,7 @@ import { renderPrivacyPage } from "./views/privacy.html.js";
 import { renderTermsPage } from "./views/terms.html.js";
 import { renderErrorPage } from "./views/error.html.js";
 import { installRoute } from "./routes/install.js";
+import { seoRoute } from "./routes/seo.js";
 import { AdsService } from "./services/ads.js";
 
 const app = new Hono<AppContext>();
@@ -135,10 +136,11 @@ SECURITY:
   }
 
   // ALL browsers, Google AdSense crawlers, Googlebot, and preview proxies receive the full HTML
-  return c.html(renderHomePage(domain));
+  return c.html(renderHomePage(domain, c.env.GOOGLE_SITE_VERIFICATION));
 });
 
-// Mount internal routes & public telemetry (bypasses code probe rate limiter)
+// Mount internal routes, public telemetry, and SEO routes (bypasses code probe rate limiter)
+app.route("/", seoRoute);
 app.route("/", internalRoute);
 app.route("/", blipRoute);
 app.route("/", statsRoute);

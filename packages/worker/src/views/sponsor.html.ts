@@ -7,6 +7,11 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
   <title>Sponsor tdrop · Reach Terminal Developers with 0% AdBlock</title>
   <meta name="description" content="Sponsor the command line with tdrop. High-intent developer impressions, 0% AdBlock rate, 3-8% CTR. Apply to sponsor tdrop CLI and web pages.">
   
+  <link rel="canonical" href="https://${domain}/sponsor">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#09090b">
+  <link rel="manifest" href="/manifest.json">
+
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
@@ -864,9 +869,11 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
   <footer>
     <div class="footer-links">
       <a href="/">Home</a>
+      <a href="/stats">Stats</a>
       <a href="/sponsor">Sponsorship</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="/terms">Terms of Service</a>
+      <a href="/sitemap.xml">Sitemap</a>
       <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
     </div>
     <p>tdrop · Ephemeral File Sharing for Terminals & Modern Workflows</p>

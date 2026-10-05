@@ -58,6 +58,13 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   <title>Download ${meta.sanitizedFilename} · tdrop</title>
   <meta name="description" content="Download ${meta.sanitizedFilename} (${sizeFormatted}). Fast, private, ephemeral file sharing verified by ClamAV.">
   
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="${pageUrl}">
+  <meta name="theme-color" content="#09090b">
+
+  <!-- Web App Manifest (PWA) -->
+  <link rel="manifest" href="/manifest.json">
+
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">

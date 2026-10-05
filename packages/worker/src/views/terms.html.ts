@@ -7,6 +7,11 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
   <title>Terms of Service · tdrop</title>
   <meta name="description" content="Terms of Service for tdrop. Acceptable use policy, liability disclaimers, and ephemeral file sharing guidelines.">
   
+  <link rel="canonical" href="https://${domain}/terms">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#09090b">
+  <link rel="manifest" href="/manifest.json">
+
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
@@ -358,9 +363,11 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
   <footer>
     <div class="footer-links">
       <a href="/">Home</a>
+      <a href="/stats">Stats</a>
       <a href="/sponsor">Sponsorship</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="/terms">Terms of Service</a>
+      <a href="/sitemap.xml">Sitemap</a>
       <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
     </div>
     <p>tdrop · Ephemeral File Sharing for Terminals & Modern Workflows</p>

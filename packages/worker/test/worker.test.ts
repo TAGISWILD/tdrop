@@ -45,6 +45,42 @@ describe("@tdrop/worker", () => {
       expect(data).toHaveProperty("text");
       expect(data).toHaveProperty("url");
     });
+
+    it("should return valid robots.txt with sitemap reference", async () => {
+      const res = await app.request("/robots.txt", {}, mockEnv);
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("text/plain");
+      const text = await res.text();
+      expect(text).toContain("User-agent: *");
+      expect(text).toContain("Sitemap: https://tdrop.link/sitemap.xml");
+      expect(text).toContain("Disallow: /upload");
+    });
+
+    it("should return valid sitemap.xml adhering to sitemaps.org schema", async () => {
+      const res = await app.request("/sitemap.xml", {}, mockEnv);
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("application/xml");
+      const xml = await res.text();
+      expect(xml).toContain("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+      expect(xml).toContain("<loc>https://tdrop.link/</loc>");
+      expect(xml).toContain("<loc>https://tdrop.link/stats</loc>");
+      expect(xml).toContain("<loc>https://tdrop.link/sponsor</loc>");
+    });
+
+    it("should return valid manifest.json PWA metadata", async () => {
+      const res = await app.request("/manifest.json", {}, mockEnv);
+      expect(res.status).toBe(200);
+      const manifest = (await res.json()) as any;
+      expect(manifest.name).toBe("tdrop - Ephemeral File Sharing");
+      expect(manifest.icons).toHaveLength(3);
+    });
+
+    it("should verify Google Search Console html verification files", async () => {
+      const res = await app.request("/google1234567890abcdef.html", {}, mockEnv);
+      expect(res.status).toBe(200);
+      const text = await res.text();
+      expect(text).toContain("google-site-verification: google1234567890abcdef.html");
+    });
   });
 
   describe("ByteLimitGuard (10MB Strict Free Limit)", () => {

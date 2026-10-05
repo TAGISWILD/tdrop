@@ -1,11 +1,19 @@
-export function renderHomePage(domain: string = "tdrop.link"): string {
+export function renderHomePage(domain: string = "tdrop.link", googleSiteVerification?: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>tdrop · Fast, Private, Ephemeral File Sharing</title>
-  <meta name="description" content="Fast, ephemeral, authless file sharing for everyone. Send files instantly from your browser, mobile, terminal, or cURL. 100% private, zero logs, encrypted at rest.">
+  <title>tdrop — Ephemeral File Sharing CLI & Web Service</title>
+  <meta name="description" content="tdrop is an ultra-fast, ephemeral, authless file sharing utility for developers and everyday users. Transfer files instantly from terminal (npx, winget, brew, curl) or browser with automatic self-destruction.">
+  <meta name="keywords" content="tdrop, tdrop link, terminal file sharing, ephemeral file upload, cli file transfer, command line drop, curl file upload, temporary file storage, anonymous file transfer, zero log file share, npx tdrop, winget tdrop">
+  <link rel="canonical" href="https://${domain}/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#09090b">
+  ${googleSiteVerification ? `<meta name="google-site-verification" content="${googleSiteVerification}">` : ""}
+
+  <!-- Web App Manifest (PWA) -->
+  <link rel="manifest" href="/manifest.json">
   
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
@@ -13,20 +21,116 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
 
   <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="tdrop">
   <meta property="og:url" content="https://${domain}/">
-  <meta property="og:title" content="tdrop · Fast, Private, Ephemeral File Sharing">
-  <meta property="og:description" content="Ephemeral file sharing, built for the command line and everyone. Transfer files directly from your terminal, cURL, or browser.">
+  <meta property="og:title" content="tdrop — Ephemeral File Sharing CLI & Web Service">
+  <meta property="og:description" content="Ultra-fast, ephemeral file sharing from your terminal, cURL, or browser. Free, encrypted at rest, zero logs, auto-incinerating.">
   <meta property="og:image" content="https://${domain}/assets/preview.png">
   <meta property="og:image:width" content="1024">
   <meta property="og:image:height" content="537">
-  <meta property="og:image:alt" content="tdrop - Ephemeral file sharing, built for the command line">
+  <meta property="og:image:alt" content="tdrop - Ephemeral file sharing, built for the command line and everyone">
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://${domain}/">
-  <meta name="twitter:title" content="tdrop · Fast, Private, Ephemeral File Sharing">
-  <meta name="twitter:description" content="Ephemeral file sharing, built for the command line and everyone. Transfer files directly from your terminal, cURL, or browser.">
+  <meta name="twitter:title" content="tdrop — Ephemeral File Sharing CLI & Web Service">
+  <meta name="twitter:description" content="Ultra-fast, ephemeral file sharing from your terminal, cURL, or browser. Free, encrypted at rest, zero logs, auto-incinerating.">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
+
+  <!-- Schema.org JSON-LD Structured Data for Google Knowledge Graph & Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://${domain}/#webapp",
+        "name": "tdrop",
+        "alternateName": ["Terminal Drop", "tdrop.link", "tdrop cli", "tdrop file transfer"],
+        "url": "https://${domain}/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All (Windows, macOS, Linux, iOS, Android)",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Ultra-fast, ephemeral, authless file sharing utility for developers and everyday users. Transfer files instantly from terminal (npx, winget, brew, curl) or web browser with automatic expiration and zero logs.",
+        "softwareVersion": "1.0.1",
+        "creator": {
+          "@type": "Person",
+          "name": "Atharva Chauhan",
+          "url": "https://github.com/TAGISWILD"
+        },
+        "downloadUrl": "https://github.com/TAGISWILD/tdrop/releases",
+        "image": "https://${domain}/assets/logo.png",
+        "screenshot": "https://${domain}/assets/preview.png",
+        "featureList": [
+          "Zero-RAM Edge Streaming",
+          "Automatic 1h, 24h, 7d TTL Expiration",
+          "Cross-Device QR Code Transfers",
+          "Resumable HTTP Range Downloads (206 Partial Content)",
+          "Universal Package Managers: WinGet, Homebrew, NPM, curl"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://${domain}/#website",
+        "url": "https://${domain}/",
+        "name": "tdrop",
+        "alternateName": "tdrop.link",
+        "description": "Ephemeral File Sharing for Everyone",
+        "publisher": {
+          "@type": "Organization",
+          "name": "tdrop",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://${domain}/assets/logo.png"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://${domain}/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is tdrop?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "tdrop is an ultra-fast, zero-friction ephemeral file sharing utility. It allows developers and everyday users to send files instantly from the terminal (npx tdrop <file>, WinGet, Homebrew, curl) or web browser with automatic link generation, QR codes, and automatic self-destruction."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long do files stay on tdrop?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Files are strictly ephemeral and automatically expire and delete after 1 hour, 24 hours (default), or 7 days based on your chosen retention settings."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I install tdrop on Windows, Mac, or Linux?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "On Windows: winget install Tagiswild.tdrop. On macOS or Linux: brew install tagiswild/tap/tdrop or curl -fsSL https://${domain}/install.sh | bash. With Node: npm install -g tdrop or npx tdrop <file>."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is tdrop free and secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, tdrop is 100% free, open-source under MIT, and requires no account or authentication. Files stream directly to edge storage with zero disk writes, encrypted at rest, and zero activity logs."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1336,7 +1440,7 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
             <span>Zero Logs</span>
           </div>
           <h1 class="hero-title">
-            Ephemeral file sharing,<br>built for everyone.
+            tdrop — Ephemeral file sharing,<br>built for everyone.
           </h1>
           <p class="hero-subtitle">
             Share files instantly from your browser, phone, terminal, or cURL. Streamed to the edge with zero sign-up, zero tracking, and automatic permanent deletion.
@@ -1556,14 +1660,39 @@ export function renderHomePage(domain: string = "tdrop.link"): string {
           </div>
         </section>
 
+        <!-- Frequently Asked Questions (SEO) -->
+        <section class="faq-section" style="margin-top: 48px;">
+          <h2 class="api-title" style="margin-bottom: 20px;">Frequently Asked Questions</h2>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
+              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">What is tdrop?</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">tdrop is an ultra-fast, zero-friction ephemeral file sharing utility. It allows developers and everyday users to send files instantly from the terminal (<code>npx tdrop &lt;file&gt;</code>, WinGet, Homebrew, cURL) or web browser with automatic link generation, QR codes, and automatic self-destruction.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
+              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">How long do files stay on tdrop?</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Files are strictly ephemeral and automatically expire and delete after 1 hour, 24 hours (default), or 7 days based on your chosen retention settings. Once expired, files are purged permanently from edge storage.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
+              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">How do I install tdrop on Windows, Mac, or Linux?</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">On Windows: <code>winget install Tagiswild.tdrop</code>. On macOS or Linux: <code>brew install tagiswild/tap/tdrop</code> or <code>curl -fsSL https://${domain}/install.sh | bash</code>. With Node: <code>npm install -g tdrop</code> or <code>npx tdrop &lt;file&gt;</code>.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
+              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">Is tdrop free and secure?</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Yes, tdrop is 100% free, open-source under MIT, and requires no account or authentication. Files stream directly to edge storage with zero disk writes, encrypted at rest, and zero activity logs.</p>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <footer>
         <div class="footer-links" style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:8px;">
           <a href="/" style="color:var(--text-muted); text-decoration:none;">Home</a>
+          <a href="/stats" style="color:var(--text-muted); text-decoration:none;">Stats</a>
           <a href="/sponsor" style="color:var(--text-muted); text-decoration:none;">Sponsorship</a>
           <a href="/privacy" style="color:var(--text-muted); text-decoration:none;">Privacy Policy</a>
           <a href="/terms" style="color:var(--text-muted); text-decoration:none;">Terms of Service</a>
+          <a href="/sitemap.xml" style="color:var(--text-muted); text-decoration:none;">Sitemap</a>
           <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" style="color:var(--text-muted); text-decoration:none;">GitHub</a>
         </div>
         <p>tdrop · Ephemeral File Sharing · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source on GitHub</a></p>
