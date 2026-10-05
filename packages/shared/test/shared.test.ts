@@ -6,6 +6,7 @@ import {
   toSafeAsciiFilename,
   formatContentDisposition,
   sanitizeTerminalText,
+  anonymizeTelemetryFilename,
   MAX_FREE_BYTES,
   RETENTION_CLASSES,
 } from "../src/index.js";
@@ -86,6 +87,43 @@ describe("@tdrop/shared", () => {
     it("should strip OSC hyperlink sequences", () => {
       const osc = "\x1b]8;;https://phishing.site\x07Click Here\x1b]8;;\x07";
       expect(sanitizeTerminalText(osc)).toBe("Click Here");
+    });
+  });
+
+  describe("Telemetry Privacy Anonymization", () => {
+    it("should anonymize personal names while preserving common file extensions", () => {
+      const masked = anonymizeTelemetryFilename("Pavitra_photo (2).jpg");
+      expect(masked).toMatch(/^drop_••••[a-f0-9]{4}\.jpg$/);
+      expect(masked).not.toContain("Pavitra");
+      expect(masked).not.toContain("photo");
+    });
+
+    it("should preserve compound archive extensions like .tar.gz", () => {
+      const masked = anonymizeTelemetryFilename("internal-company-backup.tar.gz");
+      expect(masked).toMatch(/^drop_••••[a-f0-9]{4}\.tar\.gz$/);
+      expect(masked).not.toContain("internal");
+    });
+
+    it("should handle files without extensions", () => {
+      const masked = anonymizeTelemetryFilename("id_rsa");
+      expect(masked).toMatch(/^drop_••••[a-f0-9]{4}$/);
+      expect(masked).not.toContain("id_rsa");
+    });
+
+    it("should be idempotent if already anonymized", () => {
+      const already = "drop_••••3a9f.png";
+      expect(anonymizeTelemetryFilename(already)).toBe(already);
+    });
+
+    it("should produce stable token when given a seed", () => {
+      const res1 = anonymizeTelemetryFilename("sensitive.pdf", "session-xyz");
+      const res2 = anonymizeTelemetryFilename("other.pdf", "session-xyz");
+      expect(res1).toBe(res2);
+    });
+
+    it("should handle empty or null values gracefully", () => {
+      expect(anonymizeTelemetryFilename("")).toBe("drop_••••••");
+      expect(anonymizeTelemetryFilename(null as any)).toBe("drop_••••••");
     });
   });
 });

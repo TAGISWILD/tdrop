@@ -1,6 +1,7 @@
 import { Redis } from "@upstash/redis";
 import type { Bindings } from "../types.js";
 import { AdsService } from "./ads.js";
+import { anonymizeTelemetryFilename } from "@tdrop/shared";
 
 export interface TelemetryEvent {
   id: string;
@@ -205,7 +206,7 @@ export class TelemetryService {
     const event: TelemetryEvent = {
       id: crypto.randomUUID(),
       type: "upload",
-      filename,
+      filename: anonymizeTelemetryFilename(filename, params.code || ipHash),
       size,
       sizeFormatted: formatBytes(size),
       retention,
@@ -296,7 +297,7 @@ export class TelemetryService {
     const event: TelemetryEvent = {
       id: crypto.randomUUID(),
       type: "download",
-      filename,
+      filename: anonymizeTelemetryFilename(filename, params.code || ipHash),
       size,
       sizeFormatted: formatBytes(size),
       retention,
@@ -384,7 +385,13 @@ export class TelemetryService {
           };
         }
         if (rEvents && Array.isArray(rEvents) && rEvents.length > 0) {
-          recentEvents = rEvents.map((e) => (typeof e === "string" ? JSON.parse(e) : e));
+          recentEvents = rEvents.map((e) => {
+            const evt = typeof e === "string" ? JSON.parse(e) : e;
+            return {
+              ...evt,
+              filename: anonymizeTelemetryFilename(evt.filename, evt.id),
+            };
+          });
         }
       } catch (err) {
         console.warn("[tdrop:telemetry] Redis read fallback:", err);
@@ -401,7 +408,26 @@ export class TelemetryService {
           if (stored.regions) regionsMap = new Map(stored.regions);
           if (stored.sources) sourcesMap = new Map(stored.sources);
           if (stored.retention) retentionCounts = stored.retention;
-          if (stored.recentEvents) recentEvents = stored.recentEvents;
+          if (stored.recentEvents && Array.isArray(stored.recentEvents)) {
+            let neededSanitization = false;
+            recentEvents = stored.recentEvents.map((evt: any) => {
+              const anon = anonymizeTelemetryFilename(evt.filename, evt.id);
+              if (anon !== evt.filename) {
+                neededSanitization = true;
+              }
+              return { ...evt, filename: anon };
+            });
+
+            // Permanently erase unmasked plaintext filenames from Cloudflare KV
+            if (neededSanitization) {
+              try {
+                stored.recentEvents = recentEvents;
+                await this.kv.put(TELEMETRY_KV_KEY, JSON.stringify(stored));
+              } catch (err) {
+                console.warn("[tdrop:telemetry] KV self-heal write failed:", err);
+              }
+            }
+          }
         }
       } catch (err) {
         console.warn("[tdrop:telemetry] KV read fallback:", err);
@@ -535,7 +561,10 @@ export class TelemetryService {
         activeCampaignsCount: campaigns.filter((c) => c.active).length,
         campaigns: enrichedCampaigns,
       },
-      recentEvents,
+      recentEvents: recentEvents.map((evt) => ({
+        ...evt,
+        filename: anonymizeTelemetryFilename(evt.filename, evt.id),
+      })),
     };
   }
 

@@ -55,3 +55,47 @@ export function formatContentDisposition(
 
   return `${disposition}; filename="${safeAscii}"; filename*=UTF-8''${encodedUtf8}`;
 }
+
+/**
+ * Anonymizes a filename for public telemetry / feeds to protect user privacy.
+ * Preserves the file extension while replacing the entire base name with a privacy mask and short hash token.
+ * Example: "Pavitra_photo (2).jpg" -> "drop_••••3a9f.jpg"
+ */
+export function anonymizeTelemetryFilename(raw: string, seed?: string): string {
+  if (!raw || typeof raw !== "string") {
+    return "drop_••••••";
+  }
+
+  // If already anonymized, return as-is
+  if (raw.startsWith("drop_••••")) {
+    return raw;
+  }
+
+  const clean = sanitizeFilename(raw);
+  const lower = clean.toLowerCase();
+  let ext = "";
+
+  if (lower.endsWith(".tar.gz")) ext = ".tar.gz";
+  else if (lower.endsWith(".tar.bz2")) ext = ".tar.bz2";
+  else if (lower.endsWith(".tar.xz")) ext = ".tar.xz";
+  else {
+    const lastDot = clean.lastIndexOf(".");
+    if (lastDot > 0 && lastDot < clean.length - 1) {
+      const candidate = clean.slice(lastDot).toLowerCase();
+      if (/^\.[a-z0-9]{1,8}$/i.test(candidate)) {
+        ext = candidate;
+      }
+    }
+  }
+
+  // Derive stable 4-char hex token from seed or filename
+  const str = seed || clean;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  const token = Math.abs(hash).toString(16).slice(0, 4).padStart(4, "7");
+
+  return `drop_••••${token}${ext}`;
+}

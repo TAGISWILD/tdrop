@@ -8,13 +8,15 @@ export const seoRoute = new Hono<AppContext>();
  * Instructs search engine crawlers (Googlebot, Bingbot, etc.) on allowed public indexable pages
  * and disallows indexing ephemeral private uploads and internal API routes.
  */
-seoRoute.get("/robots.txt", (c) => {
+seoRoute.on(["GET", "HEAD"], "/robots.txt", (c) => {
   const domain = c.env.APP_DOMAIN || "tdrop.link";
   const robots = `# https://www.robotstxt.org/robotstxt.html
 # Search engine crawl rules for tdrop (${domain})
 
 User-agent: *
 Allow: /
+Allow: /sitemap.xml
+Allow: /robots.txt
 Allow: /stats
 Allow: /sponsor
 Allow: /sponsorship
@@ -33,8 +35,7 @@ Disallow: /upload/raw
 Disallow: /api/
 Disallow: /internal/
 
-# Host & Sitemap location
-Host: https://${domain}
+# Sitemap location
 Sitemap: https://${domain}/sitemap.xml
 `;
 
@@ -48,7 +49,7 @@ Sitemap: https://${domain}/sitemap.xml
  * sitemap.xml
  * Fully compliant sitemaps.org XML schema with Google image extensions for Search Console indexing
  */
-seoRoute.get("/sitemap.xml", (c) => {
+seoRoute.on(["GET", "HEAD"], "/sitemap.xml", (c) => {
   const domain = c.env.APP_DOMAIN || "tdrop.link";
   const today = new Date().toISOString().split("T")[0];
 
@@ -62,12 +63,9 @@ seoRoute.get("/sitemap.xml", (c) => {
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://${domain}/assets/preview.png</image:loc>
-      <image:title>tdrop — Ephemeral File Sharing CLI and Web Service</image:title>
-      <image:caption>Ultra-fast ephemeral file sharing from terminal, cURL, or browser.</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://${domain}/assets/logo.png</image:loc>
-      <image:title>tdrop Logo</image:title>
     </image:image>
   </url>
   <url>
@@ -145,17 +143,14 @@ const manifestHandler = (c: any) => {
   });
 };
 
-seoRoute.get("/manifest.json", manifestHandler);
-seoRoute.get("/site.webmanifest", manifestHandler);
+seoRoute.on(["GET", "HEAD"], "/manifest.json", manifestHandler);
+seoRoute.on(["GET", "HEAD"], "/site.webmanifest", manifestHandler);
 
 /**
  * Dynamic Google Search Console HTML verification file handler
  * Matches: /google[a-f0-9]+.html
  */
-seoRoute.get("/:file", async (c, next) => {
+seoRoute.get("/:file{google[a-f0-9]+\\.html}", async (c) => {
   const file = c.req.param("file");
-  if (file.startsWith("google") && file.endsWith(".html")) {
-    return c.text(`google-site-verification: ${file}`);
-  }
-  return next();
+  return c.text(`google-site-verification: ${file}`);
 });

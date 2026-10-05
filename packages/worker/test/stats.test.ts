@@ -81,7 +81,8 @@ describe("Real Telemetry & Stats Dashboard API", () => {
     expect(stats.infrastructure.totalFilesProcessed).toBeGreaterThanOrEqual(1);
     expect(stats.infrastructure.totalBytesProcessed).toBeGreaterThan(0);
     expect(stats.recentEvents.length).toBeGreaterThanOrEqual(1);
-    expect(stats.recentEvents[0].filename).toBe("telemetry-test.txt");
+    expect(stats.recentEvents[0].filename).toMatch(/^drop_••••[a-f0-9]{4}\.txt$/);
+    expect(stats.recentEvents[0].filename).not.toBe("telemetry-test.txt");
   });
 
   it("should support seeding sample test drops via POST /api/stats/seed", async () => {

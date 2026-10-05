@@ -1355,7 +1355,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
               <h2 class="section-title">
                 <span>⚡</span> Real-Time File Stream
               </h2>
-              <p class="section-desc">Actual live files dropped across edge nodes (from real CLI and web requests).</p>
+              <p class="section-desc">Actual live files dropped across edge nodes (file names are anonymized for privacy).</p>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
               <span class="kpi-pill pill-green" id="streamLiveIndicator">● REALTIME STORE</span>
@@ -1567,6 +1567,14 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       }
     }
 
+    function formatPrivacyFilename(name) {
+      if (!name) return 'drop_••••••';
+      if (name.startsWith('drop_••••')) return name;
+      var lastDot = name.lastIndexOf('.');
+      var ext = lastDot > 0 ? name.slice(lastDot).toLowerCase() : '';
+      return 'drop_••••' + ext;
+    }
+
     function renderRealEvents(events) {
       const feed = document.getElementById('streamFeed');
 
@@ -1593,7 +1601,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           <div class="event-left">
             <span class="event-flag">\${evt.flag || '🌐'}</span>
             <div class="event-meta">
-              <span class="event-file">\${evt.filename}</span>
+              <span class="event-file">\${formatPrivacyFilename(evt.filename)}</span>
               <div class="event-sub">
                 <span>\${evt.city || evt.colo}</span>
                 <span>·</span>
