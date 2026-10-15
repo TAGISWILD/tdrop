@@ -63,8 +63,50 @@ describe("@tdrop/worker", () => {
       const xml = await res.text();
       expect(xml).toContain("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
       expect(xml).toContain("<loc>https://tdrop.link/</loc>");
+      expect(xml).toContain("<loc>https://tdrop.link/docs</loc>");
+      expect(xml).toContain("<loc>https://tdrop.link/docs/cli-guide</loc>");
+      expect(xml).toContain("<loc>https://tdrop.link/about</loc>");
+      expect(xml).toContain("<loc>https://tdrop.link/contact</loc>");
       expect(xml).toContain("<loc>https://tdrop.link/stats</loc>");
       expect(xml).toContain("<loc>https://tdrop.link/sponsor</loc>");
+    });
+
+    it("should return documentation hub on GET /docs", async () => {
+      const res = await app.request("/docs", {}, mockEnv);
+      expect(res.status).toBe(200);
+      const html = await res.text();
+      expect(html).toContain("Documentation & Architecture Overview");
+      expect(html).toContain("Quickstart in 10 Seconds");
+    });
+
+    it("should return individual technical guides on GET /docs/:slug", async () => {
+      const res1 = await app.request("/docs/cli-guide", {}, mockEnv);
+      expect(res1.status).toBe(200);
+      expect(await res1.text()).toContain("CLI & Package Manager Reference Guide");
+
+      const res2 = await app.request("/docs/curl-api", {}, mockEnv);
+      expect(res2.status).toBe(200);
+      expect(await res2.text()).toContain("cURL & HTTP REST API Guide");
+
+      const res3 = await app.request("/docs/security", {}, mockEnv);
+      expect(res3.status).toBe(200);
+      expect(await res3.text()).toContain("Security Architecture, ClamAV");
+    });
+
+    it("should return About page on GET /about", async () => {
+      const res = await app.request("/about", {}, mockEnv);
+      expect(res.status).toBe(200);
+      const html = await res.text();
+      expect(html).toContain("About The Project");
+      expect(html).toContain("Atharva Chauhan");
+    });
+
+    it("should return Contact page on GET /contact", async () => {
+      const res = await app.request("/contact", {}, mockEnv);
+      expect(res.status).toBe(200);
+      const html = await res.text();
+      expect(html).toContain("Contact & Developer Support");
+      expect(html).toContain("security@tdrop.link");
     });
 
     it("should return valid manifest.json PWA metadata", async () => {

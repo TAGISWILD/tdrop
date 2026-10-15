@@ -1148,7 +1148,8 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       </a>
       <div class="nav-right">
         <a href="/" class="nav-link">Home</a>
-        <a href="/#cli" class="nav-link">CLI</a>
+        <a href="/docs" class="nav-link">Docs</a>
+        <a href="/about" class="nav-link">About</a>
         <a href="/stats" class="nav-link active">Live Stats</a>
         <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-link">GitHub</a>
         <button class="cta-pill-sponsor" onclick="openSponsorModal()">
@@ -1507,8 +1508,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   <footer>
     <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:6px;">
       <a href="/">Home</a>
+      <a href="/docs">Documentation</a>
+      <a href="/about">About</a>
       <a href="/stats">Stats</a>
       <a href="/sponsor">Sponsorship</a>
+      <a href="/contact">Contact</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="/terms">Terms</a>
       <a href="/sitemap.xml">Sitemap</a>

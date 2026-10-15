@@ -858,6 +858,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
           <span>Upload</span>
         </a>
+        <a href="/docs" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; padding:4px 8px;">Docs</a>
+        <a href="/about" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; padding:4px 8px;">About</a>
         <a href="/sponsor" class="btn-nav-sponsor">Sponsor</a>
       </div>
     </nav>
@@ -984,9 +986,14 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       <footer>
         <div class="footer-links">
           <a href="/">Home</a>
+          <a href="/docs">Documentation</a>
+          <a href="/about">About</a>
+          <a href="/stats">Stats</a>
           <a href="/sponsor">Sponsorship</a>
+          <a href="/contact">Contact</a>
           <a href="/privacy">Privacy Policy</a>
           <a href="/terms">Terms of Service</a>
+          <a href="/sitemap.xml">Sitemap</a>
           <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
         </div>
         <p>tdrop · Zero egress fees · Zero logs · End-to-end ephemeral</p>

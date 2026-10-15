@@ -1414,8 +1414,10 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       </a>
       <div class="nav-actions">
         <a href="#dropZone" class="nav-link">Upload</a>
+        <a href="/docs" class="nav-link">Docs</a>
         <a href="#features" class="nav-link">Features</a>
         <a href="#cli" class="nav-link">CLI & API</a>
+        <a href="/about" class="nav-link">About</a>
         <a href="/sponsor" class="nav-link" style="color:#ffffff; font-weight:600;">Sponsor</a>
         <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-link">GitHub</a>
       </div>
@@ -1660,6 +1662,40 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
           </div>
         </section>
 
+        <!-- Architectural Deep Dive & Knowledge Base -->
+        <section class="api-section" style="margin-top: 36px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <h2 class="api-title" style="margin-bottom:0;">Developer Guides & Architecture</h2>
+            <a href="/docs" style="color:var(--status-blue, #38bdf8); font-size:0.85rem; text-decoration:none; font-family:var(--font-mono);">Browse All Documentation →</a>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; margin-bottom:20px;">
+            Explore our comprehensive technical whitepapers, CLI references, and architecture guides to master ephemeral file delivery in your terminal, scripts, and CI/CD pipelines.
+          </p>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
+            <a href="/docs/cli-guide" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">CLI Manual</div>
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">Terminal & Package Managers →</div>
+              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Install via WinGet, Homebrew, NPM, or shell script, with support for stdin streaming and custom TTLs.</div>
+            </a>
+            <a href="/docs/curl-api" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">API Reference</div>
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">cURL & HTTP REST Endpoints →</div>
+              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Multipart uploads, raw binary byte streams, resumable Range downloads, and RFC 5987 headers.</div>
+            </a>
+            <a href="/docs/security" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">Whitepaper</div>
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">Security & ClamAV Engine →</div>
+              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Edge streaming to Cloudflare R2, streaming heuristic antivirus inspection, and zero-knowledge ephemerality.</div>
+            </a>
+            <a href="/docs/ci-cd-automation" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">DevOps</div>
+              <div style="font-weight:700; color:#fff; font-size:0.95rem;">CI/CD Pipeline Drops →</div>
+              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Automate crash dump and Playwright test failure artifact sharing in GitHub Actions and GitLab CI.</div>
+            </a>
+          </div>
+        </section>
+
         <!-- Frequently Asked Questions (SEO) -->
         <section class="faq-section" style="margin-top: 48px;">
           <h2 class="api-title" style="margin-bottom: 20px;">Frequently Asked Questions</h2>
@@ -1688,15 +1724,18 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       <footer>
         <div class="footer-links" style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:8px;">
           <a href="/" style="color:var(--text-muted); text-decoration:none;">Home</a>
+          <a href="/docs" style="color:var(--text-muted); text-decoration:none;">Documentation</a>
+          <a href="/about" style="color:var(--text-muted); text-decoration:none;">About</a>
           <a href="/stats" style="color:var(--text-muted); text-decoration:none;">Stats</a>
           <a href="/sponsor" style="color:var(--text-muted); text-decoration:none;">Sponsorship</a>
+          <a href="/contact" style="color:var(--text-muted); text-decoration:none;">Contact</a>
           <a href="/privacy" style="color:var(--text-muted); text-decoration:none;">Privacy Policy</a>
           <a href="/terms" style="color:var(--text-muted); text-decoration:none;">Terms of Service</a>
           <a href="/sitemap.xml" style="color:var(--text-muted); text-decoration:none;">Sitemap</a>
           <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" style="color:var(--text-muted); text-decoration:none;">GitHub</a>
         </div>
         <p>tdrop · Ephemeral File Sharing · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source on GitHub</a></p>
-        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No trackers · RFC 5987 Compliant</p>
+        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No trackers · RFC 5987 / RFC 7233 Compliant</p>
       </footer>
 
     </div>

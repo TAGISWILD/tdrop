@@ -11,9 +11,12 @@ import { renderHomePage } from "./views/home.html.js";
 import { renderSponsorPage } from "./views/sponsor.html.js";
 import { renderPrivacyPage } from "./views/privacy.html.js";
 import { renderTermsPage } from "./views/terms.html.js";
+import { renderAboutPage } from "./views/about.html.js";
+import { renderContactPage } from "./views/contact.html.js";
 import { renderErrorPage } from "./views/error.html.js";
 import { installRoute } from "./routes/install.js";
 import { seoRoute } from "./routes/seo.js";
+import { docsRoute } from "./routes/docs.js";
 import { AdsService } from "./services/ads.js";
 
 const app = new Hono<AppContext>();
@@ -83,6 +86,16 @@ app.get("/terms", (c) => {
   return c.html(renderTermsPage(domain));
 });
 
+app.get("/about", (c) => {
+  const domain = c.env.APP_DOMAIN || "tdrop.link";
+  return c.html(renderAboutPage(domain));
+});
+
+app.get("/contact", (c) => {
+  const domain = c.env.APP_DOMAIN || "tdrop.link";
+  return c.html(renderContactPage(domain));
+});
+
 // Sponsor Inquiry Submission API
 app.post("/api/sponsor-inquiry", async (c) => {
   try {
@@ -141,6 +154,7 @@ SECURITY:
 
 // Mount internal routes, public telemetry, and SEO routes (bypasses code probe rate limiter)
 app.route("/", seoRoute);
+app.route("/", docsRoute);
 app.route("/", internalRoute);
 app.route("/", blipRoute);
 app.route("/", statsRoute);

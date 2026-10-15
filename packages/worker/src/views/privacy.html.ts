@@ -310,6 +310,8 @@ export function renderPrivacyPage(domain: string = "tdrop.link"): string {
       </a>
       <div class="nav-links">
         <a href="/" class="nav-link">Home</a>
+        <a href="/docs" class="nav-link">Docs</a>
+        <a href="/about" class="nav-link">About</a>
         <a href="/sponsor" class="btn-sponsor-nav">Sponsor Us</a>
       </div>
     </nav>
@@ -378,14 +380,17 @@ export function renderPrivacyPage(domain: string = "tdrop.link"): string {
   <footer>
     <div class="footer-links">
       <a href="/">Home</a>
-      <a href="/stats">Stats</a>
+      <a href="/docs">Documentation</a>
+      <a href="/about">About</a>
+      <a href="/stats">Telemetry Stats</a>
       <a href="/sponsor">Sponsorship</a>
+      <a href="/contact">Contact</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="/terms">Terms of Service</a>
       <a href="/sitemap.xml">Sitemap</a>
       <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <p>tdrop · Ephemeral File Sharing for Terminals & Modern Workflows</p>
+    <p>tdrop · Ephemeral File Sharing · Open Source under the MIT License</p>
   </footer>
 
 </body>

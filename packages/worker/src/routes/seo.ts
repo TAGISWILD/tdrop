@@ -17,6 +17,10 @@ User-agent: *
 Allow: /
 Allow: /sitemap.xml
 Allow: /robots.txt
+Allow: /docs
+Allow: /docs/
+Allow: /about
+Allow: /contact
 Allow: /stats
 Allow: /sponsor
 Allow: /sponsorship
@@ -69,6 +73,60 @@ seoRoute.on(["GET", "HEAD"], "/sitemap.xml", (c) => {
     </image:image>
   </url>
   <url>
+    <loc>https://${domain}/docs</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/docs/cli-guide</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/docs/curl-api</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/docs/security</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/docs/ci-cd-automation</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/docs/ephemeral-vs-cloud-storage</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/docs/faq</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/about</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://${domain}/contact</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://${domain}/stats</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
@@ -78,7 +136,7 @@ seoRoute.on(["GET", "HEAD"], "/sitemap.xml", (c) => {
     <loc>https://${domain}/sponsor</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://${domain}/privacy</loc>
