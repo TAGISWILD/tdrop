@@ -115,11 +115,12 @@ export const CINNABAR_CSS = `
     text-decoration: none;
   }
 
-  /* 9.1 Buttons: "Pill with icon" */
+  /* 9.1 Buttons: "Pill with icon" (44px min touch target on mobile) */
   .btn {
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 500;
+    min-height: 44px;
     border-radius: var(--radius-pill);
     border: 1px solid transparent;
     cursor: pointer;
@@ -132,12 +133,13 @@ export const CINNABAR_CSS = `
     line-height: 1;
     user-select: none;
     white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn-primary {
     background: var(--sindoor);
     color: var(--obsidian);
-    padding: 8px 8px 8px 18px;
+    padding: 8px 10px 8px 18px;
     border-color: transparent;
   }
 
@@ -219,19 +221,29 @@ export const CINNABAR_CSS = `
     transform: rotate(-45deg);
   }
 
-  /* 9.3 Inputs: "Filled with glow ring" */
+  /* 9.3 Inputs: "Filled with glow ring" (16px base font on mobile to prevent iOS auto-zoom) */
   .input {
-    height: 44px;
+    height: 46px;
+    min-height: 46px;
     width: 100%;
-    padding: 0 14px;
+    padding: 0 16px;
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text);
     background: var(--graphite-input);
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
     outline: none;
     transition: all var(--dur-fast) ease;
+  }
+
+  @media (min-width: 640px) {
+    .input {
+      font-size: 14px;
+      height: 44px;
+      min-height: 44px;
+      padding: 0 14px;
+    }
   }
 
   .input::placeholder {
@@ -412,14 +424,77 @@ export const CINNABAR_CSS = `
 
   /* Responsive Mobile Nav adjustments */
   @media (max-width: 640px) {
+    .nav-wrapper {
+      top: 10px;
+      padding: 0 10px;
+    }
     .nav-island {
-      padding: 6px 14px;
+      padding: 6px 12px;
+      gap: 8px;
+    }
+    .nav-brand {
+      font-size: 1.05rem;
     }
     .nav-links {
-      gap: 14px;
+      gap: 10px;
     }
     .nav-link {
       font-size: 13px;
+      padding: 6px 3px;
+    }
+  }
+
+  @media (max-width: 375px) {
+    .nav-links {
+      gap: 6px;
+    }
+    .nav-link {
+      font-size: 12px;
+      padding: 6px 2px;
+    }
+  }
+
+  /* Universal Mobile Layout & Bottom-Sheet Modal rules */
+  .container, .content-wrapper, .dashboard-wrapper, .site-wrapper {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .container, .content-wrapper, .dashboard-wrapper, .site-wrapper {
+      padding-left: 12px;
+      padding-right: 12px;
+      padding-top: 18px;
+      padding-bottom: 60px;
+    }
+
+    .modal-overlay {
+      padding: 8px;
+      align-items: flex-end;
+    }
+
+    .modal-card {
+      padding: 22px 18px 28px;
+      border-radius: var(--radius-xl) var(--radius-xl) 16px 16px;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    .footer-links-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 16px;
+      width: 100%;
+    }
+
+    .footer-top {
+      gap: 28px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
     }
   }
 

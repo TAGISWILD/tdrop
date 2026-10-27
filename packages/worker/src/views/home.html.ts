@@ -296,6 +296,8 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       max-width: 680px;
       text-align: center;
       color: var(--text);
+      text-wrap: balance;
+      word-break: break-word;
     }
 
     .hero-subtitle {
@@ -1047,6 +1049,114 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 8px;
+    }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .hero {
+        margin: 16px 0 24px;
+        gap: 14px;
+      }
+      .hero-chip {
+        font-size: 11px;
+        padding: 4px 10px;
+        gap: 6px;
+      }
+      .hero-title {
+        font-size: clamp(2rem, 7.5vw, 2.6rem);
+        line-height: 1.1;
+      }
+      .hero-subtitle {
+        font-size: 14px;
+        line-height: 1.5;
+        padding: 0 4px;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+      }
+      .hero-actions .btn,
+      .hero-actions .cli-cmd-box {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .uploader-card {
+        padding: 16px 14px;
+        border-radius: var(--radius-lg);
+        margin-bottom: 24px;
+      }
+      .retention-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .retention-tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .ttl-tab {
+        text-align: center;
+        padding: 8px 4px;
+        font-size: 11px;
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .drop-zone {
+        padding: 26px 14px;
+        gap: 10px;
+        border-radius: var(--radius-md);
+      }
+      .drop-icon-box {
+        width: 46px;
+        height: 46px;
+      }
+      .drop-title {
+        font-size: 15px;
+      }
+      .drop-subtitle {
+        font-size: 13px;
+      }
+      .terminal-section {
+        margin-bottom: 24px;
+      }
+      .terminal-header {
+        padding: 10px 12px;
+      }
+      .terminal-tabs {
+        gap: 2px;
+        padding: 2px;
+      }
+      .terminal-tab-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+      .terminal-body {
+        padding: 14px 12px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .feature-card {
+        padding: 18px 14px;
+        border-radius: var(--radius-md);
+      }
+      .sponsored-ad-banner {
+        padding: 16px 14px;
+        border-radius: var(--radius-md);
+      }
+      .ad-content-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .ad-content-row .btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>

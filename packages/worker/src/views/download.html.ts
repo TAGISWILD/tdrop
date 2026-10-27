@@ -572,6 +572,50 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       text-transform: uppercase;
       margin-bottom: 8px;
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .download-card {
+        padding: 18px 14px;
+        border-radius: var(--radius-lg);
+        gap: 16px;
+      }
+      .file-meta-header {
+        gap: 12px;
+      }
+      .file-ext-badge {
+        width: 44px;
+        height: 44px;
+        font-size: 11px;
+      }
+      .file-title {
+        font-size: 1.15rem;
+      }
+      .download-action-btn {
+        height: 48px;
+        font-size: 15px;
+        padding: 0 10px 0 18px;
+      }
+      .action-toolbar {
+        gap: 8px;
+      }
+      .btn-action-tool {
+        padding: 10px 10px;
+        font-size: 12px;
+        min-height: 44px;
+      }
+      .btn-action-qr-toggle {
+        flex: 0 0 44px;
+        height: 44px;
+      }
+      .c-url-box {
+        padding: 14px 12px;
+        border-radius: var(--radius-md);
+      }
+      .c-url-box code {
+        font-size: 11.5px;
+      }
+    }
   </style>
 </head>
 <body>

@@ -201,6 +201,35 @@ export function renderContactPage(domain: string = "tdrop.link"): string {
       color: var(--text-muted);
       line-height: 1.6;
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .content-wrapper {
+        padding: 16px 12px 60px;
+        gap: 20px;
+      }
+      .contact-card {
+        padding: 20px 16px;
+        border-radius: var(--radius-lg);
+        gap: 20px;
+      }
+      .contact-title {
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+      .channels-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .channel-box {
+        padding: 16px 14px;
+        border-radius: var(--radius-md);
+      }
+      .policy-box {
+        padding: 16px 14px;
+      }
+    }
   </style>
 </head>
 <body>

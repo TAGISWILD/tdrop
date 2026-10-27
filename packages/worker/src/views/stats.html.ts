@@ -396,6 +396,65 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       gap: 16px;
       box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .dashboard-wrapper {
+        padding: 16px 12px 60px;
+        gap: 20px;
+      }
+      .header-title {
+        font-size: clamp(1.85rem, 6.5vw, 2.4rem);
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+      .header-sub {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .header-controls {
+        width: 100%;
+        gap: 8px;
+      }
+      .btn-control {
+        flex: 1;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 12px;
+      }
+      .kpi-grid {
+        gap: 12px;
+      }
+      .kpi-card {
+        padding: 16px 14px;
+        border-radius: var(--radius-md);
+      }
+      .kpi-number {
+        font-size: 1.9rem;
+      }
+      .dash-panel {
+        padding: 18px 14px;
+        border-radius: var(--radius-md);
+      }
+      .map-box {
+        height: 190px;
+        border-radius: var(--radius-sm);
+      }
+      .calc-stats-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .modal-overlay {
+        padding: 8px;
+        align-items: flex-end;
+      }
+      .modal-card {
+        padding: 22px 16px 28px;
+        border-radius: var(--radius-xl) var(--radius-xl) 16px 16px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 <body>

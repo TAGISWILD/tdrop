@@ -1209,6 +1209,31 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
         display: block;
       }
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .docs-main {
+        padding: 18px 12px 60px;
+      }
+      .article-title {
+        font-size: clamp(1.7rem, 6vw, 2.2rem);
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+      .mobile-doc-selector {
+        height: 46px;
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+      .code-block-wrap {
+        border-radius: var(--radius-sm);
+        margin: 14px 0;
+      }
+      .code-block-wrap pre {
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>

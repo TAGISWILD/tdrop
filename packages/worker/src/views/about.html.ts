@@ -215,6 +215,31 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
       line-height: 1.5;
       margin-top: 4px;
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .content-wrapper {
+        padding: 16px 12px 60px;
+        gap: 20px;
+      }
+      .about-card {
+        padding: 20px 16px;
+        border-radius: var(--radius-lg);
+        gap: 20px;
+      }
+      .about-title {
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+      .creator-box {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        padding: 18px 14px;
+        border-radius: var(--radius-md);
+      }
+    }
   </style>
 </head>
 <body>

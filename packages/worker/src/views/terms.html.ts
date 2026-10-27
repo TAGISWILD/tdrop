@@ -127,6 +127,24 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
       text-decoration: underline;
       text-underline-offset: 3px;
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .content-wrapper {
+        padding: 16px 12px 60px;
+        gap: 20px;
+      }
+      .legal-card {
+        padding: 20px 16px;
+        border-radius: var(--radius-lg);
+        gap: 20px;
+      }
+      .legal-title {
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+    }
   </style>
 </head>
 <body>

@@ -230,6 +230,37 @@ export function renderErrorPage(
       border-radius: 50%;
       background: var(--success);
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .site-wrapper {
+        padding: 16px 12px 60px;
+      }
+      .error-card {
+        padding: 24px 16px;
+        border-radius: var(--radius-lg);
+        margin-top: 16px;
+      }
+      .error-title {
+        font-size: 1.5rem;
+        text-wrap: balance;
+        line-height: 1.2;
+      }
+      .error-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+      }
+      .error-actions .btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .cli-cmd-box {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>

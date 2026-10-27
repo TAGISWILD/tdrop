@@ -352,6 +352,69 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       gap: 16px;
       box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);
     }
+
+    /* Phone Screen Optimizations (Mobile-first Cinnabar UX) */
+    @media (max-width: 480px) {
+      .container {
+        padding: 16px 12px 60px;
+        gap: 32px;
+      }
+      .hero {
+        margin-top: 12px;
+        gap: 14px;
+      }
+      .hero-title {
+        font-size: clamp(1.9rem, 7vw, 2.6rem);
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+      .hero-subtitle {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .metrics-bar {
+        gap: 8px;
+      }
+      .metric-card {
+        padding: 14px 8px;
+        border-radius: var(--radius-md);
+      }
+      .metric-val {
+        font-size: 1.35rem;
+      }
+      .specimen-card {
+        padding: 16px 14px;
+        border-radius: var(--radius-md);
+      }
+      .specimen-body {
+        font-size: 11.5px;
+        line-height: 1.6;
+      }
+      .tier-card {
+        padding: 18px 14px;
+        border-radius: var(--radius-lg);
+      }
+      .modal-overlay {
+        padding: 8px;
+        align-items: flex-end;
+      }
+      .modal-card {
+        padding: 22px 16px 28px;
+        border-radius: var(--radius-xl) var(--radius-xl) 16px 16px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 <body>
