@@ -691,6 +691,22 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           <span>Submit Inquiry</span>
           <span class="btn-icon">→</span>
         </button>
+
+        <div id="statsSponsorSuccessBox" style="display:none; padding:12px; background:var(--obsidian); border:1px solid var(--line-strong); border-radius:var(--radius-md); font-size:12px; line-height:1.6; color:var(--text-soft);">
+          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Inquiry Prepared!</div>
+          If your email app didn't launch automatically, email us directly:
+          <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+            <code style="color:var(--text); font-size:12px; background:var(--graphite); padding:2px 8px; border-radius:4px;">support@ethiccode.in</code>
+            <button type="button" class="btn btn-secondary" onclick="copyStatsSupportEmail(this)" style="padding:3px 10px; font-size:11px;">Copy</button>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px; font-size:12px; color:var(--text-faint);">
+          <span>Direct partner contact:</span>
+          <button type="button" class="btn btn-ghost" onclick="copyStatsSupportEmail(this)" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text);">
+            support@ethiccode.in 📋
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -829,6 +845,17 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       document.getElementById('sponsorModal').style.display = 'none';
     }
 
+    function copyStatsSupportEmail(btn) {
+      const email = 'support@ethiccode.in';
+      navigator.clipboard.writeText(email).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = orig; }, 2000);
+      }).catch(() => {
+        prompt('Copy support email:', email);
+      });
+    }
+
     function handleSponsorSubmit(e) {
       e.preventDefault();
       const company = document.getElementById('sponsorCompany').value;
@@ -845,9 +872,14 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         'Hello tdrop team, we would like to sponsor tdrop terminal blips and web placement.'
       );
 
-      window.location.href = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
-      closeSponsorModal();
-      alert('Thank you! Your email client has been prepared with your sponsorship inquiry.');
+      const successBox = document.getElementById('statsSponsorSuccessBox');
+      if (successBox) successBox.style.display = 'block';
+
+      const dummyAnchor = document.createElement('a');
+      dummyAnchor.href = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
+      dummyAnchor.target = '_blank';
+      dummyAnchor.rel = 'noopener noreferrer';
+      dummyAnchor.click();
     }
 
     function exportStatsJson() {

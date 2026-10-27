@@ -326,6 +326,32 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       text-transform: uppercase;
       margin-bottom: 8px;
     }
+
+    /* Sponsor Inquiry Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(11, 11, 13, 0.76);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);
+    }
   </style>
 </head>
 <body>
@@ -408,9 +434,9 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
               <li class="tier-feature">Real-time CTR telemetry</li>
             </ul>
           </div>
-          <a href="mailto:support@ethiccode.in?subject=Starter%20Sponsorship%20Inquiry" class="btn btn-secondary" style="width:100%; justify-content:center;">
+          <button type="button" onclick="openSponsorModal('Starter')" class="btn btn-secondary" style="width:100%; justify-content:center;">
             <span>Apply for Starter</span>
-          </a>
+          </button>
         </div>
 
         <!-- Growth Pro Tier -->
@@ -427,10 +453,10 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
               <li class="tier-feature">Weekly analytics report</li>
             </ul>
           </div>
-          <a href="mailto:support@ethiccode.in?subject=Growth%20Pro%20Sponsorship%20Inquiry" class="btn btn-primary" style="width:100%; justify-content:space-between;">
+          <button type="button" onclick="openSponsorModal('Growth Pro')" class="btn btn-primary" style="width:100%; justify-content:space-between;">
             <span>Apply for Growth Pro</span>
             <span class="btn-icon">→</span>
-          </a>
+          </button>
         </div>
 
         <!-- Title Partner Tier -->
@@ -446,9 +472,9 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
               <li class="tier-feature">GitHub README & docs footer</li>
             </ul>
           </div>
-          <a href="mailto:support@ethiccode.in?subject=Title%20Partner%20Sponsorship%20Inquiry" class="btn btn-secondary" style="width:100%; justify-content:center;">
+          <button type="button" onclick="openSponsorModal('Title Partner')" class="btn btn-secondary" style="width:100%; justify-content:center;">
             <span>Contact Partners Team</span>
-          </a>
+          </button>
         </div>
       </div>
     </section>
@@ -466,6 +492,144 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       </script>
     </div>
   </main>
+
+  <!-- Sponsor Inquiry Modal -->
+  <div class="modal-overlay" id="sponsorModal" onclick="if(event.target===this)closeSponsorModal()" aria-hidden="true" role="dialog" aria-labelledby="sponsorModalTitle">
+    <div class="modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 id="sponsorModalTitle" style="font-size:1.2rem; font-weight:600; color:var(--text);">Sponsor the Command Line</h3>
+        <button type="button" onclick="closeSponsorModal()" class="btn btn-ghost" style="padding:4px 8px; font-size:16px;" aria-label="Close modal">✕</button>
+      </div>
+
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+        Reach thousands of engineers inside <code>npx tdrop</code> terminal stdout runs and web downloads. Tell us about your tool or platform.
+      </p>
+
+      <form id="sponsorForm" onsubmit="handleSponsorSubmit(event)" style="display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <label for="sponsorCompany" style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;">Company / Tool Name</label>
+          <input type="text" id="sponsorCompany" class="input" placeholder="e.g. Supabase, Turso, Raycast" required>
+        </div>
+
+        <div>
+          <label for="sponsorEmail" style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;">Work Email</label>
+          <input type="email" id="sponsorEmail" class="input" placeholder="alex@company.com" required>
+        </div>
+
+        <div>
+          <label for="sponsorTierSelect" style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;">Sponsorship Tier</label>
+          <select id="sponsorTierSelect" class="input" style="cursor:pointer;">
+            <option value="Starter ($99/mo)">Starter · 20,000+ impressions · $99/mo</option>
+            <option value="Growth Pro ($249/mo)" selected>Growth Pro · 60,000+ impressions · $249/mo (Most Popular)</option>
+            <option value="Title Partner ($599/mo)">Title Partner · 150,000+ impressions + Logo · $599/mo</option>
+            <option value="Custom Partnership">Custom Partnership / High Volume</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="sponsorUrl" style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;">Destination / Landing Page URL</label>
+          <input type="url" id="sponsorUrl" class="input mono" placeholder="https://yourcompany.com" required>
+        </div>
+
+        <div>
+          <label for="sponsorNotes" style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:6px;">Brief Pitch / Ad Text (Optional)</label>
+          <input type="text" id="sponsorNotes" class="input" placeholder="e.g. Serverless Postgres with instant branching">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btnSubmitSponsor" style="margin-top:4px; width:100%; justify-content:center;">
+          <span>Submit Sponsorship Inquiry</span>
+          <span class="btn-icon">→</span>
+        </button>
+
+        <div id="sponsorSuccessBox" style="display:none; padding:12px; background:var(--obsidian); border:1px solid var(--line-strong); border-radius:var(--radius-md); font-size:12px; line-height:1.6; color:var(--text-soft);">
+          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Inquiry Prepared!</div>
+          If your email app didn't launch automatically, email us directly:
+          <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+            <code style="color:var(--text); font-size:12px; background:var(--graphite); padding:2px 8px; border-radius:4px;">support@ethiccode.in</code>
+            <button type="button" class="btn btn-secondary" onclick="copySupportEmail(this)" style="padding:3px 10px; font-size:11px;">Copy</button>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px; font-size:12px; color:var(--text-faint);">
+          <span>Direct partner contact:</span>
+          <button type="button" class="btn btn-ghost" onclick="copySupportEmail(this)" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text);">
+            support@ethiccode.in 📋
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openSponsorModal(tier) {
+      const modal = document.getElementById('sponsorModal');
+      const select = document.getElementById('sponsorTierSelect');
+      if (select && tier) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.toLowerCase().includes(tier.toLowerCase())) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden', 'false');
+      const firstInput = document.getElementById('sponsorCompany');
+      if (firstInput) firstInput.focus();
+    }
+
+    function closeSponsorModal() {
+      const modal = document.getElementById('sponsorModal');
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function copySupportEmail(btn) {
+      const email = 'support@ethiccode.in';
+      navigator.clipboard.writeText(email).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = orig; }, 2000);
+      }).catch(() => {
+        prompt('Copy support email:', email);
+      });
+    }
+
+    function handleSponsorSubmit(e) {
+      e.preventDefault();
+      const company = document.getElementById('sponsorCompany').value.trim();
+      const email = document.getElementById('sponsorEmail').value.trim();
+      const tier = document.getElementById('sponsorTierSelect').value;
+      const url = document.getElementById('sponsorUrl').value.trim();
+      const notes = document.getElementById('sponsorNotes').value.trim();
+
+      const subject = encodeURIComponent('tdrop Sponsorship Inquiry: ' + company);
+      const body = encodeURIComponent(
+        'Company / Tool: ' + company + '\\n' +
+        'Contact Email: ' + email + '\\n' +
+        'Selected Package: ' + tier + '\\n' +
+        'Destination URL: ' + url + '\\n' +
+        (notes ? ('Notes / Pitch: ' + notes + '\\n') : '') +
+        '\\nHello tdrop team,\\nWe would like to discuss sponsoring tdrop terminal runs and web downloads.'
+      );
+
+      // Show inline confirmation with copyable support email fallback
+      const successBox = document.getElementById('sponsorSuccessBox');
+      if (successBox) {
+        successBox.style.display = 'block';
+      }
+
+      // Try triggering mailto link
+      const mailtoLink = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
+      const dummyAnchor = document.createElement('a');
+      dummyAnchor.href = mailtoLink;
+      dummyAnchor.click();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSponsorModal();
+    });
+  </script>
 
   ${renderCinnabarFooter(domain)}
 </body>
