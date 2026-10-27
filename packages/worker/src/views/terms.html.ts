@@ -1,3 +1,5 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export function renderTermsPage(domain: string = "tdrop.link"): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -9,14 +11,14 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
   
   <link rel="canonical" href="https://${domain}/terms">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0B0B0D">
   <link rel="manifest" href="/manifest.json">
 
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
 
-  <!-- Open Graph / Social Media Preview -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://${domain}/terms">
   <meta property="og:title" content="Terms of Service · tdrop">
@@ -31,9 +33,7 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
   <meta name="twitter:description" content="Terms of Service and Acceptable Use Policy for tdrop ephemeral file sharing.">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
 
   <!-- Google AdSense Verification Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
@@ -48,186 +48,50 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
+    ${CINNABAR_CSS}
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
-      background-attachment: fixed;
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-
-    /* Floating Island Navbar */
-    .nav-wrapper {
-      position: sticky;
-      top: 16px;
-      z-index: 100;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 16px;
-      pointer-events: none;
-    }
-
-    .nav-island {
-      pointer-events: auto;
-      background: rgba(14, 15, 20, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--surface-border);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #ffffff;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.65rem;
-      font-family: var(--font-mono);
-      padding: 2px 8px;
-      border-radius: 20px;
-    }
-
-    .status-dot {
-      width: 5px;
-      height: 5px;
-      background: var(--status-green);
-      border-radius: 50%;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 9999px;
-      transition: all 0.15s;
-    }
-
-    .nav-link:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-sponsor-nav {
-      background: #ffffff;
-      color: #09090b !important;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: all 0.2s;
-    }
-
-    .btn-sponsor-nav:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
-
-    /* Content Layout */
     .content-wrapper {
-      max-width: 760px;
-      margin: 40px auto 80px;
+      max-width: 820px;
+      margin: 36px auto 80px;
       padding: 0 20px;
     }
 
     .legal-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(24px, 5vw, 44px);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: clamp(28px, 5vw, 48px);
       display: flex;
       flex-direction: column;
       gap: 28px;
     }
 
     .legal-header {
-      border-bottom: 1px solid var(--surface-border-subtle);
+      border-bottom: 1px solid var(--line);
       padding-bottom: 20px;
     }
 
     .legal-tag {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
+      font-size: 11px;
+      color: var(--sindoor);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.08em;
       margin-bottom: 8px;
+      font-weight: 600;
     }
 
     .legal-title {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
-      font-weight: 800;
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-weight: 700;
       letter-spacing: -0.03em;
-      color: #ffffff;
+      color: var(--text);
       line-height: 1.2;
     }
 
     .legal-updated {
-      font-size: 0.82rem;
-      color: var(--text-muted);
+      font-size: 13px;
+      color: var(--text-faint);
       margin-top: 8px;
       font-family: var(--font-mono);
     }
@@ -240,15 +104,15 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
     }
 
     .legal-section h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.01em;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.015em;
     }
 
     .legal-section p, .legal-section li {
-      font-size: 0.92rem;
-      color: var(--text-muted);
+      font-size: 15px;
+      color: var(--text-soft);
     }
 
     .legal-section ul {
@@ -258,58 +122,19 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
       gap: 6px;
     }
 
-    footer {
-      width: 100%;
-      border-top: 1px solid var(--surface-border);
-      padding: 36px 16px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-links a:hover {
-      color: #ffffff;
+    .legal-section a {
+      color: var(--sindoor-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Island Navbar -->
-  <header class="nav-wrapper">
-    <nav class="nav-island">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
-          tdrop
-        </div>
-      </a>
-      <div class="nav-links">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/docs" class="nav-link">Docs</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/sponsor" class="btn-sponsor-nav">Sponsor Us</a>
-      </div>
-    </nav>
-  </header>
+  ${renderCinnabarNav("about", domain)}
 
   <div class="content-wrapper">
-    <div class="legal-card">
+    <main class="legal-card">
       <div class="legal-header">
         <div class="legal-tag">Legal & Compliance</div>
         <h1 class="legal-title">Terms of Service</h1>
@@ -318,7 +143,7 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
 
       <div class="legal-section">
         <h2>1. Acceptance of Terms</h2>
-        <p>By accessing or using tdrop via web browser, the tdrop CLI (npx tdrop), or HTTP APIs (cURL/stdin), you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the service.</p>
+        <p>By accessing or using tdrop via web browser, the tdrop CLI (<code>npx tdrop</code>), or HTTP APIs (cURL/stdin), you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the service.</p>
       </div>
 
       <div class="legal-section">
@@ -351,33 +176,18 @@ export function renderTermsPage(domain: string = "tdrop.link"): string {
 
       <div class="legal-section">
         <h2>6. Limitation of Liability</h2>
-        <p>In no event shall tdrop, its operators, or Cloudflare infrastructure providers be liable for any indirect, incidental, special, consequential, or punitive damages resulting from loss of data, service interruption, or unauthorized access.</p>
+        <p>In no event shall tdrop, its operators, or edge infrastructure providers be liable for any indirect, incidental, special, consequential, or punitive damages resulting from loss of data, service interruption, or unauthorized access.</p>
       </div>
 
       <div class="legal-section">
         <h2>7. Contact</h2>
         <p>For legal inquiries, abuse reports, or DMCA notifications, contact:</p>
-        <p style="font-family: var(--font-mono); color: #ffffff;"><a href="mailto:support@ethiccode.in" style="color: inherit; text-decoration: underline;">support@ethiccode.in</a></p>
+        <p style="font-family: var(--font-mono); color: var(--sindoor-text);"><a href="mailto:support@ethiccode.in">support@ethiccode.in</a></p>
       </div>
-    </div>
+    </main>
   </div>
 
-  <footer>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/docs">Documentation</a>
-      <a href="/about">About</a>
-      <a href="/stats">Telemetry Stats</a>
-      <a href="/sponsor">Sponsorship</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/sitemap.xml">Sitemap</a>
-      <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
-    </div>
-    <p>tdrop · Ephemeral File Sharing · Open Source under the MIT License</p>
-  </footer>
-
+  ${renderCinnabarFooter(domain)}
 </body>
 </html>`;
 }

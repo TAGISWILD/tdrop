@@ -1,3 +1,5 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export function renderHomePage(domain: string = "tdrop.link", googleSiteVerification?: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -9,7 +11,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
   <meta name="keywords" content="tdrop, tdrop link, terminal file sharing, ephemeral file upload, cli file transfer, command line drop, curl file upload, temporary file storage, anonymous file transfer, zero log file share, npx tdrop, winget tdrop">
   <link rel="canonical" href="https://${domain}/">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0B0B0D">
   ${googleSiteVerification ? `<meta name="google-site-verification" content="${googleSiteVerification}">` : ""}
 
   <!-- Web App Manifest (PWA) -->
@@ -37,7 +39,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
   <meta name="twitter:description" content="Ultra-fast, ephemeral file sharing from your terminal, cURL, or browser. Free, encrypted at rest, zero logs, auto-incinerating.">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
 
-  <!-- Schema.org JSON-LD Structured Data for Google Knowledge Graph & Rich Snippets -->
+  <!-- Schema.org JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -132,9 +134,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
 
   <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
@@ -149,190 +149,26 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --surface-border-hover: rgba(255, 255, 255, 0.18);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      min-height: 100dvh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
-      background-attachment: fixed;
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-
-    /* Floating Island Navbar (Inspired by componentry.dev & spaceui.one) */
-    .nav-wrapper {
-      position: sticky;
-      top: 16px;
-      z-index: 100;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 16px;
-      pointer-events: none;
-    }
-
-    .nav-island {
-      pointer-events: auto;
-      background: rgba(14, 15, 20, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--surface-border);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      transition: border-color 0.2s;
-    }
-
-    .nav-island:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #ffffff;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.65rem;
-      font-family: var(--font-mono);
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    .status-dot {
-      width: 5px;
-      height: 5px;
-      background: var(--status-green);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--status-green);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .cli-pill-nav {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      border-radius: 9999px;
-      padding: 5px 12px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      user-select: none;
-    }
-
-    .cli-pill-nav:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .cli-pill-nav:active {
-      transform: scale(0.97);
-    }
-
-    @media (min-width: 600px) {
-      .cli-pill-nav {
-        display: inline-flex;
-      }
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 6px 10px;
-      border-radius: 8px;
-      transition: color 0.15s;
-    }
-
-    .nav-link:hover {
-      color: var(--text-main);
-    }
+    ${CINNABAR_CSS}
 
     /* Master Layout: Center Content with Right Sponsor Rail */
     .site-wrapper {
       width: 100%;
-      max-width: 1080px;
+      max-width: 1120px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       gap: 36px;
-      padding: 24px 16px 80px;
+      padding: 32px 16px 80px;
       min-height: 100vh;
     }
 
     /* Right Sticky Sponsor Rail */
     .sponsor-rail {
       display: none;
-      width: 240px;
-      flex: 0 0 240px;
+      width: 250px;
+      flex: 0 0 250px;
     }
 
     @media (min-width: 1060px) {
@@ -344,35 +180,39 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     .sponsor-sticky-card {
       position: sticky;
       top: 96px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 18px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       padding: 22px 18px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: border-color var(--dur-slow) ease;
+    }
+
+    .sponsor-sticky-card:hover {
+      border-color: var(--sindoor);
     }
 
     .sponsor-rail-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      color: var(--sindoor);
       font-family: var(--font-mono);
     }
 
     .sponsor-rail-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
       line-height: 1.3;
       letter-spacing: -0.01em;
     }
 
     .sponsor-rail-desc {
-      font-size: 0.8rem;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -380,51 +220,35 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     .sponsor-rail-stats {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--surface-border-subtle);
+      gap: 8px;
+      background: var(--obsidian);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
     }
 
     .sponsor-stat-pill {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: #ffffff;
+      font-size: 12px;
+      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .sponsor-stat-pill::before {
-      content: '•';
-      color: var(--status-green);
-    }
-
-    .btn-sponsor-rail {
-      background: #ffffff;
-      color: #09090b;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.12);
-      transition: all 0.2s;
-    }
-
-    .btn-sponsor-rail:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
     }
 
     /* Center Content Container */
     .content-container {
       width: 100%;
-      max-width: 740px;
-      flex: 1 1 740px;
+      max-width: 760px;
+      flex: 1 1 760px;
       min-width: 0;
       display: flex;
       flex-direction: column;
@@ -439,7 +263,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       align-items: center;
       gap: 20px;
       width: 100%;
-      margin: 36px 0 32px;
+      margin: 32px 0 36px;
     }
 
     .hero-chip {
@@ -447,38 +271,37 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       align-items: center;
       gap: 8px;
       padding: 5px 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
-      border-radius: 9999px;
-      font-size: 0.78rem;
+      background: var(--graphite);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
       color: var(--text-muted);
       font-family: var(--font-mono);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .hero-chip-badge {
-      color: #ffffff;
+      color: var(--text);
       font-weight: 600;
     }
 
     .hero-chip-sep {
-      color: var(--surface-border);
+      color: var(--line-stronger);
     }
 
     .hero-title {
-      font-size: clamp(2.3rem, 6.5vw, 3.8rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-size: clamp(2.4rem, 6.5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
       line-height: 1.1;
       max-width: 680px;
       text-align: center;
-      color: #ffffff;
+      color: var(--text);
     }
 
     .hero-subtitle {
-      font-size: clamp(0.95rem, 2.6vw, 1.12rem);
+      font-size: clamp(0.95rem, 2.5vw, 1.12rem);
       color: var(--text-muted);
-      max-width: 540px;
+      max-width: 560px;
       line-height: 1.6;
       text-align: center;
       font-weight: 400;
@@ -493,129 +316,120 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       margin-top: 4px;
     }
 
-    .btn-solid-white {
-      background: #ffffff;
-      color: #09090b;
-      font-family: var(--font-sans);
-      font-size: 0.88rem;
-      font-weight: 600;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      user-select: none;
-    }
-
-    .btn-solid-white:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-solid-white:active {
-      transform: scale(0.98);
-    }
-
     .cli-cmd-box {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 9px 16px;
+      background: var(--graphite);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      padding: 9px 18px;
       font-family: var(--font-mono);
-      font-size: 0.82rem;
+      font-size: 13px;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all var(--dur-fast) ease;
       user-select: none;
     }
 
     .cli-cmd-box:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--sindoor);
+      color: var(--text);
+      background: var(--graphite-raised);
     }
 
     .cli-cmd-box code {
-      color: #ffffff;
+      color: var(--text);
     }
 
-    /* Uploader Console Card (Tactile, Clean, Inset Bevels) */
+    /* Uploader Console Card (Cinnabar Graphite Surface) */
     .uploader-card {
       width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
       padding: clamp(20px, 4vw, 32px);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       margin-bottom: 40px;
+      transition: border-color var(--dur-slow) ease;
     }
 
-    /* Segmented Retention Control */
+    .uploader-card:hover {
+      border-color: var(--line-strong);
+    }
+
+    /* Segmented Retention Control with Cinnabar Indicator */
     .retention-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       padding-bottom: 16px;
-      border-bottom: 1px solid var(--surface-border-subtle);
+      border-bottom: 1px solid var(--line);
     }
 
     .retention-label {
-      font-size: 0.78rem;
+      font-size: 13px;
       font-weight: 500;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
+      color: var(--text-muted);
+      font-family: var(--font-sans);
     }
 
     .retention-tabs {
       display: flex;
       gap: 4px;
-      background: rgba(0, 0, 0, 0.4);
+      background: var(--obsidian);
       padding: 3px;
-      border-radius: 8px;
-      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--line);
     }
 
     .ttl-tab {
+      position: relative;
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 12px;
       font-family: var(--font-mono);
       font-weight: 500;
-      padding: 5px 11px;
-      border-radius: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
       cursor: pointer;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all var(--dur-fast) ease;
       user-select: none;
     }
 
     .ttl-tab:hover {
-      color: var(--text-main);
+      color: var(--text);
     }
 
     .ttl-tab.active {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      background: var(--graphite-raised);
+      color: var(--text);
+      font-weight: 600;
     }
 
-    /* Drop Zone */
+    .ttl-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 2px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--sindoor);
+      transform: translateX(-50%);
+    }
+
+    /* Drop Zone (Cinnabar 9.23 Specification: Dashed line turning Sindoor) */
     .drop-zone {
-      border: 1px dashed rgba(255, 255, 255, 0.14);
-      border-radius: 14px;
-      padding: clamp(32px, 6vw, 44px) 20px;
+      border: 1.5px dashed var(--line-stronger);
+      border-radius: var(--radius-lg);
+      padding: clamp(36px, 6vw, 48px) 20px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      background: rgba(0, 0, 0, 0.25);
+      transition: all var(--dur-base) ease;
+      background: var(--obsidian);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -625,45 +439,44 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     }
 
     .drop-zone:hover, .drop-zone:focus {
-      border-color: rgba(255, 255, 255, 0.35);
-      background: rgba(255, 255, 255, 0.02);
-      transform: translateY(-1px);
+      border-color: var(--sindoor);
+      background: var(--sindoor-tint);
     }
 
     .drop-zone.dragover {
-      border-color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-      transform: scale(1.01);
+      border-color: var(--sindoor);
+      background: var(--sindoor-tint);
+      transform: scale(1.008);
     }
 
     .drop-icon-box {
       width: 52px;
       height: 52px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
+      border-radius: 50%;
+      background: var(--graphite-input);
+      border: 1px solid var(--line-strong);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-main);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      transition: transform 0.2s;
+      color: var(--text);
+      transition: transform var(--dur-fast) ease, border-color var(--dur-fast) ease;
     }
 
     .drop-zone:hover .drop-icon-box {
-      transform: scale(1.06);
-      border-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.08);
+      border-color: var(--sindoor);
+      color: var(--sindoor);
     }
 
     .drop-title {
-      font-size: clamp(1.05rem, 3.2vw, 1.25rem);
+      font-size: clamp(1.1rem, 3.2vw, 1.3rem);
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text);
       letter-spacing: -0.01em;
     }
 
     .drop-subtitle {
-      font-size: clamp(0.8rem, 2.4vw, 0.88rem);
+      font-size: 14px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -672,8 +485,8 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
 
     .upload-legal-notice {
       margin-top: 14px;
-      font-size: 0.76rem;
-      color: var(--text-dim);
+      font-size: 12px;
+      color: var(--text-faint);
       font-family: var(--font-mono);
       text-align: center;
       line-height: 1.5;
@@ -683,14 +496,14 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       color: var(--text-muted);
       text-decoration: underline;
       text-underline-offset: 3px;
-      transition: color 0.15s;
+      transition: color var(--dur-fast);
     }
 
     .upload-legal-notice a:hover {
-      color: #ffffff;
+      color: var(--sindoor);
     }
 
-    /* Upload Progress State */
+    /* Upload Progress State (Cinnabar 4px Sindoor Bar) */
     .upload-state {
       display: none;
       margin-top: 20px;
@@ -701,35 +514,34 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     .progress-info {
       display: flex;
       justify-content: space-between;
-      font-size: 0.82rem;
+      font-size: 13px;
       font-family: var(--font-mono);
       color: var(--text-muted);
     }
 
     .progress-bar-bg {
       width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 3px;
+      height: 4px;
+      background: var(--line-strong);
+      border-radius: 2px;
       overflow: hidden;
     }
 
     .progress-bar-fill {
       height: 100%;
       width: 0%;
-      background: #ffffff;
+      background: var(--sindoor);
       transition: width 0.15s ease-out;
     }
 
     /* Result Box */
     .result-box {
       display: none;
-      background: #090a0d;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      padding: clamp(16px, 3.5vw, 22px);
+      background: var(--obsidian);
+      border: 1px solid var(--sindoor);
+      border-radius: var(--radius-lg);
+      padding: clamp(18px, 3.5vw, 24px);
       margin-top: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
     .result-header {
@@ -739,27 +551,18 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       justify-content: space-between;
       gap: 8px;
       margin-bottom: 14px;
-      font-size: 0.88rem;
-      color: #ffffff;
+      font-size: 14px;
+      color: var(--text);
       font-weight: 600;
-    }
-
-    .result-verified-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      font-family: var(--font-mono);
-      color: var(--status-green);
     }
 
     .result-url-block {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
+      gap: 10px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
       padding: 10px 14px;
     }
 
@@ -772,47 +575,21 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
 
     .result-url {
       font-family: var(--font-mono);
-      font-size: 0.88rem;
-      color: #ffffff;
+      font-size: 14px;
+      color: var(--text);
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .copy-btn {
-      background: #ffffff;
-      color: #09090b;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      padding: 7px 16px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-      min-height: 36px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      white-space: nowrap;
-    }
-
-    .copy-btn:hover {
-      background: #f4f4f5;
-    }
-
-    .copy-btn:active {
-      transform: scale(0.97);
-    }
-
     /* Mobile QR Transfer & Quick Share */
     .transfer-box {
       margin-top: 14px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 14px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -822,7 +599,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       .transfer-box {
         flex-direction: row;
         align-items: center;
-        gap: 16px;
+        gap: 18px;
       }
     }
 
@@ -831,15 +608,14 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       height: 104px;
       min-width: 104px;
       min-height: 104px;
-      background: #ffffff;
+      background: var(--paper);
       padding: 6px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       margin: 0 auto;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform var(--dur-fast) ease;
       cursor: pointer;
     }
 
@@ -851,7 +627,6 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       width: 100%;
       height: 100%;
       display: block;
-      border-radius: 2px;
     }
 
     .transfer-info {
@@ -862,26 +637,19 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       gap: 10px;
     }
 
-    .transfer-header {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
     .transfer-title-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #ffffff;
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .transfer-desc {
-      font-size: 0.78rem;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .transfer-actions {
@@ -891,57 +659,13 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       gap: 8px;
     }
 
-    .btn-action-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--surface-border-hover);
-      color: #ffffff;
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-      user-select: none;
-    }
-
-    .btn-action-primary:hover {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.28);
-      transform: translateY(-1px);
-    }
-
-    .btn-action-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      font-weight: 500;
-      padding: 7px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-      user-select: none;
-    }
-
-    .btn-action-secondary:hover {
-      background: rgba(255, 255, 255, 0.07);
-      color: var(--text-main);
-      border-color: rgba(255, 255, 255, 0.18);
-    }
-
     .result-details {
       margin-top: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       padding-top: 14px;
-      border-top: 1px solid var(--surface-border-subtle);
+      border-top: 1px solid var(--line);
     }
 
     .result-curl-row {
@@ -949,74 +673,55 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      background: rgba(0, 0, 0, 0.35);
+      background: var(--graphite-input);
       padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 12px;
     }
 
     .result-curl-text {
-      color: var(--text-muted);
+      color: var(--text-soft);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .copy-sm {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      font-weight: 500;
-      padding: 3px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.15s;
-    }
-
-    .copy-sm:hover {
-      color: var(--text-main);
-      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .result-meta-row {
       display: flex;
       justify-content: space-between;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
+      font-size: 12px;
+      color: var(--text-faint);
     }
 
-    /* Terminal Console (Clean, Precision Code Block) */
+    /* Terminal Console */
     .terminal-section {
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
       margin-bottom: 40px;
     }
 
     .section-title {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.35rem;
+      font-weight: 600;
       letter-spacing: -0.02em;
-      color: #ffffff;
+      color: var(--text);
     }
 
     .section-desc {
-      font-size: 0.85rem;
+      font-size: 14px;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .terminal-box {
-      background: #090a0d;
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       overflow: hidden;
     }
 
@@ -1024,9 +729,9 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--surface-border);
+      padding: 12px 18px;
+      background: var(--graphite);
+      border-bottom: 1px solid var(--line);
     }
 
     .terminal-dots {
@@ -1038,44 +743,62 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--line-strong);
     }
 
     .terminal-tabs {
       display: flex;
-      gap: 2px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 2px;
-      border-radius: 6px;
-      border: 1px solid var(--surface-border);
+      gap: 4px;
+      background: var(--obsidian);
+      padding: 3px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--line);
     }
 
     .terminal-tab-btn {
+      position: relative;
       background: transparent;
       border: none;
-      color: var(--text-dim);
+      color: var(--text-muted);
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 12px;
       font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 5px;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all var(--dur-fast);
+    }
+
+    .terminal-tab-btn:hover {
+      color: var(--text);
     }
 
     .terminal-tab-btn.active {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
+      background: var(--graphite-raised);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .terminal-tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 2px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--sindoor);
+      transform: translateX(-50%);
     }
 
     .terminal-body {
-      padding: 18px 20px;
+      padding: 20px;
       font-family: var(--font-mono);
-      font-size: clamp(0.75rem, 2.3vw, 0.85rem);
-      line-height: 1.65;
+      font-size: clamp(12px, 2.2vw, 13px);
+      line-height: 1.7;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      color: var(--text-main);
+      color: var(--text);
     }
 
     .terminal-line {
@@ -1085,9 +808,9 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       white-space: pre;
     }
 
-    .terminal-prompt { color: var(--text-dim); }
+    .terminal-prompt { color: var(--text-faint); }
 
-    /* Bento Grid Features (Understated, High-Craft) */
+    /* Bento Grid Features (Cinnabar Cards) */
     .features-section {
       width: 100%;
       display: flex;
@@ -1100,62 +823,58 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       width: 100%;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 16px;
     }
 
     @media (min-width: 600px) {
       .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
       }
     }
 
     .feature-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       padding: 22px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      transition: border-color 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color var(--dur-slow) ease;
     }
 
     .feature-card:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-1px);
+      border-color: var(--sindoor);
     }
 
     .feature-title {
       font-size: 1rem;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text);
       letter-spacing: -0.01em;
     }
 
     .feature-desc {
-      font-size: 0.84rem;
+      font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
-    /* API Cheat Sheet */
+    /* API Section */
     .api-section {
       width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 30px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 32px;
     }
 
     .api-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 600;
-      margin-bottom: 14px;
-      color: #ffffff;
+      margin-bottom: 16px;
+      color: var(--text);
       letter-spacing: -0.01em;
     }
 
@@ -1169,24 +888,24 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       display: flex;
       flex-direction: column;
       gap: 6px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
       padding: 10px 14px;
     }
 
     .api-row-label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--text-dim);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-faint);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.05em;
     }
 
     .api-row-code {
       font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-main);
+      font-size: 13px;
+      color: var(--text);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -1194,36 +913,22 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       overflow-x: auto;
     }
 
-    /* In-Flow Banner Ad Container (Quiet, Clean) */
-    .ad-banner-inline {
-      width: 100%;
-      margin: 20px 0;
-      padding: 10px;
-      text-align: center;
-      min-height: 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
     /* Sponsored Ad Banner */
     .sponsored-ad-banner {
       width: 100%;
       margin: 24px 0 36px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: 16px 18px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      transition: border-color 0.2s;
+      transition: border-color var(--dur-slow) ease;
     }
 
     .sponsored-ad-banner:hover {
-      border-color: rgba(255, 255, 255, 0.16);
+      border-color: var(--sindoor);
     }
 
     .ad-top-row {
@@ -1237,37 +942,32 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.68rem;
+      font-size: 11px;
       font-family: var(--font-mono);
-      color: var(--text-dim);
+      color: var(--text-faint);
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.06em;
     }
 
     .ad-badge-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
+      background: var(--graphite-raised);
+      border: 1px solid var(--line);
       padding: 2px 7px;
-      border-radius: 4px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .ad-sponsor-tag {
-      color: var(--text-main);
-      font-weight: 600;
+      border-radius: var(--radius-xs);
+      color: var(--text-soft);
+      font-weight: 500;
     }
 
     .ad-promote-link {
-      font-size: 0.72rem;
+      font-size: 12px;
       font-family: var(--font-mono);
-      color: var(--text-dim);
+      color: var(--text-faint);
       text-decoration: none;
-      transition: color 0.15s;
+      transition: color var(--dur-fast);
     }
 
     .ad-promote-link:hover {
-      color: #ffffff;
+      color: var(--sindoor);
     }
 
     .ad-content-row {
@@ -1287,23 +987,22 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     .ad-main-info {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       flex: 1;
       min-width: 0;
     }
 
     .ad-icon-box {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      background: var(--graphite-input);
+      border: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff;
+      color: var(--text);
       flex-shrink: 0;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .ad-text-wrap {
@@ -1312,54 +1011,26 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     }
 
     .ad-headline {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
       margin-bottom: 2px;
     }
 
     .ad-copy {
-      font-size: 0.8rem;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.4;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .btn-ad-visit {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: #ffffff;
-      color: #09090b !important;
-      font-family: var(--font-sans);
-      font-size: 0.82rem;
-      font-weight: 700;
-      padding: 9px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      white-space: nowrap;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.12);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-ad-visit:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+      line-height: 1.45;
     }
 
     /* Google AdSense Wrapper */
     .adsense-container {
       width: 100%;
-      margin: 18px 0;
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid var(--surface-border-subtle);
-      border-radius: 12px;
+      margin: 20px 0;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
       padding: 12px 14px;
       text-align: center;
       min-height: 90px;
@@ -1371,372 +1042,292 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
 
     .adsense-label {
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      letter-spacing: 1px;
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 8px;
-    }
-
-    /* Footer */
-    footer {
-      width: 100%;
-      border-top: 1px solid var(--surface-border);
-      padding: 32px 16px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    footer a {
-      color: var(--text-muted);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      color: #ffffff;
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Island Navbar -->
-  <header class="nav-wrapper">
-    <nav class="nav-island">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
-          tdrop
-        </div>
-      </a>
-      <div class="nav-actions">
-        <a href="#dropZone" class="nav-link">Upload</a>
-        <a href="/docs" class="nav-link">Docs</a>
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#cli" class="nav-link">CLI & API</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/sponsor" class="nav-link" style="color:#ffffff; font-weight:600;">Sponsor</a>
-        <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-link">GitHub</a>
-      </div>
-    </nav>
-  </header>
+  ${renderCinnabarNav("drop", domain)}
 
-  <!-- Layout: Main Content + Right Sponsor Rail -->
   <div class="site-wrapper">
-
-    <!-- Center Content -->
     <div class="content-container">
 
-      <main style="width: 100%;">
-
-        <!-- Hero Section -->
-        <section class="hero">
-          <div class="hero-chip">
-            <span class="hero-chip-badge">Fast & Private</span>
-            <span class="hero-chip-sep">/</span>
-            <span>ClamAV Clean</span>
-            <span class="hero-chip-sep">/</span>
-            <span>Zero Logs</span>
-          </div>
-          <h1 class="hero-title">
-            tdrop — Ephemeral file sharing,<br>built for everyone.
-          </h1>
-          <p class="hero-subtitle">
-            Share files instantly from your browser, phone, terminal, or cURL. Streamed to the edge with zero sign-up, zero tracking, and automatic permanent deletion.
-          </p>
-          <div class="hero-actions">
-            <a href="#dropZone" class="btn-solid-white">Share a File</a>
-            <div class="cli-cmd-box" onclick="copySnippet('npx tdrop <file>')">
-              <code>$ npx tdrop &lt;file&gt;</code>
-              <span style="font-size:0.75rem; color:var(--text-dim);">CLI</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- Tactile Uploader Console -->
-        <div class="uploader-card">
-          
-          <!-- Retention Duration Segmented Control -->
-          <div class="retention-bar">
-            <div class="retention-label">Retention duration</div>
-            <div class="retention-tabs">
-              <button type="button" class="ttl-tab" onclick="setTtl('1h', this)">1h</button>
-              <button type="button" class="ttl-tab active" onclick="setTtl('24h', this)">24h</button>
-              <button type="button" class="ttl-tab" onclick="setTtl('7d', this)">7d</button>
-            </div>
-          </div>
-
-          <!-- Drop Zone -->
-          <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-            <input type="file" id="fileInput" class="file-input" onchange="handleFileSelect(this.files)">
-            <div class="drop-icon-box">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            </div>
-            <div class="drop-title">Drop file here or click to browse</div>
-            <div class="drop-subtitle">Strict 10MB limit · Encrypted at rest · Auto-deleted after retention</div>
-          </div>
-
-          <div class="upload-legal-notice">
-            By uploading, you accept our <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
-          </div>
-
-          <!-- Upload Progress -->
-          <div class="upload-state" id="uploadState">
-            <div class="progress-info">
-              <span id="uploadFilename">uploading...</span>
-              <span id="uploadPercent">0%</span>
-            </div>
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-          </div>
-
-          <!-- Result Card -->
-          <div class="result-box" id="resultBox">
-            <div class="result-header">
-              <span>Upload Ready</span>
-              <span class="result-verified-pill">
-                <span class="status-dot"></span>
-                <span>ClamAV Verified</span>
-              </span>
-            </div>
-            
-            <div class="result-url-block">
-              <span class="result-url" id="resultUrl">https://${domain}/...</span>
-              <button class="copy-btn" id="copyUrlBtn" onclick="copyResultUrl()">Copy Link</button>
-            </div>
-
-            <!-- Mobile QR Transfer & Quick Share -->
-            <div class="transfer-box" id="resultTransferBox">
-              <div class="qr-frame" id="resultQrFrame" onclick="copyResultUrl()" title="Scan with camera or click to copy link">
-                <div style="font-size:0.7rem; color:#71717a; text-align:center;">QR Code</div>
-              </div>
-              <div class="transfer-info">
-                <div class="transfer-header">
-                  <div class="transfer-title-row">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                    <span>Instant Mobile Transfer</span>
-                  </div>
-                  <p class="transfer-desc">Scan with your phone camera to download directly on iOS/Android, or share instantly.</p>
-                </div>
-                <div class="transfer-actions">
-                  <button class="btn-action-primary" type="button" onclick="triggerNativeShare()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                    <span id="shareBtnText">Share Link</span>
-                  </button>
-                  <button class="btn-action-secondary" type="button" onclick="copyResultUrl()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    <span id="copyUrlBtnText">Copy URL</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="result-details">
-              <div class="result-curl-row">
-                <div class="result-curl-text" id="resultCurl">curl -O ...</div>
-                <button class="copy-sm" onclick="copyResultCurl()">Copy</button>
-              </div>
-              <div class="result-meta-row">
-                <span id="resultExpiry">Retention: 24h</span>
-                <span>$0 Egress Fee</span>
-              </div>
-            </div>
-          </div>
-
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-chip">
+          <span class="hero-chip-badge">Zero Logs</span>
+          <span class="hero-chip-sep">/</span>
+          <span>Zero Authentication</span>
+          <span class="hero-chip-sep">/</span>
+          <span>Edge Direct</span>
         </div>
 
-        <!-- Google AdSense Container -->
-        <div class="adsense-container" aria-label="Advertisement">
-          <div class="adsense-label">ADVERTISEMENT</div>
-          <ins class="adsbygoogle"
-               style="display:block; width:100%;"
-               data-ad-client="ca-pub-2876380604791121"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          <script>
-               (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+        <h1 class="hero-title">Ephemeral file sharing, built for the command line.</h1>
+        <p class="hero-subtitle">Transfer files instantly from your terminal or browser. Encrypted at rest, streamed directly to edge memory, and automatically deleted when time runs out.</p>
+
+        <div class="hero-actions">
+          <button class="cli-cmd-box" onclick="copyNavCli('npx tdrop <file>', this)" title="Copy CLI Command">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+            <span><code>npx tdrop &lt;file&gt;</code></span>
+          </button>
+          <a href="/docs" class="btn btn-secondary">Read Documentation</a>
+        </div>
+      </section>
+
+      <!-- Uploader Card -->
+      <main class="uploader-card">
+        <div class="retention-bar">
+          <span class="retention-label">Self-Destruction Retention</span>
+          <div class="retention-tabs">
+            <button class="ttl-tab" onclick="setTtl('1h', this)">1 Hour</button>
+            <button class="ttl-tab active" onclick="setTtl('24h', this)">24 Hours</button>
+            <button class="ttl-tab" onclick="setTtl('7d', this)">7 Days</button>
+          </div>
         </div>
 
-        <!-- Multi-Platform & Terminal Showcase -->
-        <section class="terminal-section" id="cli">
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+          <div class="drop-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
           <div>
-            <h2 class="section-title">Every Device, Any Workflow</h2>
-            <p class="section-desc">Drag and drop in your browser, transfer to your phone via QR, or automate via CLI and cURL.</p>
+            <div class="drop-title">Drop file here or tap to upload</div>
+            <div class="drop-subtitle">Free edge transfer up to 10MB per file · Auto-incinerating</div>
+          </div>
+          <input type="file" id="fileInput" class="file-input" onchange="handleFileSelect(this.files)">
+        </div>
+
+        <div class="upload-legal-notice">
+          By uploading, you agree to the <a href="/terms">Terms</a> and affirm the file is non-malicious and lawful.
+        </div>
+
+        <!-- Progress State -->
+        <div class="upload-state" id="uploadState">
+          <div class="progress-info">
+            <span id="uploadFilename">Uploading file...</span>
+            <span id="uploadPercent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+        </div>
+
+        <!-- Result Box -->
+        <div class="result-box" id="resultBox">
+          <div class="result-header">
+            <span>Drop Ready & In-Flight</span>
+            <span class="badge"><span class="badge-dot success"></span>ClamAV Clean</span>
           </div>
 
-          <div class="terminal-box">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <span class="terminal-dot"></span>
-                <span class="terminal-dot"></span>
-                <span class="terminal-dot"></span>
-              </div>
-              <div class="terminal-tabs">
-                <button class="terminal-tab-btn active" onclick="switchTerminalTab('npx', this)">npx</button>
-                <button class="terminal-tab-btn" onclick="switchTerminalTab('stdin', this)">stdin</button>
-                <button class="terminal-tab-btn" onclick="switchTerminalTab('curl', this)">curl</button>
-              </div>
-            </div>
-            <div class="terminal-body" id="terminalContent">
-              <div class="terminal-line"><span class="terminal-prompt">$</span> <span>npx tdrop release-v1.tar.gz</span></div>
-              <div class="terminal-line" style="color:var(--text-dim);"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>
-              <div class="terminal-line"><span>Uploading [████████████] 100% | 4.8 MB/s</span></div>
-              <div class="terminal-line" style="color:var(--status-green); margin-top:4px;"><span>✔ Upload complete!</span></div>
-              <div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>
-              <div class="terminal-line"><span>  Link: </span><span style="color:#ffffff;">https://${domain}/a7kX9b2</span></div>
-              <div class="terminal-line" style="color:var(--text-dim);"><span>  cURL: curl -O https://${domain}/a7kX9b2/release-v1.tar.gz</span></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Bento Grid Features (Universal & Clear) -->
-        <section class="features-section" id="features">
-          <div>
-            <h2 class="section-title">Fast, Secure & Private for Everyone</h2>
-            <p class="section-desc">End-to-end ephemeral file delivery with zero sign-up, zero tracking, and zero retention debt.</p>
+          <div class="result-url-block">
+            <span class="result-url" id="resultUrl">https://${domain}/...</span>
+            <button class="btn btn-primary" id="copyUrlBtn" onclick="copyResultUrl()">
+              <span>Copy Link</span>
+              <span class="btn-icon">→</span>
+            </button>
           </div>
 
-          <div class="features-grid">
-            <div class="feature-card">
-              <h3 class="feature-title">Instant Mobile Transfer</h3>
-              <p class="feature-desc">Scan with your smartphone camera to download files or share on iOS and Android instantly via QR codes.</p>
+          <!-- Cross-Device Transfer -->
+          <div class="transfer-box">
+            <div class="qr-frame" id="resultQrFrame" onclick="copyResultUrl()" title="Scan with mobile camera">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+              </svg>
             </div>
-
-            <div class="feature-card">
-              <h3 class="feature-title">ClamAV Malware Scanning</h3>
-              <p class="feature-desc">Live streaming antivirus inspection ensures files are verified clean and safe before distribution.</p>
-            </div>
-
-            <div class="feature-card">
-              <h3 class="feature-title">Auto-Incinerate Lifecycle</h3>
-              <p class="feature-desc">True ephemerality. Objects are permanently deleted from edge storage after your chosen retention window.</p>
-            </div>
-
-            <div class="feature-card">
-              <h3 class="feature-title">Zero Accounts & Zero Tracking</h3>
-              <p class="feature-desc">No logins, no emails, no personal data, and no tracking cookies. Frictionless, private utility.</p>
-            </div>
-
-            <div class="feature-card">
-              <h3 class="feature-title">Edge Direct-to-R2</h3>
-              <p class="feature-desc">Zero RAM accumulation. Files stream directly to Cloudflare R2 globally with $0 egress bandwidth fees.</p>
-            </div>
-
-            <div class="feature-card">
-              <h3 class="feature-title">CLI & Developer Automation</h3>
-              <p class="feature-desc">Full terminal support with npx tdrop, cURL endpoints, and stdin piping for engineers and automated scripts.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- API Reference -->
-        <section class="api-section">
-          <h2 class="api-title">cURL API Reference</h2>
-          <div class="api-code-list">
-            <div class="api-row">
-              <div class="api-row-label">Upload a file</div>
-              <div class="api-row-code">
-                <code>curl -F "file=@app.zip" https://${domain}/upload</code>
-                <button class="copy-sm" onclick="copySnippet('curl -F \\"file=@app.zip\\" https://${domain}/upload')">Copy</button>
+            <div class="transfer-info">
+              <div class="transfer-title-row">
+                <span>Instant Mobile Transfer</span>
               </div>
-            </div>
-            <div class="api-row">
-              <div class="api-row-label">Stream piped stdin</div>
-              <div class="api-row-code">
-                <code>cat logs.txt | curl -H "X-TDrop-Filename: logs.txt" --data-binary @- https://${domain}/upload/raw</code>
-                <button class="copy-sm" onclick="copySnippet('cat logs.txt | curl -H \\"X-TDrop-Filename: logs.txt\\" --data-binary @- https://${domain}/upload/raw')">Copy</button>
-              </div>
-            </div>
-            <div class="api-row">
-              <div class="api-row-label">Resumable range download</div>
-              <div class="api-row-code">
-                <code>curl -C - -O https://${domain}/CODE/filename.ext</code>
-                <button class="copy-sm" onclick="copySnippet('curl -C - -O https://${domain}/CODE/filename.ext')">Copy</button>
+              <p class="transfer-desc">Scan with your iOS or Android camera for instant direct download without logging in or typing URLs.</p>
+              <div class="transfer-actions">
+                <button class="btn btn-secondary" onclick="triggerNativeShare()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                  <span>Share Link</span>
+                </button>
               </div>
             </div>
           </div>
-        </section>
 
-        <!-- Architectural Deep Dive & Knowledge Base -->
-        <section class="api-section" style="margin-top: 36px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
-            <h2 class="api-title" style="margin-bottom:0;">Developer Guides & Architecture</h2>
-            <a href="/docs" style="color:var(--status-blue, #38bdf8); font-size:0.85rem; text-decoration:none; font-family:var(--font-mono);">Browse All Documentation →</a>
-          </div>
-          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; margin-bottom:20px;">
-            Explore our comprehensive technical whitepapers, CLI references, and architecture guides to master ephemeral file delivery in your terminal, scripts, and CI/CD pipelines.
-          </p>
-
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
-            <a href="/docs/cli-guide" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
-              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">CLI Manual</div>
-              <div style="font-weight:700; color:#fff; font-size:0.95rem;">Terminal & Package Managers →</div>
-              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Install via WinGet, Homebrew, NPM, or shell script, with support for stdin streaming and custom TTLs.</div>
-            </a>
-            <a href="/docs/curl-api" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
-              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">API Reference</div>
-              <div style="font-weight:700; color:#fff; font-size:0.95rem;">cURL & HTTP REST Endpoints →</div>
-              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Multipart uploads, raw binary byte streams, resumable Range downloads, and RFC 5987 headers.</div>
-            </a>
-            <a href="/docs/security" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
-              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">Whitepaper</div>
-              <div style="font-weight:700; color:#fff; font-size:0.95rem;">Security & ClamAV Engine →</div>
-              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Edge streaming to Cloudflare R2, streaming heuristic antivirus inspection, and zero-knowledge ephemerality.</div>
-            </a>
-            <a href="/docs/ci-cd-automation" style="background:rgba(0,0,0,0.35); border:1px solid var(--surface-border); border-radius:12px; padding:16px; text-decoration:none; display:flex; flex-direction:column; gap:6px;">
-              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#38bdf8; text-transform:uppercase; font-weight:600;">DevOps</div>
-              <div style="font-weight:700; color:#fff; font-size:0.95rem;">CI/CD Pipeline Drops →</div>
-              <div style="color:var(--text-muted); font-size:0.8rem; line-height:1.4;">Automate crash dump and Playwright test failure artifact sharing in GitHub Actions and GitLab CI.</div>
-            </a>
-          </div>
-        </section>
-
-        <!-- Frequently Asked Questions (SEO) -->
-        <section class="faq-section" style="margin-top: 48px;">
-          <h2 class="api-title" style="margin-bottom: 20px;">Frequently Asked Questions</h2>
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
-              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">What is tdrop?</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">tdrop is an ultra-fast, zero-friction ephemeral file sharing utility. It allows developers and everyday users to send files instantly from the terminal (<code>npx tdrop &lt;file&gt;</code>, WinGet, Homebrew, cURL) or web browser with automatic link generation, QR codes, and automatic self-destruction.</p>
+          <div class="result-details">
+            <div class="result-curl-row">
+              <span class="result-curl-text" id="resultCurl">curl -O https://${domain}/...</span>
+              <button class="btn btn-ghost" onclick="copyResultCurl()" style="padding: 4px 8px; font-size: 11px;">Copy cURL</button>
             </div>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
-              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">How long do files stay on tdrop?</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Files are strictly ephemeral and automatically expire and delete after 1 hour, 24 hours (default), or 7 days based on your chosen retention settings. Once expired, files are purged permanently from edge storage.</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
-              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">How do I install tdrop on Windows, Mac, or Linux?</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">On Windows: <code>winget install Tagiswild.tdrop</code>. On macOS or Linux: <code>brew install tagiswild/tap/tdrop</code> or <code>curl -fsSL https://${domain}/install.sh | bash</code>. With Node: <code>npm install -g tdrop</code> or <code>npx tdrop &lt;file&gt;</code>.</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--surface-border); border-radius: 10px; padding: 18px 20px;">
-              <h3 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px;">Is tdrop free and secure?</h3>
-              <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Yes, tdrop is 100% free, open-source under MIT, and requires no account or authentication. Files stream directly to edge storage with zero disk writes, encrypted at rest, and zero activity logs.</p>
+            <div class="result-meta-row">
+              <span id="resultExpiry">Retention: 24h</span>
+              <span>Zero logs kept</span>
             </div>
           </div>
-        </section>
-
+        </div>
       </main>
 
-      <footer>
-        <div class="footer-links" style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:8px;">
-          <a href="/" style="color:var(--text-muted); text-decoration:none;">Home</a>
-          <a href="/docs" style="color:var(--text-muted); text-decoration:none;">Documentation</a>
-          <a href="/about" style="color:var(--text-muted); text-decoration:none;">About</a>
-          <a href="/stats" style="color:var(--text-muted); text-decoration:none;">Stats</a>
-          <a href="/sponsor" style="color:var(--text-muted); text-decoration:none;">Sponsorship</a>
-          <a href="/contact" style="color:var(--text-muted); text-decoration:none;">Contact</a>
-          <a href="/privacy" style="color:var(--text-muted); text-decoration:none;">Privacy Policy</a>
-          <a href="/terms" style="color:var(--text-muted); text-decoration:none;">Terms of Service</a>
-          <a href="/sitemap.xml" style="color:var(--text-muted); text-decoration:none;">Sitemap</a>
-          <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" style="color:var(--text-muted); text-decoration:none;">GitHub</a>
+      <!-- Terminal Interactive Section -->
+      <section class="terminal-section">
+        <div>
+          <h2 class="section-title">The Terminal Experience</h2>
+          <p class="section-desc">Share files directly from your developer workflow without switching context or opening browsers.</p>
         </div>
-        <p>tdrop · Ephemeral File Sharing · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">Open Source on GitHub</a></p>
-        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No trackers · RFC 5987 / RFC 7233 Compliant</p>
-      </footer>
+
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <div class="terminal-dot"></div>
+              <div class="terminal-dot"></div>
+              <div class="terminal-dot"></div>
+            </div>
+            <div class="terminal-tabs">
+              <button class="terminal-tab-btn active" onclick="switchTerminalTab('npx', this)">npx</button>
+              <button class="terminal-tab-btn" onclick="switchTerminalTab('stdin', this)">stdin pipe</button>
+              <button class="terminal-tab-btn" onclick="switchTerminalTab('curl', this)">curl</button>
+            </div>
+          </div>
+          <div class="terminal-body" id="terminalContent">
+            <div class="terminal-line"><span class="terminal-prompt">$</span> <span>npx tdrop release-v1.tar.gz</span></div>
+            <div class="terminal-line" style="color:var(--text-faint);"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>
+            <div class="terminal-line"><span>Uploading [████████████] 100% | 4.8 MB/s</span></div>
+            <div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>✔ Upload complete!</span></div>
+            <div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>
+            <div class="terminal-line"><span>  Link: </span><span style="color:var(--text);">https://${domain}/a7kX9b2</span></div>
+            <div class="terminal-line" style="color:var(--text-faint);"><span>  cURL: curl -O https://${domain}/a7kX9b2/release-v1.tar.gz</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sponsored Campaign Banner -->
+      <section class="sponsored-ad-banner">
+        <div class="ad-top-row">
+          <div class="ad-badge-wrap">
+            <span class="ad-badge-pill">Sponsored Partner</span>
+            <span style="color: var(--text);">Cloudflare R2</span>
+          </div>
+          <a href="/sponsor" class="ad-promote-link">Sponsor tdrop →</a>
+        </div>
+        <div class="ad-content-row">
+          <div class="ad-main-info">
+            <div class="ad-icon-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <div class="ad-text-wrap">
+              <div class="ad-headline">Cloudflare R2 Zero Egress Object Storage</div>
+              <div class="ad-copy">S3-compatible object storage with zero egress fees, edge caching, and predictable billing.</div>
+            </div>
+          </div>
+          <a href="https://www.cloudflare.com/developer-platform/r2/" target="_blank" rel="noopener sponsored" class="btn btn-secondary" style="font-size: 13px;">
+            <span>Explore R2</span>
+            <span class="btn-icon" style="width: 18px; height: 18px; font-size: 11px;">→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Features Bento Grid -->
+      <section class="features-section">
+        <div>
+          <h2 class="section-title">Built For Engineers</h2>
+          <p class="section-desc">Designed around zero-friction principles and edge-native architecture.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3 class="feature-title">Zero-RAM Edge Streaming</h3>
+            <p class="feature-desc">Files stream directly between clients and distributed object storage without staging to local server disks.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">Auto Self-Destruction</h3>
+            <p class="feature-desc">All files automatically incinerate after your specified TTL (1h, 24h, 7d). Cryptographically deleted forever.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">ClamAV Antivirus Shield</h3>
+            <p class="feature-desc">In-flight scanning ensures payloads are verified free of known signatures and trojans before sharing.</p>
+          </div>
+          <div class="feature-card">
+            <h3 class="feature-title">Cross-Platform Distribution</h3>
+            <p class="feature-desc">Universal command line packages via NPM, Windows WinGet, macOS Homebrew, or pure cURL.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- API Cheat Sheet -->
+      <section class="api-section">
+        <h2 class="api-title">cURL & REST API Reference</h2>
+        <div class="api-code-list">
+          <div class="api-row">
+            <span class="api-row-label">Upload File</span>
+            <div class="api-row-code">
+              <code>curl -F "file=@data.csv" -F "ttl=24h" https://${domain}/upload</code>
+              <button class="btn btn-ghost" onclick="copySnippet('curl -F &quot;file=@data.csv&quot; -F &quot;ttl=24h&quot; https://${domain}/upload')" style="padding: 2px 6px; font-size: 11px;">Copy</button>
+            </div>
+          </div>
+          <div class="api-row">
+            <span class="api-row-label">Download File</span>
+            <div class="api-row-code">
+              <code>curl -O https://${domain}/&lt;code&gt;/data.csv</code>
+              <button class="btn btn-ghost" onclick="copySnippet('curl -O https://${domain}/&lt;code&gt;/data.csv')" style="padding: 2px 6px; font-size: 11px;">Copy</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Google AdSense Container -->
+      <div class="adsense-container">
+        <span class="adsense-label">Advertisement</span>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2876380604791121"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+
+      <!-- FAQ Section -->
+      <section class="api-section" style="margin-top: 32px;">
+        <h2 class="api-title">Frequently Asked Questions</h2>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="background: var(--obsidian); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 18px 20px;">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px;">What is tdrop?</h3>
+            <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">tdrop is an ultra-fast, zero-friction ephemeral file sharing utility. It allows developers and everyday users to send files instantly from the terminal (<code>npx tdrop &lt;file&gt;</code>, WinGet, Homebrew, cURL) or web browser with automatic link generation, QR codes, and automatic self-destruction.</p>
+          </div>
+          <div style="background: var(--obsidian); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 18px 20px;">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px;">How long do files stay on tdrop?</h3>
+            <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">Files are strictly ephemeral and automatically expire and delete after 1 hour, 24 hours (default), or 7 days based on your chosen retention settings. Once expired, files are purged permanently from edge storage.</p>
+          </div>
+          <div style="background: var(--obsidian); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 18px 20px;">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px;">How do I install tdrop on Windows, Mac, or Linux?</h3>
+            <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">On Windows: <code>winget install Tagiswild.tdrop</code>. On macOS or Linux: <code>brew install tagiswild/tap/tdrop</code> or <code>curl -fsSL https://${domain}/install.sh | bash</code>. With Node: <code>npm install -g tdrop</code> or <code>npx tdrop &lt;file&gt;</code>.</p>
+          </div>
+          <div style="background: var(--obsidian); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 18px 20px;">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px;">Is tdrop free and secure?</h3>
+            <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">Yes, tdrop is 100% free, open-source under MIT, and requires no account or authentication. Files stream directly to edge storage with zero disk writes, encrypted at rest, and zero activity logs.</p>
+          </div>
+        </div>
+      </section>
 
     </div>
 
@@ -1751,11 +1342,16 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
           <div class="sponsor-stat-pill">3%–8% Average CTR</div>
           <div class="sponsor-stat-pill">300+ Edge PoP Reach</div>
         </div>
-        <a href="/sponsor" class="btn-sponsor-rail">Sponsor Us →</a>
+        <a href="/sponsor" class="btn btn-primary" style="justify-content: space-between;">
+          <span>Sponsor Us</span>
+          <span class="btn-icon">→</span>
+        </a>
       </div>
     </aside>
 
   </div>
+
+  ${renderCinnabarFooter(domain)}
 
   <script>
     let selectedTtl = '24h';
@@ -1822,7 +1418,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
             resultBox.style.display = 'block';
             resultUrl.textContent = res.url;
             resultUrl.setAttribute('data-url', res.url);
-            document.getElementById('resultCurl').innerHTML = 'curl -O ' + res.url + '/' + encodeURIComponent(res.filename);
+            document.getElementById('resultCurl').textContent = 'curl -O ' + res.url + '/' + encodeURIComponent(res.filename);
             document.getElementById('resultCurl').setAttribute('data-cmd', 'curl -O ' + res.url + '/' + encodeURIComponent(res.filename));
             document.getElementById('resultExpiry').textContent = 'Retention: ' + res.expiresIn;
 
@@ -1873,11 +1469,6 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     function copyResultUrl() {
       const url = resultUrl.getAttribute('data-url') || resultUrl.textContent;
       copyTextToClipboard(url, copyUrlBtn, 'Copied!');
-      const altBtn = document.getElementById('copyUrlBtnText');
-      if (altBtn) {
-        altBtn.textContent = 'Copied!';
-        setTimeout(() => { altBtn.textContent = 'Copy URL'; }, 2000);
-      }
     }
 
     function copyResultCurl() {
@@ -1916,18 +1507,18 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
 
       if (tab === 'npx') {
         box.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">$</span> <span>npx tdrop release-v1.tar.gz</span></div>' +
-          '<div class="terminal-line" style="color:var(--text-dim);"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>' +
+          '<div class="terminal-line" style="color:var(--text-faint);"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>' +
           '<div class="terminal-line"><span>Uploading [████████████] 100% | 4.8 MB/s</span></div>' +
-          '<div class="terminal-line" style="color:var(--status-green); margin-top:4px;"><span>✔ Upload complete!</span></div>' +
+          '<div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>✔ Upload complete!</span></div>' +
           '<div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>' +
-          '<div class="terminal-line"><span>  Link: </span><span style="color:#ffffff;">https://${domain}/a7kX9b2</span></div>' +
-          '<div class="terminal-line" style="color:var(--text-dim);"><span>  cURL: curl -O https://${domain}/a7kX9b2/release-v1.tar.gz</span></div>';
+          '<div class="terminal-line"><span>  Link: </span><span style="color:var(--text);">https://${domain}/a7kX9b2</span></div>' +
+          '<div class="terminal-line" style="color:var(--text-faint);"><span>  cURL: curl -O https://${domain}/a7kX9b2/release-v1.tar.gz</span></div>';
       } else if (tab === 'stdin') {
         box.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">$</span> <span>cat production.log | npx tdrop --filename prod.log</span></div>' +
-          '<div class="terminal-line" style="color:var(--text-dim);"><span>Streaming stdin to https://${domain}... 1.2 MB uploaded</span></div>' +
-          '<div class="terminal-line" style="color:var(--status-green); margin-top:4px;"><span>✔ Stdin upload complete!</span></div>' +
+          '<div class="terminal-line" style="color:var(--text-faint);"><span>Streaming stdin to https://${domain}... 1.2 MB uploaded</span></div>' +
+          '<div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>✔ Stdin upload complete!</span></div>' +
           '<div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>' +
-          '<div class="terminal-line"><span>  Link: </span><span style="color:#ffffff;">https://${domain}/b9mW2q1</span></div>';
+          '<div class="terminal-line"><span>  Link: </span><span style="color:var(--text);">https://${domain}/b9mW2q1</span></div>';
       } else if (tab === 'curl') {
         box.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">$</span> <span>curl -F "file=@backup.sql" -F "ttl=7d" https://${domain}/upload</span></div>' +
           '<div class="terminal-line"><span>{"success":true,"code":"m4kL8z9","url":"https://${domain}/m4kL8z9","expiresIn":"7d"}</span></div>' +

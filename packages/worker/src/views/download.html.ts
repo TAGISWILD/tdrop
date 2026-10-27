@@ -1,5 +1,6 @@
 import type { FileMetadata } from "@tdrop/shared";
 import { renderSVG } from "uqr";
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -46,8 +47,8 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   const curlCmd = `curl -O https://${domain}/${meta.code}/${encodeURIComponent(meta.sanitizedFilename)}`;
   const qrSvg = renderSVG(pageUrl, {
     border: 1,
-    whiteColor: "#ffffff",
-    blackColor: "#09090b",
+    whiteColor: "#F7F7F5",
+    blackColor: "#0B0B0D",
   });
 
   return `<!DOCTYPE html>
@@ -60,7 +61,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="${pageUrl}">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0B0B0D">
 
   <!-- Web App Manifest (PWA) -->
   <link rel="manifest" href="/manifest.json">
@@ -84,9 +85,7 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   <meta name="twitter:description" content="Download ${meta.sanitizedFilename} (${sizeFormatted}). Fast, private, ephemeral file sharing.">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
   
   <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
@@ -101,167 +100,25 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --surface-border-hover: rgba(255, 255, 255, 0.18);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      min-height: 100dvh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
-      background-attachment: fixed;
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-
-    /* Floating Island Navbar */
-    .nav-wrapper {
-      position: sticky;
-      top: 12px;
-      z-index: 100;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 12px;
-      pointer-events: none;
-    }
-
-    .nav-island {
-      pointer-events: auto;
-      background: rgba(14, 15, 20, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--surface-border);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      padding: 6px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #ffffff;
-    }
-
-    .brand-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--status-green);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--status-green);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-nav-upload {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.78rem;
-      font-weight: 500;
-      padding: 5px 11px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      border-radius: 9999px;
-      transition: all 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-nav-upload:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-nav-sponsor {
-      background: #ffffff;
-      color: #09090b !important;
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 9999px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .btn-nav-sponsor:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
+    ${CINNABAR_CSS}
 
     /* Master Layout */
     .site-wrapper {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1120px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 32px;
-      padding: 20px 12px 60px;
-      min-height: calc(100vh - 60px);
+      gap: 36px;
+      padding: 32px 16px 80px;
+      min-height: 100vh;
     }
 
-    @media (min-width: 640px) {
-      .site-wrapper {
-        padding: 32px 16px 80px;
-      }
-    }
-
-    /* Center Content Container */
     .content-container {
       width: 100%;
-      max-width: 580px;
-      flex: 1 1 580px;
+      max-width: 680px;
+      flex: 1 1 680px;
       min-width: 0;
       display: flex;
       flex-direction: column;
@@ -271,11 +128,11 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     /* Right Sticky Sponsor Rail */
     .sponsor-rail {
       display: none;
-      width: 240px;
-      flex: 0 0 240px;
+      width: 250px;
+      flex: 0 0 250px;
     }
 
-    @media (min-width: 1040px) {
+    @media (min-width: 1060px) {
       .sponsor-rail {
         display: block;
       }
@@ -283,36 +140,39 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .sponsor-sticky-card {
       position: sticky;
-      top: 84px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: 20px 16px;
+      top: 96px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 22px 18px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      gap: 14px;
+      transition: border-color var(--dur-slow) ease;
+    }
+
+    .sponsor-sticky-card:hover {
+      border-color: var(--sindoor);
     }
 
     .sponsor-rail-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      color: var(--sindoor);
       font-family: var(--font-mono);
     }
 
     .sponsor-rail-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
       line-height: 1.3;
-      letter-spacing: -0.01em;
     }
 
     .sponsor-rail-desc {
-      font-size: 0.78rem;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -320,291 +180,211 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     .sponsor-rail-stats {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--surface-border-subtle);
+      gap: 8px;
+      background: var(--obsidian);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
     }
 
     .sponsor-stat-pill {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: #ffffff;
+      font-size: 12px;
+      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .sponsor-stat-pill::before {
-      content: '•';
-      color: var(--status-green);
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
     }
 
-    .btn-sponsor-rail {
-      background: #ffffff;
-      color: #09090b;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 9px;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.12);
-      transition: all 0.2s;
-    }
-
-    .btn-sponsor-rail:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
-
-    /* Main Download Card */
+    /* File Download Main Card */
     .download-card {
       width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 18px;
-      padding: 18px 16px;
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      position: relative;
-    }
-
-    @media (min-width: 480px) {
-      .download-card {
-        border-radius: 20px;
-        padding: 24px 22px;
-      }
-    }
-
-    /* File Header */
-    .file-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .file-icon-box {
-      width: 48px;
-      height: 52px;
-      flex-shrink: 0;
-      background: ${badge.accentBg};
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: clamp(24px, 5vw, 36px);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      gap: 20px;
+      margin-top: 16px;
+      transition: border-color var(--dur-slow) ease;
     }
 
-    .file-icon-svg {
-      color: ${badge.color};
-      width: 22px;
-      height: 22px;
+    .download-card:hover {
+      border-color: var(--line-strong);
+    }
+
+    /* File Header: Icon, Name, Size */
+    .file-meta-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
     .file-ext-badge {
-      font-family: var(--font-mono);
-      font-size: 0.58rem;
-      font-weight: 800;
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: ${badge.accentBg};
       color: ${badge.color};
-      letter-spacing: 0.5px;
-      margin-top: 2px;
-      text-transform: uppercase;
-      max-width: 42px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .file-details {
+    .file-name-block {
       flex: 1;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .file-name {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #ffffff;
-      overflow-wrap: anywhere;
-      word-break: break-all;
+    .file-title {
+      font-size: clamp(1.1rem, 3.2vw, 1.35rem);
+      font-weight: 600;
+      color: var(--text);
       line-height: 1.3;
-      margin-bottom: 4px;
-      letter-spacing: -0.015em;
+      word-break: break-all;
     }
 
-    @media (min-width: 480px) {
-      .file-name {
-        font-size: 1.35rem;
-      }
-    }
-
-    .file-meta-row {
+    .file-subinfo {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 6px 8px;
-      font-size: 0.75rem;
+      gap: 10px;
+      font-size: 13px;
       color: var(--text-muted);
       font-family: var(--font-mono);
     }
 
-    .file-meta-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
-      border-radius: 5px;
-      padding: 1px 6px;
-      color: #ffffff;
+    .file-size-pill {
+      color: var(--text);
       font-weight: 600;
     }
 
-    .file-meta-sep {
-      color: var(--surface-border);
+    /* Security Scan Row */
+    .security-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
-    /* ClamAV Verification Chip */
-    .security-chip {
+    .clean-text {
+      color: var(--success-text);
+      font-weight: 600;
+      font-family: var(--font-mono);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px solid rgba(16, 185, 129, 0.22);
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      margin-bottom: 16px;
     }
 
-    .security-chip .status-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--status-green);
-      border-radius: 50%;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
-    }
-
-    .security-chip span.clean-text {
-      color: #ffffff;
+    /* Primary Cinnabar Download Button (Large Pill with Arrow) */
+    .download-action-btn {
+      width: 100%;
+      height: 52px;
+      font-size: 16px;
       font-weight: 600;
+      padding: 0 12px 0 24px;
+      justify-content: space-between;
     }
 
-    /* Solid White Primary Download Button */
-    .download-btn {
+    .download-action-btn .btn-icon {
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+    }
+
+    /* Mobile Quick Actions Toolbar */
+    .action-toolbar {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      gap: 10px;
       width: 100%;
-      min-height: 48px;
-      background: #ffffff;
-      color: #09090b !important;
-      font-family: var(--font-sans);
-      font-size: 0.92rem;
-      font-weight: 700;
-      padding: 12px 20px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .download-btn:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
-    }
-
-    .download-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* Quick Action Toolbar (Mobile & Desktop) */
-    .action-toolbar {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 8px;
-      margin-top: 10px;
     }
 
     .btn-action-tool {
+      flex: 1;
+      background: var(--graphite-raised);
+      border: 1px solid var(--line-strong);
+      color: var(--text-soft);
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      color: var(--text-main);
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 9px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      min-height: 38px;
+      gap: 8px;
+      transition: all var(--dur-fast) ease;
     }
 
     .btn-action-tool:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-action-tool:active {
-      transform: scale(0.97);
+      border-color: var(--sindoor);
+      color: var(--text);
     }
 
     .btn-action-qr-toggle {
-      width: 38px;
+      flex: 0 0 44px;
       padding: 0;
-      flex-shrink: 0;
+      height: 40px;
     }
 
     .btn-action-qr-toggle.active {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.3);
-      color: #ffffff;
+      border-color: var(--sindoor);
+      color: var(--sindoor);
+      background: var(--sindoor-tint);
     }
 
-    /* Collapsible / Expandable QR Drawer */
+    /* Mobile QR Drawer */
     .qr-drawer {
       display: none;
-      margin-top: 12px;
-      background: #090a0d;
-      border: 1px solid var(--surface-border);
-      border-radius: 14px;
-      padding: 14px;
-      animation: fadeIn 0.2s ease-out;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-top: 4px;
     }
 
     .qr-drawer.open {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .qr-frame {
-      width: 140px;
-      height: 140px;
-      background: #ffffff;
-      padding: 8px;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      width: 160px;
+      height: 160px;
+      background: var(--paper);
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
     }
 
@@ -615,33 +395,28 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
     }
 
     .qr-hint {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-faint);
       text-align: center;
     }
 
-    /* Desktop Transfer Box (Hidden on small mobile screens to keep it clean, shown on >= 640px) */
+    /* Desktop Transfer Box */
     .desktop-transfer-box {
       display: none;
-      margin-top: 14px;
-      background: #090a0d;
-      border: 1px solid var(--surface-border);
-      border-radius: 14px;
-      padding: 14px 16px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      gap: 18px;
       align-items: center;
-      gap: 16px;
     }
 
-    @media (min-width: 640px) {
+    @media (min-width: 520px) {
       .desktop-transfer-box {
         display: flex;
       }
       .action-toolbar {
         display: none;
-      }
-      .qr-drawer {
-        display: none !important;
       }
     }
 
@@ -649,12 +424,18 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
       width: 96px;
       height: 96px;
       min-width: 96px;
-      min-height: 96px;
-      background: #ffffff;
+      background: var(--paper);
       padding: 6px;
-      border-radius: 8px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      transition: transform var(--dur-fast) ease;
+    }
+
+    .desktop-qr-frame:hover {
+      transform: scale(1.04);
     }
 
     .desktop-qr-frame svg {
@@ -665,139 +446,118 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .desktop-transfer-info {
       flex: 1;
-      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .desktop-transfer-title {
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .desktop-transfer-desc {
-      font-size: 0.76rem;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .desktop-transfer-actions {
       display: flex;
       gap: 8px;
-      margin-top: 4px;
     }
 
     .btn-dt-action {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
-      color: var(--text-main);
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 6px;
+      background: var(--graphite-raised);
+      border: 1px solid var(--line-strong);
+      color: var(--text-soft);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      transition: all 0.15s;
+      gap: 6px;
+      transition: all var(--dur-fast);
     }
 
     .btn-dt-action:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--sindoor);
+      color: var(--text);
     }
 
     /* Terminal cURL Block */
     .curl-container {
-      margin-top: 14px;
-      background: #090a0d;
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 8px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
+      background: var(--graphite-input);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
     }
 
     .curl-scroll-area {
       flex: 1;
-      min-width: 0;
       overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
       white-space: nowrap;
-    }
-
-    .curl-scroll-area::-webkit-scrollbar {
-      display: none;
     }
 
     .curl-code-line {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      white-space: nowrap;
-      user-select: all;
+      font-size: 13px;
+      color: var(--text-soft);
     }
 
-    .curl-code-line span.cmd-prefix {
-      color: var(--status-green);
-      font-weight: 600;
-    }
-
-    .curl-code-line span.cmd-url {
-      color: var(--text-muted);
-    }
+    .cmd-prefix { color: var(--text-faint); }
+    .cmd-url { color: var(--text); }
 
     .btn-copy-curl {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--surface-border);
-      color: var(--text-main);
+      background: transparent;
+      border: 1px solid var(--line-strong);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 12px;
       padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      font-weight: 600;
+      border-radius: var(--radius-xs);
       cursor: pointer;
+      transition: all var(--dur-fast);
       flex-shrink: 0;
-      transition: all 0.15s ease;
-      white-space: nowrap;
     }
 
     .btn-copy-curl:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--sindoor);
+      color: var(--text);
     }
 
-    /* Expiry & Retention Bar */
+    /* Live Expiry Bar */
     .expiry-bar {
-      margin-top: 14px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      gap: 6px;
-      font-size: 0.72rem;
-      color: var(--text-dim);
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
       font-family: var(--font-mono);
-      padding-top: 12px;
-      border-top: 1px solid var(--surface-border-subtle);
+      font-size: 12px;
+      color: var(--text-faint);
     }
 
     /* Google AdSense Container */
     .adsense-container {
       width: 100%;
-      margin-top: 16px;
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid var(--surface-border-subtle);
-      border-radius: 12px;
-      padding: 10px 12px;
+      margin: 20px 0;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
       text-align: center;
-      min-height: 80px;
+      min-height: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -806,148 +566,91 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
 
     .adsense-label {
       font-family: var(--font-mono);
-      font-size: 0.62rem;
-      color: var(--text-dim);
-      letter-spacing: 1px;
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    /* Footer */
-    footer {
-      width: 100%;
-      margin-top: 28px;
-      padding: 20px 12px;
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-links a:hover {
-      color: #ffffff;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Island Navbar -->
-  <header class="nav-wrapper">
-    <nav class="nav-island">
-      <a href="/" class="brand-wrap">
-        <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
-        <span class="brand-logo">tdrop</span>
-      </a>
-      <div class="nav-actions">
-        <a href="/" class="btn-nav-upload">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Upload</span>
-        </a>
-        <a href="/docs" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; padding:4px 8px;">Docs</a>
-        <a href="/about" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; padding:4px 8px;">About</a>
-        <a href="/sponsor" class="btn-nav-sponsor">Sponsor</a>
-      </div>
-    </nav>
-  </header>
+  ${renderCinnabarNav("download", domain)}
 
-  <!-- Layout: Main Content + Right Sponsor Rail -->
   <div class="site-wrapper">
-
-    <!-- Center Column -->
     <div class="content-container">
 
-      <!-- Main Download Card -->
       <main class="download-card">
-        
-        <div class="file-header">
-          <div class="file-icon-box">
-            <svg class="file-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-            </svg>
-            <span class="file-ext-badge">${badge.ext}</span>
-          </div>
-          <div class="file-details">
-            <h1 class="file-name">${meta.sanitizedFilename}</h1>
-            <div class="file-meta-row">
-              <span class="file-meta-pill">${sizeFormatted}</span>
-              <span class="file-meta-sep">•</span>
-              <span>Ephemeral</span>
-              <span class="file-meta-sep">•</span>
-              <span>$0 Egress</span>
+        <!-- File Header -->
+        <div class="file-meta-header">
+          <div class="file-ext-badge">${badge.ext}</div>
+          <div class="file-name-block">
+            <h1 class="file-title">${meta.sanitizedFilename}</h1>
+            <div class="file-subinfo">
+              <span class="file-size-pill">${sizeFormatted}</span>
+              <span>•</span>
+              <span>Ephemeral Drop</span>
             </div>
           </div>
         </div>
 
-        <!-- ClamAV Security Chip -->
-        <div class="security-chip">
-          <div class="status-dot"></div>
-          <span>Security scan:</span>
-          <span class="clean-text">ClamAV Clean</span>
+        <!-- Security Scan -->
+        <div class="security-badge-row">
+          <span>Security scan</span>
+          <span class="clean-text">
+            <span class="badge-dot success"></span>
+            ClamAV Clean
+          </span>
         </div>
 
-        <!-- Primary White Download Button -->
-        <a href="${downloadUrl}" class="download-btn" id="mainDownloadBtn" onclick="onDownloadClick()">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <!-- Primary Cinnabar Download Button -->
+        <a href="${downloadUrl}" class="btn btn-primary download-action-btn" id="mainDownloadBtn" onclick="onDownloadClick()">
           <span id="downloadBtnText">Download (${sizeFormatted})</span>
+          <span class="btn-icon">↓</span>
         </a>
 
         <!-- Mobile Quick Actions Toolbar -->
         <div class="action-toolbar">
           <button type="button" class="btn-action-tool" onclick="triggerNativeShare()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span id="mobileShareText">Share Link</span>
           </button>
           <button type="button" class="btn-action-tool" onclick="copyLink()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span id="mobileCopyText">Copy URL</span>
           </button>
           <button type="button" class="btn-action-tool btn-action-qr-toggle" id="qrToggleBtn" onclick="toggleQrDrawer()" title="Show QR Code">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           </button>
         </div>
 
         <!-- Mobile Expandable QR Code Drawer -->
         <div class="qr-drawer" id="mobileQrDrawer">
-          <div class="qr-frame" onclick="copyLink()" title="Click to copy link">
+          <div class="qr-frame" onclick="copyLink()" title="Tap QR to copy link">
             ${qrSvg}
           </div>
           <div class="qr-hint">Show screen to another device or tap QR to copy link</div>
         </div>
 
-        <!-- Desktop Transfer Box (Hidden on Mobile) -->
+        <!-- Desktop Transfer Box -->
         <div class="desktop-transfer-box">
           <div class="desktop-qr-frame" onclick="copyLink()" title="Scan with camera or click to copy link">
             ${qrSvg}
           </div>
           <div class="desktop-transfer-info">
             <div class="desktop-transfer-title">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-              <span>Instant Mobile Transfer</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <span>Instant Cross-Device Transfer</span>
             </div>
-            <p class="desktop-transfer-desc">Scan with your phone camera to download directly on iOS/Android, or share instantly.</p>
+            <p class="desktop-transfer-desc">Scan with your phone camera to download directly on iOS or Android, or copy link.</p>
             <div class="desktop-transfer-actions">
               <button class="btn-dt-action" type="button" onclick="triggerNativeShare()">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 <span>Share</span>
               </button>
               <button class="btn-dt-action" type="button" onclick="copyLink()">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 <span id="desktopCopyText">Copy URL</span>
               </button>
             </div>
@@ -967,12 +670,11 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
           <span>Retention: ${meta.retentionClass}</span>
           <span id="countdown">Calculating...</span>
         </div>
-
       </main>
 
       <!-- Google AdSense Container -->
       <div class="adsense-container" aria-label="Advertisement">
-        <div class="adsense-label">ADVERTISEMENT</div>
+        <span class="adsense-label">ADVERTISEMENT</span>
         <ins class="adsbygoogle"
              style="display:block; width:100%;"
              data-ad-client="ca-pub-2876380604791121"
@@ -982,22 +684,6 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
       </div>
-
-      <footer>
-        <div class="footer-links">
-          <a href="/">Home</a>
-          <a href="/docs">Documentation</a>
-          <a href="/about">About</a>
-          <a href="/stats">Stats</a>
-          <a href="/sponsor">Sponsorship</a>
-          <a href="/contact">Contact</a>
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="/sitemap.xml">Sitemap</a>
-          <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
-        </div>
-        <p>tdrop · Zero egress fees · Zero logs · End-to-end ephemeral</p>
-      </footer>
 
     </div>
 
@@ -1012,11 +698,15 @@ export function renderDownloadPage(meta: FileMetadata, domain: string = "tdrop.l
           <div class="sponsor-stat-pill">3%–8% Average CTR</div>
           <div class="sponsor-stat-pill">300+ Edge PoP Reach</div>
         </div>
-        <a href="/sponsor" class="btn-sponsor-rail">Sponsor Us →</a>
+        <a href="/sponsor" class="btn btn-primary" style="justify-content: space-between;">
+          <span>Sponsor Us</span>
+          <span class="btn-icon">→</span>
+        </a>
       </div>
     </aside>
-
   </div>
+
+  ${renderCinnabarFooter(domain)}
 
   <script>
     function onDownloadClick() {

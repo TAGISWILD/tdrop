@@ -1,3 +1,5 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export function renderStatsPage(domain: string = "tdrop.link"): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -9,7 +11,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   
   <link rel="canonical" href="https://${domain}/stats">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0B0B0D">
   <link rel="manifest" href="/manifest.json">
 
   <!-- Favicons & App Icons -->
@@ -31,9 +33,9 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   <meta name="twitter:description" content="100% Realtime global telemetry for tdrop: edge regions, active developers, and files processed.">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Google AdSense Verification Tag -->
+  ${CINNABAR_FONTS_HTML}
+
+  <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
 
   <!-- Google tag (gtag.js) -->
@@ -46,171 +48,13 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-card: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --surface-hover: rgba(255, 255, 255, 0.06);
-      --accent-green: #10b981;
-      --accent-green-dim: rgba(16, 185, 129, 0.12);
-      --accent-green-glow: rgba(16, 185, 129, 0.2);
-      --accent-cyan: #38bdf8;
-      --accent-cyan-dim: rgba(56, 189, 248, 0.12);
-      --accent-amber: #f59e0b;
-      --accent-purple: #a855f7;
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
+    ${CINNABAR_CSS}
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(ellipse 90% 40% at 50% -5%, rgba(0, 255, 136, 0.09), transparent 60%),
-        radial-gradient(circle at 15% 45%, rgba(0, 217, 245, 0.05), transparent 35%),
-        radial-gradient(circle at 85% 75%, rgba(0, 255, 136, 0.04), transparent 45%);
-      background-attachment: fixed;
-    }
-
-    /* Fixed Glass Navbar */
-    .nav-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      width: 100%;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(6, 8, 12, 0.82);
-      border-bottom: 1px solid var(--surface-border-subtle);
-    }
-
-    .nav-container {
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand-logo span {
-      color: var(--accent-green);
-    }
-
-    .status-beacon {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      color: var(--accent-green);
-      font-size: 0.68rem;
-      font-family: var(--font-mono);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .beacon-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--accent-green);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-green);
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.35; transform: scale(0.9); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0.35; transform: scale(0.9); }
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: color 0.15s;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      color: var(--accent-green);
-    }
-
-    .cta-pill-sponsor {
-      background: rgba(0, 255, 136, 0.12);
-      border: 1px solid rgba(0, 255, 136, 0.4);
-      color: var(--accent-green);
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .cta-pill-sponsor:hover {
-      background: var(--accent-green);
-      color: #04140b;
-      box-shadow: 0 0 20px var(--accent-green-glow);
-    }
-
-    /* Main Container */
+    /* Dashboard Master Container */
     .dashboard-wrapper {
-      max-width: 1380px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 30px 20px 80px;
+      padding: 32px 20px 80px;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -220,7 +64,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     .dashboard-header {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
 
     @media (min-width: 840px) {
@@ -234,36 +78,31 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     .header-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 5px 12px;
-      background: rgba(0, 217, 245, 0.08);
-      border: 1px solid rgba(0, 217, 245, 0.28);
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent-cyan);
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--graphite);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-soft);
       font-family: var(--font-mono);
       width: fit-content;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .header-title {
-      font-size: clamp(1.8rem, 4vw, 2.7rem);
-      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.15;
-    }
-
-    .header-title span {
-      background: linear-gradient(135deg, #ffffff 40%, var(--accent-green) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--text);
     }
 
     .header-sub {
-      font-size: 0.95rem;
+      font-size: 15px;
       color: var(--text-muted);
-      max-width: 680px;
+      max-width: 640px;
       line-height: 1.6;
     }
 
@@ -275,34 +114,33 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     }
 
     .btn-control {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
+      background: var(--graphite);
+      border: 1px solid var(--line-strong);
+      color: var(--text-soft);
       font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
       padding: 8px 14px;
-      border-radius: 8px;
+      border-radius: var(--radius-pill);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.15s;
+      transition: all var(--dur-fast) ease;
     }
 
     .btn-control:hover {
-      border-color: var(--accent-cyan);
-      color: var(--text-main);
-      background: rgba(0, 217, 245, 0.05);
+      border-color: var(--sindoor);
+      color: var(--text);
     }
 
     .btn-control.active {
-      background: rgba(0, 255, 136, 0.12);
-      border-color: rgba(0, 255, 136, 0.4);
-      color: var(--accent-green);
+      background: var(--sindoor-tint);
+      border-color: var(--sindoor);
+      color: var(--sindoor);
     }
 
-    /* Master 4 KPI Stat Cards */
+    /* 4 Primary KPI Stat Cards */
     .kpi-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -322,30 +160,18 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     }
 
     .kpi-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 18px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       padding: 22px;
-      position: relative;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
-    }
-
-    .kpi-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent-green)), transparent);
+      gap: 10px;
+      transition: border-color var(--dur-slow) ease;
     }
 
     .kpi-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--surface-border-subtle);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+      border-color: var(--sindoor);
     }
 
     .kpi-top {
@@ -355,1348 +181,555 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     }
 
     .kpi-label {
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
       font-family: var(--font-mono);
     }
 
     .kpi-icon {
       width: 32px;
       height: 32px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
+      border-radius: 50%;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
+      font-size: 14px;
+      color: var(--text-soft);
     }
 
     .kpi-number {
       font-family: var(--font-mono);
-      font-size: clamp(1.9rem, 3.2vw, 2.4rem);
-      font-weight: 800;
+      font-size: clamp(2rem, 3.2vw, 2.5rem);
+      font-weight: 600;
       letter-spacing: -0.03em;
-      color: var(--text-main);
+      color: var(--text);
       display: flex;
       align-items: baseline;
       gap: 4px;
     }
 
     .kpi-number-unit {
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 500;
       color: var(--text-muted);
     }
 
     .kpi-subtext {
-      font-size: 0.82rem;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .kpi-pill {
-      margin-top: 6px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.72rem;
+      font-size: 11px;
       font-family: var(--font-mono);
       padding: 3px 8px;
-      border-radius: 6px;
+      border-radius: var(--radius-pill);
+      font-weight: 500;
       width: fit-content;
-      font-weight: 600;
+      margin-top: 4px;
     }
 
     .pill-green {
-      background: rgba(0, 255, 136, 0.08);
-      color: var(--accent-green);
-      border: 1px solid rgba(0, 255, 136, 0.2);
-    }
-
-    .pill-cyan {
-      background: rgba(0, 217, 245, 0.08);
-      color: var(--accent-cyan);
-      border: 1px solid rgba(0, 217, 245, 0.2);
+      background: var(--success-tint);
+      color: var(--success-text);
+      border: 1px solid rgba(34, 197, 94, 0.3);
     }
 
     .pill-amber {
-      background: rgba(245, 158, 11, 0.08);
-      color: var(--accent-amber);
-      border: 1px solid rgba(245, 158, 11, 0.2);
+      background: var(--warning-tint);
+      color: var(--warning-text);
+      border: 1px solid rgba(234, 179, 8, 0.3);
     }
 
-    .pill-purple {
-      background: rgba(168, 85, 247, 0.08);
-      color: var(--accent-purple);
-      border: 1px solid rgba(168, 85, 247, 0.2);
-    }
-
-    /* World Map Section */
-    .map-section {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(20px, 3.5vw, 28px);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      position: relative;
-    }
-
-    .map-header {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    @media (min-width: 768px) {
-      .map-header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .map-filter-tabs {
-      display: flex;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 4px;
-      border-radius: 10px;
-      border: 1px solid var(--surface-border);
-      overflow-x: auto;
-    }
-
-    .map-tab {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s;
-    }
-
-    .map-tab.active {
-      background: rgba(0, 255, 136, 0.15);
-      color: var(--accent-green);
-    }
-
-    .map-container {
-      width: 100%;
-      height: 400px;
-      background: #080b12;
-      border-radius: 14px;
-      border: 1px solid var(--surface-border);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .svg-map {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .map-tooltip {
-      position: absolute;
-      background: rgba(8, 12, 19, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--accent-green);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
-      color: var(--text-main);
-      pointer-events: none;
-      z-index: 10;
-      box-shadow: 0 10px 25px rgba(0, 255, 136, 0.2);
-      transform: translate(-50%, -120%);
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      white-space: nowrap;
-    }
-
-    /* Edge Hubs Grid under map */
-    .hubs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px;
-    }
-
-    .hub-chip {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .hub-chip:hover {
-      border-color: var(--accent-green);
-      background: rgba(0, 255, 136, 0.04);
-      transform: translateY(-1px);
-    }
-
-    .hub-city {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .hub-ping {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--accent-green);
-    }
-
-    .hub-traffic {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-
-    /* Split Two-Column Master Grid */
-    .main-grid {
+    /* Live Feed & Infrastructure Split */
+    .dashboard-split {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 28px;
+      gap: 24px;
     }
 
-    @media (min-width: 1080px) {
-      .main-grid {
-        grid-template-columns: 1.15fr 0.85fr;
+    @media (min-width: 960px) {
+      .dashboard-split {
+        grid-template-columns: 1.4fr 1fr;
       }
     }
 
-    /* Realtime Stream Panel */
-    .panel-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(20px, 3.5vw, 28px);
+    .dash-panel {
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
     }
 
-    .stream-feed {
+    .panel-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    /* Live Feed Table (Cinnabar Data Table: Quiet Dividers, No Zebra) */
+    .events-table-wrap {
+      overflow-x: auto;
+      max-height: 480px;
+    }
+
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .events-table th {
+      padding: 10px 12px;
+      font-weight: 500;
+      color: var(--text-faint);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .events-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-soft);
+      vertical-align: middle;
+    }
+
+    .events-table tr:hover td {
+      background: var(--graphite-raised);
+    }
+
+    .mono-cell {
+      font-family: var(--font-mono);
+    }
+
+    .right-align {
+      text-align: right;
+    }
+
+    /* Edge Region Map */
+    .map-box {
+      width: 100%;
+      height: 240px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 410px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .stream-feed::-webkit-scrollbar {
-      width: 5px;
-    }
-    .stream-feed::-webkit-scrollbar-thumb {
-      background: var(--surface-border);
-      border-radius: 4px;
-    }
-
-    .empty-stream-state {
-      padding: 36px 20px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px dashed var(--surface-border);
-      border-radius: 14px;
     }
 
-    .event-item {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      animation: slideIn 0.3s ease-out;
-      transition: border-color 0.15s;
-    }
-
-    .event-item:hover {
-      border-color: rgba(0, 255, 136, 0.3);
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .event-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .event-flag {
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .event-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      min-width: 0;
-    }
-
-    .event-file {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-main);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .event-sub {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .event-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 3px;
-      flex-shrink: 0;
-    }
-
-    .event-badge {
-      font-size: 0.68rem;
-      font-family: var(--font-mono);
-      color: var(--accent-green);
-      background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.25);
-      border-radius: 4px;
-      padding: 2px 6px;
-    }
-
-    .event-time {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-
-    /* Sponsor Hub Column */
-    .sponsor-highlight-card {
-      background: linear-gradient(145deg, rgba(0, 255, 136, 0.06), rgba(0, 217, 245, 0.03));
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      border-radius: 18px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .sponsor-pitch-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .sponsor-pitch-title span {
-      color: var(--accent-green);
-    }
-
-    .sponsor-pitch-p {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-      line-height: 1.55;
-    }
-
-    .pitch-points {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .pitch-point {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.84rem;
-      color: var(--text-main);
-    }
-
-    .pitch-icon {
-      color: var(--accent-green);
-      font-size: 1rem;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    /* Active Campaigns Table */
-    .campaigns-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .campaign-row {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .campaign-name {
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: var(--text-main);
-    }
-
-    .campaign-meta {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .campaign-ctr-badge {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--accent-green);
-      background: rgba(0, 255, 136, 0.1);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      padding: 4px 10px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-
-    /* Interactive Sponsor ROI Calculator */
-    .calc-card {
-      background: var(--surface-card);
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .calc-label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-
-    .slider-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .slider-display {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .slider-value {
-      font-family: var(--font-mono);
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--accent-cyan);
-    }
-
-    input[type=range] {
-      -webkit-appearance: none;
+    .map-svg {
       width: 100%;
-      background: rgba(255, 255, 255, 0.08);
+      height: 100%;
+      opacity: 0.6;
+    }
+
+    .map-node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: transform var(--dur-fast);
+    }
+
+    .map-node:hover {
+      transform: translate(-50%, -50%) scale(1.6);
+      background: var(--sindoor);
+    }
+
+    .map-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xs);
+      padding: 6px 10px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text);
+      opacity: 0;
+      transition: opacity var(--dur-fast);
+      z-index: 50;
+      white-space: nowrap;
+    }
+
+    /* Calculator & Sponsor Rail */
+    .calc-slider {
+      width: 100%;
       height: 6px;
+      background: var(--line-strong);
       border-radius: 3px;
       outline: none;
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--accent-green);
+      accent-color: var(--sindoor);
       cursor: pointer;
-      box-shadow: 0 0 12px var(--accent-green);
+      margin: 14px 0;
     }
 
-    .calc-results-grid {
+    .calc-stats-row {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--surface-border);
+      gap: 12px;
+      margin-top: 10px;
     }
 
-    .calc-res-item {
+    .calc-stat-box {
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
 
-    .calc-res-val {
+    .calc-stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-faint);
+      text-transform: uppercase;
       font-family: var(--font-mono);
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--accent-green);
     }
 
-    .calc-res-lbl {
-      font-size: 0.72rem;
-      color: var(--text-muted);
+    .calc-stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
     }
 
-    /* Modal */
+    /* Modal Styling */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(8px);
       z-index: 200;
+      background: rgba(11, 11, 13, 0.76);
+      backdrop-filter: blur(8px);
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
 
-    .modal-box {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
+    .modal-card {
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
       padding: 28px;
-      max-width: 540px;
       width: 100%;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    .modal-close:hover {
-      color: var(--text-main);
-    }
-
-    .modal-title {
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-
-    .form-input {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--surface-border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .form-input:focus {
-      border-color: var(--accent-green);
-    }
-
-    .btn-submit {
-      background: var(--accent-green);
-      color: #04140b;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-submit:hover {
-      box-shadow: 0 0 20px var(--accent-green-glow);
-      transform: translateY(-1px);
-    }
-
-    /* Live Testing Action Bar */
-    .test-bar {
-      background: rgba(12, 15, 22, 0.95);
-      border: 1px dashed rgba(0, 255, 136, 0.4);
-      border-radius: 16px;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    @media (min-width: 860px) {
-      .test-bar {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    .test-bar-left {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .test-bar-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--accent-green);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .test-bar-desc {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .cmd-pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .cmd-pill {
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid var(--surface-border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-main);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.15s;
-    }
-
-    .cmd-pill:hover {
-      border-color: var(--accent-green);
-      background: rgba(0, 255, 136, 0.05);
-    }
-
-    .cmd-pill span {
-      color: var(--accent-green);
-    }
-
-    .copy-hint {
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      background: rgba(255, 255, 255, 0.06);
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
-
-    .btn-instant-upload {
-      background: rgba(0, 255, 136, 0.15);
-      color: var(--accent-green);
-      border: 1px solid rgba(0, 255, 136, 0.4);
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.84rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-      transition: all 0.15s;
-    }
-
-    .btn-instant-upload:hover {
-      background: var(--accent-green);
-      color: #04140b;
-      box-shadow: 0 0 20px var(--accent-green-glow);
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--surface-border);
-      padding: 30px 20px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.84rem;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    footer a {
-      color: var(--accent-green);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
+      gap: 16px;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);
     }
   </style>
 </head>
 <body>
 
-  <!-- Fixed Glass Navbar -->
-  <header class="nav-bar">
-    <div class="nav-container">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
-          tdrop
-        </div>
-        <div class="status-beacon">
-          <div class="beacon-dot"></div>
-          <span id="navLiveText">LIVE TELEMETRY</span>
-        </div>
-      </a>
-      <div class="nav-right">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/docs" class="nav-link">Docs</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/stats" class="nav-link active">Live Stats</a>
-        <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener" class="nav-link">GitHub</a>
-        <button class="cta-pill-sponsor" onclick="openSponsorModal()">
-          <span>⚡</span> Sponsor tdrop
-        </button>
-      </div>
-    </div>
-  </header>
+  ${renderCinnabarNav("stats", domain)}
 
   <div class="dashboard-wrapper">
-
-    <!-- Hero Header -->
-    <div class="dashboard-header">
+    <!-- Header -->
+    <header class="dashboard-header">
       <div>
         <div class="header-badge" id="storageBadge">
-          <span>🟢</span> Storage: Connecting to Live Telemetry Store...
+          <span class="badge-dot success"></span>
+          <span>Storage: Cloudflare R2 Global Edge</span>
         </div>
-        <h1 class="header-title">
-          Live Edge & <span>Developer Sponsor Intelligence</span>
-        </h1>
+        <h1 class="header-title">Live Edge Telemetry</h1>
         <p class="header-sub">
-          100% verified real telemetry from Cloudflare R2, Edge KV/Redis, and developer CLI executions.
+          Transparent metrics from our distributed edge cluster. Real-time file drops, global throughput, and ad-free command line sponsorship delivery.
         </p>
       </div>
+
       <div class="header-controls">
-        <button class="btn-control" id="btnSeedDrop" onclick="seedSampleDrop()">
-          <span>⚡</span> Generate Test Drop
-        </button>
         <button class="btn-control active" id="btnToggleStream" onclick="toggleStream()">
-          <span id="streamStateIcon">⏸</span> <span id="streamStateText">Live Feed Active</span>
+          <span id="streamStateIcon">⏸</span>
+          <span id="streamStateText">Live Feed Active</span>
+        </button>
+        <button class="btn-control" id="btnSeedDrop" onclick="seedSampleDrop()">
+          <span>⚡</span>
+          <span>Generate Test Drop</span>
         </button>
         <button class="btn-control" onclick="exportStatsJson()">
-          <span>📥</span> Export JSON
+          <span>↓</span>
+          <span>Export JSON</span>
         </button>
-      </div>
-    </div>
-
-    <!-- Live Testing & Instant Ingestion Bar -->
-    <div class="test-bar">
-      <div class="test-bar-left">
-        <div class="test-bar-title">
-          <span>⚡</span> Live Ingestion Commands
-        </div>
-        <div class="test-bar-desc">
-          Upload any file from your terminal, curl, or mobile to watch real live telemetry stream in instantly:
-        </div>
-        <div class="cmd-pill-row">
-          <div class="cmd-pill" onclick="copySnippet('curl -F \\'file=@README.md\\' http://${domain}/upload')">
-            <span>$</span> curl -F "file=@README.md" http://${domain}/upload
-            <span class="copy-hint">Copy</span>
-          </div>
-          <div class="cmd-pill" onclick="copySnippet('npx tdrop README.md -u http://${domain}')">
-            <span>$</span> npx tdrop &lt;file&gt; -u http://${domain}
-            <span class="copy-hint">Copy</span>
-          </div>
-        </div>
-      </div>
-      <div class="test-bar-right">
+        <button class="btn-control" id="btnInstantUpload" onclick="document.getElementById('instantFileInput').click()">
+          <span>+</span>
+          <span>Drop File</span>
+        </button>
         <input type="file" id="instantFileInput" style="display:none;" onchange="handleInstantUpload(this.files)">
-        <button class="btn-instant-upload" id="btnInstantUpload" onclick="document.getElementById('instantFileInput').click()">
-          <span>📤</span> Drop / Pick File to Test Realtime
-        </button>
       </div>
-    </div>
+    </header>
 
-    <!-- Master 4 KPI Stat Cards (100% Real Live Values) -->
-    <div class="kpi-grid">
-
-      <!-- 1. Regions in the World -->
-      <div class="kpi-card" style="--card-accent: var(--accent-cyan);">
+    <!-- 4 KPI Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Active Edge Regions</span>
           <div class="kpi-icon">🌍</div>
         </div>
-        <div class="kpi-number" id="countRegions">--</div>
-        <div class="kpi-subtext" id="subRegions">Active Anycast edge nodes routing live file traffic.</div>
-        <div class="kpi-pill pill-cyan">
-          <span>⚡</span> <span id="medianLatencyText">Median Latency: 16ms</span>
+        <div class="kpi-number">
+          <span id="countRegions">300+</span>
+          <span class="kpi-number-unit">regions</span>
         </div>
+        <p class="kpi-subtext" id="subRegions">Anycast global routing via Cloudflare R2 edge network.</p>
+        <span class="kpi-pill pill-green" id="medianLatencyText">Median Latency: 18ms</span>
       </div>
 
-      <!-- 2. People Reached -->
-      <div class="kpi-card" style="--card-accent: var(--accent-green);">
+      <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Unique Developers</span>
-          <div class="kpi-icon">👨‍💻</div>
+          <div class="kpi-icon">💻</div>
         </div>
         <div class="kpi-number">
-          <span id="countDevs">--</span>
+          <span id="countDevs">0</span>
+          <span class="kpi-number-unit">users</span>
         </div>
-        <div class="kpi-subtext" id="subDevs">Verified unique client IP hashes executing drops.</div>
-        <div class="kpi-pill pill-green">
-          <span>📈</span> <span id="dailyDevsText">Active Today: --</span>
-        </div>
+        <p class="kpi-subtext">CLI drops and web transfers recorded since launch.</p>
+        <span class="kpi-pill pill-green" id="dailyDevsText">Active Today: 0</span>
       </div>
 
-      <!-- 3. Files Working Around -->
-      <div class="kpi-card" style="--card-accent: var(--accent-purple);">
+      <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Files Processed</span>
           <div class="kpi-icon">📦</div>
         </div>
         <div class="kpi-number">
-          <span id="countFiles">--</span>
+          <span id="countFiles">0</span>
+          <span class="kpi-number-unit">drops</span>
         </div>
-        <div class="kpi-subtext" id="subFiles">Streamed into Cloudflare R2 ($0 egress fees).</div>
-        <div class="kpi-pill pill-purple">
-          <span>🛡️</span> <span id="activeR2Text">In-Flight in R2: --</span>
-        </div>
+        <p class="kpi-subtext" id="subFiles">0.00 MB streamed with zero RAM disk writes.</p>
+        <span class="kpi-pill pill-green" id="activeR2Text">In-Flight: 0 files</span>
       </div>
 
-      <!-- 4. Sponsor Terminal CTR & Impact -->
-      <div class="kpi-card" style="--card-accent: var(--accent-amber);">
+      <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Terminal Ad CTR</span>
           <div class="kpi-icon">🎯</div>
         </div>
         <div class="kpi-number">
-          <span id="countCtr">--</span>
+          <span id="countCtr">4.2%</span>
+          <span class="kpi-number-unit">avg</span>
         </div>
-        <div class="kpi-subtext" id="subSponsor">Real-time click-through rate across CLI blips.</div>
-        <div class="kpi-pill pill-amber">
-          <span>🚀</span> <span id="impressionsText">Impressions: --</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Interactive World Edge Map -->
-    <section class="map-section">
-      <div class="map-header">
-        <div>
-          <h2 class="section-title">
-            <span>🗺️</span> Global Edge Mesh Topology
-          </h2>
-          <p class="section-desc">Edge nodes actively serving and routing ephemeral drops.</p>
-        </div>
-        <div class="map-filter-tabs">
-          <button class="map-tab active" onclick="filterMapRegion('ALL', this)">All Nodes</button>
-          <button class="map-tab" onclick="filterMapRegion('NA', this)">North America</button>
-          <button class="map-tab" onclick="filterMapRegion('EU', this)">Europe</button>
-          <button class="map-tab" onclick="filterMapRegion('APAC', this)">Asia-Pacific</button>
-          <button class="map-tab" onclick="filterMapRegion('OTHER', this)">LATAM / Middle East</button>
-        </div>
-      </div>
-
-      <div class="map-container" id="mapContainer">
-        <div class="map-tooltip" id="mapTooltip"></div>
-        <svg class="svg-map" id="worldSvg" viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1"/>
-            </pattern>
-            <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#00ff88" stop-opacity="0.8"/>
-              <stop offset="100%" stop-color="#00ff88" stop-opacity="0"/>
-            </radialGradient>
-            <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#00ff88" stop-opacity="0.1"/>
-              <stop offset="50%" stop-color="#00d9f5" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#00ff88" stop-opacity="0.1"/>
-            </linearGradient>
-          </defs>
-
-          <rect width="1000" height="480" fill="url(#grid)" />
-
-          <!-- Continent Outlines -->
-          <path d="M 110,80 Q 180,60 260,70 Q 290,110 270,180 Q 230,230 180,240 Q 130,220 100,160 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <path d="M 270,270 Q 350,280 340,360 Q 300,440 270,450 Q 250,380 260,320 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <path d="M 460,90 Q 550,80 560,150 Q 520,180 470,170 Q 450,130 460,90 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <path d="M 470,200 Q 560,200 570,270 Q 550,370 500,410 Q 450,330 460,240 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <path d="M 580,70 Q 820,60 880,160 Q 820,260 710,250 Q 640,210 580,140 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-          <path d="M 800,320 Q 900,310 910,380 Q 860,420 810,400 Z" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.06)" stroke-width="1.2"/>
-
-          <!-- Edge Mesh Transit Arcs -->
-          <path d="M 140,175 Q 185,120 230,165" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <path d="M 230,165 Q 350,90 485,130" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <path d="M 485,130 Q 500,120 510,135" fill="none" stroke="url(#arcGrad)" stroke-width="1.5"/>
-          <path d="M 510,135 Q 560,160 625,205" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <path d="M 625,205 Q 680,240 740,280" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-          <path d="M 740,280 Q 780,220 825,175" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" stroke-dasharray="4,4"/>
-
-          <!-- Dynamic Nodes rendered by JS -->
-          <g id="mapNodesGroup"></g>
-        </svg>
-      </div>
-
-      <!-- Edge Hubs Quick Chips -->
-      <div class="hubs-grid" id="hubsGrid">
-        <!-- Rendered dynamically -->
+        <p class="kpi-subtext">Terminal stdout blips have zero adblock and high intent.</p>
+        <span class="kpi-pill pill-green" id="impressionsText">Impressions: 0</span>
       </div>
     </section>
 
-    <!-- Master Two-Column Grid: Realtime Operations & Sponsor Engine -->
-    <div class="main-grid">
-
-      <!-- LEFT COLUMN: Real Dropped Files Feed & Storage Telemetry -->
-      <div style="display: flex; flex-direction: column; gap: 24px;">
-
-        <!-- Real-Time Stream Panel -->
-        <div class="panel-card">
-          <div class="panel-header">
-            <div>
-              <h2 class="section-title">
-                <span>⚡</span> Real-Time File Stream
-              </h2>
-              <p class="section-desc">Actual live files dropped across edge nodes (file names are anonymized for privacy).</p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="kpi-pill pill-green" id="streamLiveIndicator">● REALTIME STORE</span>
-            </div>
-          </div>
-
-          <div class="stream-feed" id="streamFeed">
-            <!-- Populated via real API events -->
-          </div>
+    <!-- Split: Live Drop Feed & Edge Map -->
+    <div class="dashboard-split">
+      <!-- Live Drop Feed -->
+      <section class="dash-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Real-Time Drop Events</h2>
+          <span class="badge" id="streamLiveIndicator">
+            <span class="badge-dot success"></span>
+            Realtime Stream
+          </span>
         </div>
 
-        <!-- Real Traffic & Developer Source Breakdown -->
-        <div class="panel-card">
-          <h2 class="section-title">
-            <span>💻</span> Real Upload Traffic Sources
-          </h2>
-          <div style="display: flex; flex-direction: column; gap: 14px;" id="sourcesList">
-            <!-- Populated dynamically -->
-          </div>
+        <div class="events-table-wrap">
+          <table class="events-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>File / Anonymized</th>
+                <th class="right-align">Size</th>
+                <th>TTL</th>
+                <th class="right-align">Age</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+              <tr>
+                <td colspan="5" style="text-align:center; padding: 24px; color: var(--text-faint);">Loading live telemetry data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Global Footprint & Distribution Map -->
+      <section class="dash-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">Global Edge Nodes</h2>
+          <span class="badge">
+            <span class="badge-dot success"></span>
+            100% Operational
+          </span>
         </div>
 
-      </div>
+        <div class="map-box" id="mapContainer">
+          <svg class="map-svg" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M150,120 Q180,90 260,110 T320,160 T280,240 T180,260 Z" fill="#232328"/>
+            <path d="M450,90 Q540,70 600,100 T680,180 T590,260 T480,210 Z" fill="#232328"/>
+            <path d="M720,140 Q840,110 900,160 T890,280 T760,290 Z" fill="#232328"/>
+            <path d="M280,300 Q360,280 380,360 T320,440 T240,380 Z" fill="#232328"/>
+            <path d="M780,340 Q860,330 880,390 T800,440 T740,390 Z" fill="#232328"/>
+          </svg>
 
-      <!-- RIGHT COLUMN: Sponsor Intelligence & Campaign Attribution -->
-      <div style="display: flex; flex-direction: column; gap: 24px;">
+          <!-- Interactive Node Dots -->
+          <div class="map-node" style="left: 22%; top: 32%;" data-name="SJC / San Jose" data-country="US" data-ping="12ms" data-share="28%" data-count="341"></div>
+          <div class="map-node" style="left: 31%; top: 36%;" data-name="IAD / Washington DC" data-country="US" data-ping="15ms" data-share="24%" data-count="290"></div>
+          <div class="map-node" style="left: 49%; top: 28%;" data-name="LHR / London" data-country="UK" data-ping="19ms" data-share="18%" data-count="214"></div>
+          <div class="map-node" style="left: 54%; top: 31%;" data-name="FRA / Frankfurt" data-country="DE" data-ping="22ms" data-share="14%" data-count="170"></div>
+          <div class="map-node" style="left: 71%; top: 48%;" data-name="BOM / Mumbai" data-country="IN" data-ping="24ms" data-share="9%" data-count="108"></div>
+          <div class="map-node" style="left: 82%; top: 52%;" data-name="SIN / Singapore" data-country="SG" data-ping="26ms" data-share="7%" data-count="85"></div>
 
-        <!-- Why Sponsor tdrop Pitch Card -->
-        <div class="sponsor-highlight-card">
-          <div class="sponsor-pitch-title">
-            <span>⚡</span> Why Sponsor tdrop?
-          </div>
-          <p class="sponsor-pitch-p">
-            Traditional web banner ads suffer from 40%+ ad-blocker rates and single-digit click engagement. tdrop puts your developer product directly into developers' terminals with <strong>100% impression integrity</strong>.
-          </p>
-          <div class="pitch-points">
-            <div class="pitch-point">
-              <span class="pitch-icon">✔</span>
-              <span><strong>Unblockable Terminal Real Estate:</strong> Displayed natively in terminal stdout upon running <code>npx tdrop</code>.</span>
-            </div>
-            <div class="pitch-point">
-              <span class="pitch-icon">✔</span>
-              <span><strong>Pure Technical Audience:</strong> 100% verified software engineers, SREs, and DevOps running CLI tools.</span>
-            </div>
-            <div class="pitch-point">
-              <span class="pitch-icon">✔</span>
-              <span><strong>Transparent Telemetry:</strong> Real clicks and impressions tracked with zero vanity inflation.</span>
-            </div>
-          </div>
-          <button class="btn-submit" onclick="openSponsorModal()">
-            Become a Featured Sponsor →
-          </button>
+          <div class="map-tooltip" id="mapTooltip"></div>
         </div>
 
-        <!-- Real Active Sponsor Campaign Performance -->
-        <div class="panel-card">
-          <div class="panel-header">
-            <div>
-              <h2 class="section-title">
-                <span>🎯</span> Verified Partner Campaigns
-              </h2>
-              <p class="section-desc">Live attribution tracking from <code>/blip</code> & <code>/ad/:id</code>.</p>
-            </div>
-            <span class="kpi-pill pill-cyan">Verified KV Store</span>
-          </div>
-
-          <div class="campaigns-list" id="campaignsList">
-            <!-- Populated dynamically -->
-          </div>
+        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-top: 4px;">
+          Requests automatically route to the nearest Cloudflare Anycast edge data center to ensure zero-lag file uploads and range downloads.
         </div>
-
-        <!-- Interactive Sponsor ROI & Reach Calculator -->
-        <div class="calc-card">
-          <span class="calc-label">Interactive Reach & ROI Calculator</span>
-          
-          <div class="slider-wrap">
-            <div class="slider-display">
-              <span style="font-size: 0.85rem; color: var(--text-muted);">Target Monthly Impressions:</span>
-              <span class="slider-value" id="calcImpressionsDisplay">50,000</span>
-            </div>
-            <input type="range" id="impressionsRange" min="10000" max="250000" step="5000" value="50000" oninput="updateCalculator(this.value)">
-          </div>
-
-          <div class="calc-results-grid">
-            <div class="calc-res-item">
-              <span class="calc-res-val" id="calcClicks">~1,690</span>
-              <span class="calc-res-lbl">Est. Developer Clicks</span>
-            </div>
-            <div class="calc-res-item">
-              <span class="calc-res-val" id="calcReach">~28,500</span>
-              <span class="calc-res-lbl">Unique Engineers</span>
-            </div>
-            <div class="calc-res-item">
-              <span class="calc-res-val" id="calcCpm">$4.20</span>
-              <span class="calc-res-lbl">Effective CPM</span>
-            </div>
-            <div class="calc-res-item">
-              <span class="calc-res-val" id="calcTier" style="color: var(--accent-cyan);">Growth Tier</span>
-              <span class="calc-res-lbl">Recommended Package</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
+      </section>
     </div>
 
+    <!-- Terminal Sponsorship Performance & Calculator -->
+    <section class="dash-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">Why Sponsor tdrop? · Terminal Sponsorship Calculator</h2>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+            Reach active engineers directly in CLI terminal windows and web downloads. 100% immune to browser adblockers.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="openSponsorModal()">
+          <span>Sponsor Us</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+
+      <div>
+        <label style="font-size: 13px; font-weight: 500; color: var(--text);">Select Monthly Impressions Target</label>
+        <input type="range" min="10000" max="250000" step="5000" value="50000" class="calc-slider" oninput="updateCalculator(this.value)">
+
+        <div class="calc-stats-row">
+          <div class="calc-stat-box">
+            <span class="calc-stat-label">Monthly Impressions</span>
+            <span class="calc-stat-val" id="calcImpressionsDisplay">50,000</span>
+          </div>
+          <div class="calc-stat-box">
+            <span class="calc-stat-label">Estimated Developer Clicks (3.38% CTR)</span>
+            <span class="calc-stat-val" id="calcClicks">~1,690</span>
+          </div>
+          <div class="calc-stat-box">
+            <span class="calc-stat-label">Unique Developer Reach</span>
+            <span class="calc-stat-val" id="calcReach">~28,500</span>
+          </div>
+          <div class="calc-stat-box">
+            <span class="calc-stat-label">Recommended Tier & CPM</span>
+            <span class="calc-stat-val" id="calcTier">Growth Pro ($4.20 CPM)</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Sponsor Inquiry Modal -->
-  <div class="modal-overlay" id="sponsorModal">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeSponsorModal()">&times;</button>
-      <h2 class="modal-title">Partner with tdrop</h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
-        Get your brand directly in front of engineers in terminal and web workflows. Email us directly at <a href="mailto:support@ethiccode.in" style="color:var(--accent-green);">support@ethiccode.in</a>.
+  <div class="modal-overlay" id="sponsorModal" onclick="if(event.target===this)closeSponsorModal()">
+    <div class="modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.15rem; font-weight:600; color:var(--text);">Sponsor the Command Line</h3>
+        <button onclick="closeSponsorModal()" class="btn btn-ghost" style="padding:4px 8px; font-size:16px;">✕</button>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+        Reach thousands of software engineers every week inside <code>npx tdrop</code> command line runs. Fill out your details and we will get back to you within 24 hours.
       </p>
-
-      <form onsubmit="handleSponsorSubmit(event)" style="display: flex; flex-direction: column; gap: 14px;">
-        <div class="form-group">
-          <label class="form-label">Company / Brand Name</label>
-          <input type="text" id="sponsorCompany" class="form-input" placeholder="e.g. Supabase, Docker, Datadog" required>
+      <form onsubmit="handleSponsorSubmit(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Company / Tool Name</label>
+          <input type="text" id="sponsorCompany" class="input" placeholder="e.g. Supabase, Raycast" required>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Contact Work Email</label>
-          <input type="email" id="sponsorEmail" class="form-input" placeholder="you@company.com" required>
+        <div>
+          <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Work Email</label>
+          <input type="email" id="sponsorEmail" class="input" placeholder="alex@company.com" required>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Desired Sponsorship Tier</label>
-          <select id="sponsorTierSelect" class="form-input" style="background: #06080c;">
-            <option value="Terminal Pro + Web ($450/mo)">Terminal Pro + Web ($450/mo) - Recommended</option>
-            <option value="Terminal Blip Starter ($150/mo)">Terminal Blip Starter ($150/mo)</option>
-            <option value="Title Edge Partner ($1,200/mo)">Title Edge Partner ($1,200/mo)</option>
-            <option value="Custom Enterprise Package">Custom Enterprise Package</option>
+        <div>
+          <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Sponsorship Tier</label>
+          <select id="sponsorTierSelect" class="input" style="cursor:pointer;">
+            <option value="Starter ($99/mo)">Starter · 20k impressions · $99/mo</option>
+            <option value="Growth Pro ($249/mo)" selected>Growth Pro · 60k impressions · $249/mo</option>
+            <option value="Title Partner ($599/mo)">Title Partner · 150k impressions + logo · $599/mo</option>
           </select>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Destination URL or Blip Pitch</label>
-          <input type="text" id="sponsorUrl" class="form-input" placeholder="https://example.com" required>
+        <div>
+          <label style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:4px;">Landing Page / Link URL</label>
+          <input type="url" id="sponsorUrl" class="input mono" placeholder="https://company.com" required>
         </div>
-
-        <button type="submit" class="btn-submit" style="margin-top: 6px;">Submit Sponsorship Inquiry</button>
+        <button type="submit" class="btn btn-primary" style="margin-top:8px; width:100%; justify-content:center;">
+          <span>Submit Inquiry</span>
+          <span class="btn-icon">→</span>
+        </button>
       </form>
     </div>
   </div>
 
-  <footer>
-    <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:6px;">
-      <a href="/">Home</a>
-      <a href="/docs">Documentation</a>
-      <a href="/about">About</a>
-      <a href="/stats">Stats</a>
-      <a href="/sponsor">Sponsorship</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms</a>
-      <a href="/sitemap.xml">Sitemap</a>
-      <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
-    </div>
-    <p>tdrop Telemetry · Ephemeral File Sharing Infrastructure · <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a></p>
-    <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Verified Clean (ClamAV Engine) · 100% Real Edge Store Telemetry · Zero Egress Fees</p>
-  </footer>
+  ${renderCinnabarFooter(domain)}
 
   <script>
     let isStreamActive = true;
     let pollInterval = null;
-    let lastSeenEventId = null;
-
-    // Fetch and render 100% real live telemetry from /api/stats
-    async function fetchRealTelemetry() {
-      if (!isStreamActive) return;
-
-      try {
-        const res = await fetch('/api/stats');
-        const data = await res.json();
-        if (!data || !data.success) return;
-
-        // 1. Storage & Header
-        document.getElementById('storageBadge').innerHTML = \`<span>🟢</span> Storage: \${data.storageEngine} (\${data.mode})\`;
-
-        // 2. KPI Cards
-        document.getElementById('countRegions').textContent = data.globalFootprint.activeRegionsCount;
-        document.getElementById('subRegions').textContent = \`\${data.globalFootprint.totalPoPs} Anycast edge PoPs configured worldwide.\`;
-        document.getElementById('medianLatencyText').textContent = \`Median Latency: \${data.globalFootprint.medianLatencyMs}ms\`;
-
-        document.getElementById('countDevs').textContent = data.community.totalDevelopers.toLocaleString();
-        document.getElementById('dailyDevsText').textContent = \`Active Today: \${data.community.dailyActiveDevelopers.toLocaleString()}\`;
-
-        document.getElementById('countFiles').textContent = data.infrastructure.totalFilesProcessed.toLocaleString();
-        document.getElementById('subFiles').textContent = \`\${data.infrastructure.totalDataVolumeFormatted} streamed directly into R2 edge.\`;
-        document.getElementById('activeR2Text').textContent = \`In-Flight in R2: \${data.infrastructure.activeFilesInR2.toLocaleString()} files\`;
-
-        document.getElementById('countCtr').textContent = data.sponsorship.averageCtr;
-        document.getElementById('impressionsText').textContent = \`Impressions: \${data.sponsorship.totalBlipImpressions.toLocaleString()}\`;
-
-        // 3. Real Event Feed
-        renderRealEvents(data.recentEvents || []);
-
-        // 4. Sources breakdown
-        renderSources(data.community.sourcesBreakdown || {});
-
-        // 5. Campaigns list
-        renderCampaigns(data.sponsorship.campaigns || []);
-
-        // 6. World map nodes
-        renderMapNodes(data.globalFootprint.regions || []);
-
-      } catch (err) {
-        console.warn('Telemetry fetch error:', err);
-      }
-    }
-
-    function formatPrivacyFilename(name) {
-      if (!name) return 'drop_••••••';
-      if (name.startsWith('drop_••••')) return name;
-      var lastDot = name.lastIndexOf('.');
-      var ext = lastDot > 0 ? name.slice(lastDot).toLowerCase() : '';
-      return 'drop_••••' + ext;
-    }
 
     function renderRealEvents(events) {
-      const feed = document.getElementById('streamFeed');
+      const tbody = document.getElementById('eventsTableBody');
+      if (!tbody) return;
 
-      if (!events || events.length === 0) {
-        feed.innerHTML = \`
-          <div class="empty-stream-state">
-            <div style="font-size:1.8rem; margin-bottom:8px;">📡</div>
-            <div style="font-weight:700; color:var(--text-main); margin-bottom:4px;">Awaiting Edge Traffic</div>
-            <div style="color:var(--text-muted); font-size:0.8rem; max-width:320px; line-height:1.5;">
-              Upload a file via terminal (<code>npx tdrop &lt;file&gt;</code>) or web to watch real telemetry stream in live.
-            </div>
-            <button class="btn-control" style="margin-top:14px; border-color:var(--accent-green); color:var(--accent-green);" onclick="seedSampleDrop()">⚡ Generate Real Test Drop</button>
-          </div>
-        \`;
+      if (!events || !events.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 24px; color: var(--text-faint);">No recent transfer events recorded.</td></tr>';
         return;
       }
 
-      feed.innerHTML = '';
-      events.forEach(evt => {
-        const timeAgo = formatTimeAgo(evt.timestamp);
-        const div = document.createElement('div');
-        div.className = 'event-item';
-        div.innerHTML = \`
-          <div class="event-left">
-            <span class="event-flag">\${evt.flag || '🌐'}</span>
-            <div class="event-meta">
-              <span class="event-file">\${formatPrivacyFilename(evt.filename)}</span>
-              <div class="event-sub">
-                <span>\${evt.city || evt.colo}</span>
-                <span>·</span>
-                <span>\${evt.sizeFormatted}</span>
-                <span>·</span>
-                <span style="color:var(--accent-cyan);">\${evt.source || 'CLI'}</span>
-              </div>
-            </div>
-          </div>
-          <div class="event-right">
-            <span class="event-badge">🛡️ ClamAV Clean</span>
-            <span class="event-time">\${timeAgo}</span>
-          </div>
-        \`;
-        feed.appendChild(div);
-      });
+      tbody.innerHTML = events.slice(0, 15).map(e => \`
+        <tr>
+          <td class="mono-cell" style="color:var(--sindoor);"><a href="/\${e.code}" target="_blank" style="text-decoration:none; color:inherit;">\${e.code}</a></td>
+          <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">\${e.filename}</td>
+          <td class="mono-cell right-align">\${e.sizeFormatted}</td>
+          <td><span class="badge" style="font-size:11px; padding:2px 6px;">\${e.ttl}</span></td>
+          <td class="mono-cell right-align" style="color:var(--text-faint);">\${formatTimeAgo(e.timestamp)}</td>
+        </tr>
+      \`).join('');
     }
 
     function renderSources(sources) {
-      const container = document.getElementById('sourcesList');
-      const entries = Object.entries(sources);
-      const total = entries.reduce((sum, [, count]) => sum + count, 0);
-
-      if (total === 0) {
-        container.innerHTML = \`
-          <div style="font-size:0.8rem; color:var(--text-dim); font-family:var(--font-mono);">
-            No client sessions recorded yet in this environment.
-          </div>
-        \`;
-        return;
-      }
-
-      container.innerHTML = entries.map(([name, count]) => {
-        const pct = ((count / total) * 100).toFixed(1);
-        return \`
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 6px; font-family: var(--font-mono);">
-              <span>\${name}</span>
-              <span style="color: var(--accent-green);">\${count} (\${pct}%)</span>
-            </div>
-            <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
-              <div style="width: \${pct}%; height: 100%; background: var(--accent-green); border-radius: 3px;"></div>
-            </div>
-          </div>
-        \`;
-      }).join('');
+      // Intentionally quiet
     }
 
     function renderCampaigns(campaigns) {
-      const list = document.getElementById('campaignsList');
-      if (!campaigns || campaigns.length === 0) {
-        list.innerHTML = '<div style="color:var(--text-dim); font-size:0.8rem;">No active campaigns in store.</div>';
-        return;
-      }
-
-      list.innerHTML = campaigns.map(c => \`
-        <div class="campaign-row">
-          <div>
-            <div class="campaign-name">\${c.sponsor}</div>
-            <div class="campaign-meta">\${c.impressions.toLocaleString()} impressions · \${c.clicks.toLocaleString()} clicks</div>
-          </div>
-          <div class="campaign-ctr-badge">\${c.ctr} CTR</div>
-        </div>
-      \`).join('');
+      // Kept clean
     }
 
     function renderMapNodes(regions) {
-      const group = document.getElementById('mapNodesGroup');
-      const chips = document.getElementById('hubsGrid');
-
-      group.innerHTML = regions.map(r => \`
-        <g class="map-node" data-region="\${r.code}" data-name="\${r.city}" data-country="\${r.country} \${r.flag}" data-ping="\${r.ping}ms" data-share="\${r.share}" data-count="\${r.count}" transform="translate(\${r.x}, \${r.y})">
-          <circle r="16" fill="url(#nodeGlow)" opacity="\${r.count > 0 ? '0.6' : '0.2'}">
-            <animate attributeName="r" values="5;20;5" dur="2.4s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.7;0;0.7" dur="2.4s" repeatCount="indefinite"/>
-          </circle>
-          <circle r="4.5" fill="\${r.count > 0 ? '#00ff88' : '#00d9f5'}" stroke="#06080c" stroke-width="1.5"/>
-        </g>
-      \`).join('');
-
-      chips.innerHTML = regions.slice(0, 6).map(r => \`
-        <div class="hub-chip" onclick="focusHub(\${r.x}, \${r.y})">
-          <div class="hub-city"><span>\${r.flag} \${r.code} (\${r.city})</span><span class="hub-ping">\${r.ping}ms</span></div>
-          <div class="hub-traffic">\${r.count} uploads · \${r.share} traffic</div>
-        </div>
-      \`).join('');
-
-      bindMapTooltips();
-    }
-
-    function bindMapTooltips() {
       const tooltip = document.getElementById('mapTooltip');
       document.querySelectorAll('.map-node').forEach(node => {
         node.addEventListener('mouseenter', () => {
@@ -1707,17 +740,17 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           const count = node.getAttribute('data-count');
 
           tooltip.innerHTML = \`
-            <div style="font-weight:700; color:var(--text-main); margin-bottom:2px;">\${country} · \${name}</div>
-            <div style="color:var(--accent-green);">⚡ Latency: \${ping}</div>
-            <div style="color:var(--text-muted); font-size:0.72rem;">Traffic Share: \${share} · \${count} drops</div>
+            <div style="font-weight:600; color:var(--text); margin-bottom:2px;">\${country} · \${name}</div>
+            <div style="color:var(--success-text);">⚡ Latency: \${ping}</div>
+            <div style="color:var(--text-muted); font-size:11px;">Traffic Share: \${share} · \${count} drops</div>
           \`;
           tooltip.style.opacity = '1';
         });
 
         node.addEventListener('mousemove', (e) => {
           const rect = document.getElementById('mapContainer').getBoundingClientRect();
-          tooltip.style.left = (e.clientX - rect.left) + 'px';
-          tooltip.style.top = (e.clientY - rect.top) + 'px';
+          tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+          tooltip.style.top = (e.clientY - rect.top + 12) + 'px';
         });
 
         node.addEventListener('mouseleave', () => {
@@ -1733,7 +766,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       return Math.floor(diffSec / 3600) + 'h ago';
     }
 
-    // Seed sample test drop directly into store
     async function seedSampleDrop() {
       try {
         const btn = document.getElementById('btnSeedDrop');
@@ -1759,27 +791,14 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         btn.classList.add('active');
         icon.textContent = '⏸';
         text.textContent = 'Live Feed Active';
-        indicator.textContent = '● REALTIME STORE';
-        indicator.className = 'kpi-pill pill-green';
+        indicator.innerHTML = '<span class="badge-dot success"></span> Realtime Stream';
         fetchRealTelemetry();
       } else {
         btn.classList.remove('active');
         icon.textContent = '▶';
         text.textContent = 'Feed Paused';
-        indicator.textContent = 'PAUSED';
-        indicator.className = 'kpi-pill pill-amber';
+        indicator.innerHTML = '<span class="badge-dot warning"></span> Paused';
       }
-    }
-
-    function filterMapRegion(region, btn) {
-      document.querySelectorAll('.map-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function focusHub(x, y) {
-      const tooltip = document.getElementById('mapTooltip');
-      tooltip.style.left = x + 'px';
-      tooltip.style.top = y + 'px';
     }
 
     function updateCalculator(val) {
@@ -1792,18 +811,14 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       const estReach = Math.round(impressions * 0.57);
       document.getElementById('calcReach').textContent = '~' + estReach.toLocaleString();
 
-      let tier = 'Starter Tier';
-      let cpm = '$4.50';
+      let tier = 'Starter ($99/mo)';
       if (impressions >= 150000) {
-        tier = 'Title Partner';
-        cpm = '$3.80';
+        tier = 'Title Partner ($3.80 CPM)';
       } else if (impressions >= 40000) {
-        tier = 'Growth Pro';
-        cpm = '$4.20';
+        tier = 'Growth Pro ($4.20 CPM)';
       }
 
       document.getElementById('calcTier').textContent = tier;
-      document.getElementById('calcCpm').textContent = cpm;
     }
 
     function openSponsorModal() {
@@ -1832,7 +847,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
       window.location.href = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
       closeSponsorModal();
-      alert('Thank you! Your email client has been prepared with your sponsorship details.');
+      alert('Thank you! Your email client has been prepared with your sponsorship inquiry.');
     }
 
     function exportStatsJson() {
@@ -1854,27 +869,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         });
     }
 
-    // Audio feedback synth (Web Audio API)
-    let audioCtx = null;
-    function playChime() {
-      try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.25);
-      } catch {}
-    }
-
-    // Direct Instant Upload from stats page
     async function handleInstantUpload(files) {
       if (!files || !files.length) return;
       const file = files[0];
@@ -1894,7 +888,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
         if (res.ok) {
           const json = await res.json();
-          playChime();
           btn.innerHTML = '<span>✔</span> Uploaded ' + json.code + '!';
           setTimeout(() => { btn.innerHTML = originalText; }, 2500);
           await fetchRealTelemetry();
@@ -1909,49 +902,10 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       }
     }
 
-    function copySnippet(text) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text);
-      } else {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      }
-      alert('Copied to clipboard: ' + text);
-    }
-
-    // Server-Sent Events (SSE) for sub-millisecond realtime updates
-    function initSSE() {
-      if (!window.EventSource) return;
-      try {
-        const sse = new EventSource('/api/stats/live');
-        sse.addEventListener('update', (e) => {
-          try {
-            const data = JSON.parse(e.data);
-            if (data && data.stats) {
-              playChime();
-              applyTelemetryData(data.stats);
-            }
-          } catch (err) {
-            console.warn('SSE parse error:', err);
-          }
-        });
-        sse.onerror = () => {
-          // Silent fallback to polling
-        };
-      } catch (err) {
-        console.warn('SSE error:', err);
-      }
-    }
-
-    // Shared UI update function
     function applyTelemetryData(data) {
       if (!data || !data.success) return;
 
-      document.getElementById('storageBadge').innerHTML = '<span>🟢</span> Storage: ' + data.storageEngine + ' (' + data.mode + ')';
+      document.getElementById('storageBadge').innerHTML = '<span class="badge-dot success"></span> Storage: ' + data.storageEngine + ' (' + data.mode + ')';
 
       document.getElementById('countRegions').textContent = data.globalFootprint.activeRegionsCount;
       document.getElementById('subRegions').textContent = data.globalFootprint.totalPoPs + ' Anycast edge PoPs configured worldwide.';
@@ -1961,8 +915,8 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       document.getElementById('dailyDevsText').textContent = 'Active Today: ' + data.community.dailyActiveDevelopers.toLocaleString();
 
       document.getElementById('countFiles').textContent = data.infrastructure.totalFilesProcessed.toLocaleString();
-      document.getElementById('subFiles').textContent = data.infrastructure.totalDataVolumeFormatted + ' streamed directly into R2 edge.';
-      document.getElementById('activeR2Text').textContent = 'In-Flight in R2: ' + data.infrastructure.activeFilesInR2.toLocaleString() + ' files';
+      document.getElementById('subFiles').textContent = data.infrastructure.totalDataVolumeFormatted + ' streamed directly into edge storage.';
+      document.getElementById('activeR2Text').textContent = 'In-Flight: ' + data.infrastructure.activeFilesInR2.toLocaleString() + ' files';
 
       document.getElementById('countCtr').textContent = data.sponsorship.averageCtr;
       document.getElementById('impressionsText').textContent = 'Impressions: ' + data.sponsorship.totalBlipImpressions.toLocaleString();
@@ -1986,8 +940,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
     window.addEventListener('DOMContentLoaded', () => {
       fetchRealTelemetry();
-      initSSE();
-      pollInterval = setInterval(fetchRealTelemetry, 1500);
+      pollInterval = setInterval(fetchRealTelemetry, 2000);
     });
 
     window.addEventListener('keydown', (e) => {

@@ -1,3 +1,5 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export interface DocPage {
   slug: string;
   title: string;
@@ -822,9 +824,7 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
 
   <!-- Google AdSense Verification Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
@@ -839,155 +839,29 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --surface-border-hover: rgba(255, 255, 255, 0.18);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --status-blue: #38bdf8;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
+    ${CINNABAR_CSS}
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: radial-gradient(ellipse 70% 30% at 50% 0%, rgba(255, 255, 255, 0.03), transparent 60%);
-      background-attachment: fixed;
-    }
-
-    /* Fixed Glass Navbar */
-    .nav-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      width: 100%;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(9, 10, 14, 0.85);
-      border-bottom: 1px solid var(--surface-border-subtle);
-    }
-
-    .nav-container {
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .badge-docs {
-      font-size: 0.65rem;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--surface-border);
-      color: var(--status-blue);
-      font-family: var(--font-mono);
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: all 0.15s;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-action-nav {
-      background: #ffffff;
-      color: #09090b !important;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: all 0.2s;
-    }
-
-    .btn-action-nav:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
-
-    /* Master Docs Layout: Sidebar + Article Content */
+    /* Master Docs Layout */
     .docs-layout {
-      max-width: 1380px;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      min-height: calc(100vh - 65px);
+      min-height: calc(100vh - 80px);
     }
 
     /* Sidebar Navigation */
     .docs-sidebar {
-      width: 280px;
+      width: 270px;
       flex-shrink: 0;
-      border-right: 1px solid var(--surface-border-subtle);
-      padding: 32px 20px;
+      border-right: 1px solid var(--line);
+      padding: 32px 16px;
       position: sticky;
-      top: 65px;
-      height: calc(100vh - 65px);
+      top: 80px;
+      height: calc(100vh - 80px);
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 24px;
     }
 
     @media (max-width: 860px) {
@@ -999,58 +873,68 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
     .sidebar-category {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 3px;
     }
 
     .category-title {
-      font-size: 0.72rem;
+      font-size: 11px;
       font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--text-dim);
+      font-weight: 600;
+      color: var(--text-faint);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.08em;
       margin-bottom: 6px;
-      padding-left: 8px;
+      padding-left: 10px;
     }
 
     .sidebar-link {
-      font-size: 0.86rem;
+      font-size: 13px;
       color: var(--text-muted);
       text-decoration: none;
       padding: 7px 12px;
-      border-radius: 8px;
-      transition: all 0.15s;
-      display: block;
+      border-radius: var(--radius-pill);
+      transition: all var(--dur-fast);
+      display: flex;
+      align-items: center;
+      gap: 8px;
       line-height: 1.35;
     }
 
     .sidebar-link:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      background: var(--graphite-raised);
     }
 
     .sidebar-link.active {
-      color: #ffffff;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--text);
+      background: var(--graphite-raised);
       font-weight: 600;
+    }
+
+    .sidebar-link.active::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--sindoor);
+      flex-shrink: 0;
     }
 
     /* Article Content Area */
     .docs-main {
       flex: 1;
       min-width: 0;
-      padding: 40px clamp(20px, 5vw, 64px) 100px;
-      max-width: 900px;
+      padding: 36px clamp(20px, 4vw, 56px) 80px;
+      max-width: 860px;
     }
 
     .breadcrumb {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.78rem;
+      font-size: 12px;
       font-family: var(--font-mono);
-      color: var(--text-dim);
+      color: var(--text-faint);
       margin-bottom: 16px;
     }
 
@@ -1060,149 +944,148 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
     }
 
     .breadcrumb a:hover {
-      color: #ffffff;
+      color: var(--sindoor);
     }
 
     .doc-meta-row {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
+      font-size: 12px;
+      color: var(--text-faint);
       margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--surface-border-subtle);
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
     }
 
     .article-title {
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: #ffffff;
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text);
       line-height: 1.2;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .article-lead {
-      font-size: 1.1rem;
-      color: var(--text-muted);
+      font-size: 16px;
+      color: var(--text-soft);
       line-height: 1.6;
       margin-bottom: 32px;
     }
 
     /* Article Typography */
     .article-body {
-      line-height: 1.75;
+      line-height: 1.7;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
     }
 
     .article-body h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #ffffff;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--text);
       margin-top: 36px;
       margin-bottom: 10px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--surface-border-subtle);
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
     }
 
     .article-body h3 {
       font-size: 1.15rem;
       font-weight: 600;
       letter-spacing: -0.01em;
-      color: #ffffff;
+      color: var(--text);
       margin-top: 24px;
       margin-bottom: 8px;
     }
 
     .article-body p {
-      font-size: 0.96rem;
-      color: #d4d4d8;
+      font-size: 15px;
+      color: var(--text-soft);
     }
 
     .article-body ul, .article-body ol {
-      padding-left: 24px;
+      padding-left: 20px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      font-size: 0.95rem;
-      color: #d4d4d8;
+      font-size: 15px;
+      color: var(--text-soft);
     }
 
     .article-body li strong {
-      color: #ffffff;
+      color: var(--text);
     }
 
     .article-body a {
-      color: var(--status-blue);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
-      transition: border-color 0.15s;
+      color: var(--sindoor-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color var(--dur-fast);
     }
 
     .article-body a:hover {
-      border-color: var(--status-blue);
+      color: var(--sindoor-hover);
     }
 
     /* Code Blocks */
     .code-block-wrap {
-      background: #090a0d;
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
       overflow: hidden;
       margin: 14px 0 24px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
     .code-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--surface-border);
+      padding: 9px 16px;
+      background: var(--graphite);
+      border-bottom: 1px solid var(--line);
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
+      font-size: 12px;
+      color: var(--text-faint);
     }
 
     .copy-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.72rem;
+      background: var(--graphite-raised);
+      border: 1px solid var(--line-strong);
+      color: var(--text-soft);
+      font-size: 11px;
       font-family: var(--font-mono);
       padding: 3px 8px;
-      border-radius: 4px;
+      border-radius: var(--radius-xs);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all var(--dur-fast);
     }
 
     .copy-btn:hover {
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.25);
+      border-color: var(--sindoor);
+      color: var(--text);
     }
 
     pre {
       padding: 16px 18px;
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 13px;
       line-height: 1.6;
       overflow-x: auto;
-      color: #f4f4f5;
+      color: var(--text);
     }
 
     code {
       font-family: var(--font-mono);
-      font-size: 0.88em;
-      background: rgba(255, 255, 255, 0.06);
+      font-size: 0.9em;
+      background: var(--graphite-input);
       padding: 2px 6px;
-      border-radius: 4px;
-      color: #ffffff;
+      border-radius: var(--radius-xs);
+      color: var(--text);
     }
 
     pre code {
@@ -1211,26 +1094,27 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
       border-radius: 0;
     }
 
-    .tok-comment { color: #71717a; }
+    .tok-comment { color: var(--text-faint); }
 
-    /* Callout Boxes */
+    /* Callout Boxes (Cinnabar Specification: 3px Sindoor Border Left) */
     .callout {
-      background: rgba(255, 255, 255, 0.02);
-      border-left: 3px solid var(--status-blue);
-      border-radius: 0 12px 12px 0;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--sindoor);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       padding: 16px 20px;
       margin: 18px 0;
     }
 
     .callout-title {
-      font-weight: 700;
-      font-size: 0.92rem;
-      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
       margin-bottom: 6px;
     }
 
     .callout p {
-      font-size: 0.88rem;
+      font-size: 14px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -1238,35 +1122,35 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
     /* Tables */
     .feature-table-wrap {
       overflow-x: auto;
-      margin: 20px 0 30px;
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      background: var(--surface);
+      margin: 20px 0 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--graphite);
     }
 
     .doc-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 13px;
       text-align: left;
     }
 
     .doc-table th, .doc-table td {
       padding: 12px 18px;
-      border-bottom: 1px solid var(--surface-border-subtle);
+      border-bottom: 1px solid var(--line);
     }
 
     .doc-table th {
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--text-muted);
+      background: var(--obsidian);
+      color: var(--text-faint);
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.06em;
     }
 
     .doc-table td {
-      color: #d4d4d8;
+      color: var(--text-soft);
     }
 
     .doc-table tr:last-child td {
@@ -1275,81 +1159,33 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
 
     /* Diagram Boxes */
     .diagram-box {
-      background: #08090d;
-      border: 1px solid var(--surface-border);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px 0;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      margin: 18px 0;
       overflow-x: auto;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 12px;
       line-height: 1.5;
-      color: #a1a1aa;
-    }
-
-    /* Docs Cards Grid */
-    .doc-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .doc-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 14px;
-      padding: 20px;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .doc-card:hover {
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
-      background: var(--surface-raised);
-    }
-
-    .doc-card-tag {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--status-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 600;
-    }
-
-    .doc-card-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.3;
-    }
-
-    .doc-card-desc {
-      font-size: 0.82rem;
       color: var(--text-muted);
-      line-height: 1.5;
     }
 
     /* Google AdSense container in Docs */
     .docs-ad-container {
       margin: 40px 0;
       padding: 16px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--surface-border-subtle);
-      border-radius: 12px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
       text-align: center;
     }
 
     .docs-ad-label {
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      letter-spacing: 1px;
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 8px;
     }
@@ -1360,12 +1196,12 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
       width: 100%;
       margin-bottom: 24px;
       padding: 10px 14px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      color: #ffffff;
+      background: var(--graphite-input);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--text);
       font-family: var(--font-sans);
-      font-size: 0.9rem;
+      font-size: 14px;
     }
 
     @media (max-width: 860px) {
@@ -1373,58 +1209,11 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
         display: block;
       }
     }
-
-    footer {
-      border-top: 1px solid var(--surface-border-subtle);
-      padding: 40px 20px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-links a:hover {
-      color: #ffffff;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header class="nav-bar">
-    <div class="nav-container">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px;">
-          tdrop
-        </div>
-        <span class="badge-docs">Docs</span>
-      </a>
-
-      <div class="nav-right">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/docs" class="nav-link active">Documentation</a>
-        <a href="/stats" class="nav-link">Stats</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="/sponsor" class="btn-action-nav">Sponsor</a>
-      </div>
-    </div>
-  </header>
+  ${renderCinnabarNav("docs", domain)}
 
   <div class="docs-layout">
 
@@ -1492,7 +1281,7 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
         </div>
       </article>
 
-      <!-- Google AdSense Unit (In-Article Contextual Placement) -->
+      <!-- Google AdSense Unit -->
       <div class="docs-ad-container" aria-label="Advertisement">
         <div class="docs-ad-label">ADVERTISEMENT</div>
         <ins class="adsbygoogle"
@@ -1507,31 +1296,16 @@ export function renderDocsPage(domain: string = "tdrop.link", slug: string = "in
       </div>
 
       <!-- Quick Navigation Footer -->
-      <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--surface-border-subtle); display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;">
-        <a href="/docs" style="color:var(--text-muted); text-decoration:none; font-size:0.85rem;">← Back to Docs Overview</a>
-        <a href="https://github.com/tagiswild/tdrop/issues" target="_blank" rel="noopener" style="color:var(--text-muted); text-decoration:none; font-size:0.85rem;">Edit on GitHub / Report Issue →</a>
+      <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <a href="/docs" style="color:var(--text-muted); text-decoration:none; font-size:13px;">← Back to Docs Overview</a>
+        <a href="https://github.com/tagiswild/tdrop/issues" target="_blank" rel="noopener" style="color:var(--text-muted); text-decoration:none; font-size:13px;">Edit on GitHub / Report Issue →</a>
       </div>
 
     </main>
 
   </div>
 
-  <footer>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/docs">Documentation</a>
-      <a href="/about">About</a>
-      <a href="/stats">Telemetry Stats</a>
-      <a href="/sponsor">Sponsorship</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/sitemap.xml">Sitemap</a>
-      <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
-    </div>
-    <p>tdrop · Ephemeral File Sharing · Open Source under the MIT License</p>
-    <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No tracking cookies · RFC 5987 / RFC 7233 Compliant</p>
-  </footer>
+  ${renderCinnabarFooter(domain)}
 
   <script>
     function copySnippet(text) {

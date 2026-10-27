@@ -1,3 +1,5 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export function renderAboutPage(domain: string = "tdrop.link"): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -9,7 +11,7 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
   
   <link rel="canonical" href="https://${domain}/about">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0B0B0D">
   <link rel="manifest" href="/manifest.json">
 
   <!-- Favicons & App Icons -->
@@ -61,9 +63,7 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
 
   <!-- Google AdSense Verification Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
@@ -78,140 +78,47 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --status-blue: #38bdf8;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
-      background-attachment: fixed;
-    }
-
-    .nav-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      width: 100%;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background: rgba(9, 10, 14, 0.85);
-      border-bottom: 1px solid var(--surface-border-subtle);
-    }
-
-    .nav-container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      transition: all 0.15s;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-    }
+    ${CINNABAR_CSS}
 
     .content-wrapper {
       max-width: 840px;
-      margin: 40px auto 80px;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 36px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
     }
 
     .about-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(24px, 5vw, 48px);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: clamp(28px, 5vw, 48px);
       display: flex;
       flex-direction: column;
       gap: 32px;
     }
 
-    .about-header {
-      border-bottom: 1px solid var(--surface-border-subtle);
-      padding-bottom: 24px;
-    }
-
     .about-tag {
+      font-size: 11px;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--status-blue);
+      color: var(--sindoor);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.08em;
       margin-bottom: 8px;
       font-weight: 600;
     }
 
     .about-title {
       font-size: clamp(2rem, 5vw, 2.75rem);
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: -0.03em;
-      color: #ffffff;
+      color: var(--text);
       line-height: 1.2;
     }
 
     .about-subtitle {
-      font-size: 1.1rem;
+      font-size: 16px;
       color: var(--text-muted);
       line-height: 1.6;
       margin-top: 12px;
@@ -221,20 +128,20 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
       display: flex;
       flex-direction: column;
       gap: 14px;
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
     .about-section h2 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-      margin-top: 10px;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.015em;
+      margin-top: 12px;
     }
 
     .about-section p {
-      font-size: 0.95rem;
-      color: #d4d4d8;
+      font-size: 15px;
+      color: var(--text-soft);
     }
 
     .about-section ul {
@@ -242,43 +149,45 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      font-size: 0.95rem;
-      color: #d4d4d8;
+      font-size: 15px;
+      color: var(--text-soft);
     }
 
     .about-highlight {
-      background: rgba(255, 255, 255, 0.02);
-      border-left: 3px solid var(--status-green);
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--sindoor);
       padding: 16px 20px;
-      border-radius: 0 12px 12px 0;
-      font-size: 0.92rem;
-      color: var(--text-main);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
     }
 
     .creator-box {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--surface-border);
-      border-radius: 14px;
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       padding: 24px;
       display: flex;
       gap: 20px;
       align-items: center;
-      margin-top: 16px;
+      margin-top: 12px;
     }
 
     .creator-avatar {
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: #18191f;
-      border: 2px solid var(--surface-border);
+      background: var(--graphite-input);
+      border: 1px solid var(--line-strong);
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 1.4rem;
-      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text);
       font-family: var(--font-mono);
     }
 
@@ -289,75 +198,28 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
     }
 
     .creator-name {
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #ffffff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text);
     }
 
     .creator-role {
-      font-size: 0.8rem;
-      color: var(--text-dim);
+      font-size: 12px;
+      color: var(--text-faint);
       font-family: var(--font-mono);
     }
 
     .creator-bio {
-      font-size: 0.86rem;
+      font-size: 14px;
       color: var(--text-muted);
       line-height: 1.5;
       margin-top: 4px;
-    }
-
-    footer {
-      width: 100%;
-      border-top: 1px solid var(--surface-border);
-      padding: 40px 16px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-links a:hover {
-      color: #ffffff;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header class="nav-bar">
-    <div class="nav-container">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px;">
-          tdrop
-        </div>
-      </a>
-
-      <div class="nav-right">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/docs" class="nav-link">Docs</a>
-        <a href="/about" class="nav-link active">About</a>
-        <a href="/stats" class="nav-link">Stats</a>
-        <a href="/sponsor" class="nav-link">Sponsor</a>
-      </div>
-    </div>
-  </header>
+  ${renderCinnabarNav("about", domain)}
 
   <div class="content-wrapper">
     <main class="about-card">
@@ -372,8 +234,8 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
         <h2>The Origin Story</h2>
         <p>In 2024, software engineer <strong>Atharva Chauhan</strong> was debugging a remote, headless Linux virtual machine in a cloud environment. The machine encountered a kernel panic and generated a 4MB crash dump. To inspect the dump locally on a laptop, Atharva faced the classic dilemma of modern software engineering:</p>
         <ul>
-          <li>SCP/SFTP required configuring SSH bastion jump boxes and temporary public keys.</li>
-          <li>Cloud storage services (Dropbox, Google Drive, Box) required an OAuth sign-in, email verification, and manual browser clicks.</li>
+          <li>SCP and SFTP required configuring SSH bastion jump boxes and temporary public keys.</li>
+          <li>Cloud storage services required OAuth sign-in, email verification, and manual browser clicks.</li>
           <li>S3 buckets required generating IAM credentials and configuring AWS CLI profiles inside an ephemeral VM.</li>
           <li>Existing pastebins only supported plain text and lacked binary streaming or antivirus verification.</li>
         </ul>
@@ -422,8 +284,8 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
             <div class="creator-role">Creator & Lead Maintainer</div>
             <p class="creator-bio">Systems architect, open-source enthusiast, and creator of developer utilities. Dedicated to building fast, minimalist tools that respect user privacy and eliminate cloud complexity.</p>
             <div style="display:flex; gap:12px; margin-top:8px;">
-              <a href="https://github.com/TAGISWILD" target="_blank" rel="noopener" style="color:var(--status-blue); font-size:0.8rem; text-decoration:none;">GitHub Profile →</a>
-              <a href="https://github.com/TAGISWILD/tdrop" target="_blank" rel="noopener" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none;">tdrop Repository →</a>
+              <a href="https://github.com/TAGISWILD" target="_blank" rel="noopener" style="color:var(--sindoor-text); font-size:13px; text-decoration:none;">GitHub Profile →</a>
+              <a href="https://github.com/TAGISWILD/tdrop" target="_blank" rel="noopener" style="color:var(--text-muted); font-size:13px; text-decoration:none;">tdrop Repository →</a>
             </div>
           </div>
         </div>
@@ -432,23 +294,7 @@ export function renderAboutPage(domain: string = "tdrop.link"): string {
     </main>
   </div>
 
-  <footer>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/docs">Documentation</a>
-      <a href="/about">About</a>
-      <a href="/stats">Telemetry Stats</a>
-      <a href="/sponsor">Sponsorship</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/sitemap.xml">Sitemap</a>
-      <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
-    </div>
-    <p>tdrop · Ephemeral File Sharing · Open Source under the MIT License</p>
-    <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">Zero egress fees · No tracking cookies · RFC 5987 / RFC 7233 Compliant</p>
-  </footer>
-
+  ${renderCinnabarFooter(domain)}
 </body>
 </html>`;
 }

@@ -1,3 +1,5 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export function renderSponsorPage(domain: string = "tdrop.link"): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -9,7 +11,7 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
   
   <link rel="canonical" href="https://${domain}/sponsor">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#09090b">
+  <meta name="theme-color" content="#0B0B0D">
   <link rel="manifest" href="/manifest.json">
 
   <!-- Favicons & App Icons -->
@@ -31,11 +33,9 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
   <meta name="twitter:description" content="High-intent developer impressions with 100% ad-blocker immunity across developer terminals and web.">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
 
-  <!-- Google AdSense Verification Tag -->
+  <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
 
   <!-- Google tag (gtag.js) -->
@@ -48,154 +48,14 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --surface-border-hover: rgba(255, 255, 255, 0.18);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      min-height: 100dvh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
-      background-attachment: fixed;
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-
-    /* Floating Island Navbar */
-    .nav-wrapper {
-      position: sticky;
-      top: 16px;
-      z-index: 100;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 16px;
-      pointer-events: none;
-    }
-
-    .nav-island {
-      pointer-events: auto;
-      background: rgba(14, 15, 20, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--surface-border);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #ffffff;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.65rem;
-      font-family: var(--font-mono);
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    .status-dot {
-      width: 5px;
-      height: 5px;
-      background: var(--status-green);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--status-green);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 9999px;
-      transition: all 0.15s;
-    }
-
-    .nav-link:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-apply-nav {
-      background: #ffffff;
-      color: #09090b !important;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 6px 16px;
-      border-radius: 9999px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .btn-apply-nav:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
+    ${CINNABAR_CSS}
 
     /* Main Container */
     .container {
       width: 100%;
-      max-width: 840px;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 36px 20px 80px;
       display: flex;
       flex-direction: column;
       gap: 56px;
@@ -216,28 +76,27 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       align-items: center;
       gap: 8px;
       padding: 5px 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
-      border-radius: 9999px;
-      font-size: 0.76rem;
+      background: var(--graphite);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
       color: var(--text-muted);
       font-family: var(--font-mono);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .hero-title {
-      font-size: clamp(2.2rem, 6vw, 3.6rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-size: clamp(2.3rem, 6vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
       line-height: 1.12;
-      color: #ffffff;
-      max-width: 720px;
+      color: var(--text);
+      max-width: 740px;
     }
 
     .hero-subtitle {
-      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
       color: var(--text-muted);
-      max-width: 580px;
+      max-width: 600px;
       line-height: 1.6;
     }
 
@@ -247,41 +106,6 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       flex-wrap: wrap;
       justify-content: center;
       margin-top: 6px;
-    }
-
-    .btn-primary {
-      background: #ffffff;
-      color: #09090b;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-primary:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
-      font-weight: 500;
-      padding: 12px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      border: 1px solid var(--surface-border);
-      transition: all 0.2s;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
     }
 
     /* Metrics Grid */
@@ -299,40 +123,43 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
     }
 
     .metric-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 14px;
-      padding: 18px 16px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      gap: 6px;
+      transition: border-color var(--dur-slow) ease;
+    }
+
+    .metric-card:hover {
+      border-color: var(--sindoor);
     }
 
     .metric-val {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #ffffff;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text);
       font-family: var(--font-mono);
       letter-spacing: -0.02em;
     }
 
     .metric-label {
-      font-size: 0.75rem;
-      color: var(--text-dim);
+      font-size: 11px;
+      color: var(--text-faint);
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.08em;
       font-weight: 600;
     }
 
-    /* Specimen Terminal Preview */
+    /* Terminal Preview Specimen */
     .specimen-card {
-      background: #090a0d;
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      background: var(--obsidian);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 22px;
     }
 
     .specimen-header {
@@ -341,154 +168,113 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       align-items: center;
       margin-bottom: 14px;
       padding-bottom: 10px;
-      border-bottom: 1px solid var(--surface-border-subtle);
+      border-bottom: 1px solid var(--line);
     }
 
     .specimen-title {
-      font-size: 0.78rem;
+      font-size: 12px;
       font-family: var(--font-mono);
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      color: var(--text-faint);
     }
 
-    .specimen-code {
+    .specimen-body {
       font-family: var(--font-mono);
-      font-size: clamp(0.78rem, 2.4vw, 0.85rem);
+      font-size: 13px;
       line-height: 1.7;
-      color: var(--text-main);
+      color: var(--text-soft);
       overflow-x: auto;
     }
 
-    .blip-preview-line {
-      background: rgba(255, 255, 255, 0.04);
-      border-left: 2px solid #ffffff;
-      padding: 4px 10px;
-      margin: 6px 0;
-      border-radius: 0 4px 4px 0;
-      color: #ffffff;
-    }
-
-    /* Advantages Bento */
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-
-    .section-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 22px;
-      line-height: 1.5;
-    }
-
-    .advantages-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    @media (min-width: 600px) {
-      .advantages-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .adv-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 16px;
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
-
-    .adv-badge {
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
-
-    .adv-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-    }
-
-    .adv-text {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.55;
+    .specimen-blip {
+      color: var(--sindoor-text);
+      font-weight: 500;
     }
 
     /* Tiers Grid */
+    .tiers-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-align: center;
+    }
+
     .tiers-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 20px;
     }
 
-    @media (min-width: 720px) {
+    @media (min-width: 768px) {
       .tiers-grid {
         grid-template-columns: repeat(3, 1fr);
       }
     }
 
     .tier-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 18px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 20px;
       position: relative;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color var(--dur-slow) ease;
+    }
+
+    .tier-card:hover {
+      border-color: var(--sindoor);
     }
 
     .tier-card.featured {
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      border-color: var(--line-stronger);
+      background: var(--graphite);
     }
 
-    .tier-featured-tag {
+    .tier-badge {
       position: absolute;
       top: -10px;
-      right: 18px;
-      background: #ffffff;
-      color: #09090b;
-      font-size: 0.65rem;
+      right: 20px;
+      background: var(--sindoor);
+      color: var(--obsidian);
+      font-size: 11px;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 9999px;
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-
-    .tier-header {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
     }
 
     .tier-name {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #ffffff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .tier-price {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 8px 0 4px;
+    }
+
+    .tier-period {
+      font-size: 13px;
+      color: var(--text-faint);
+      font-weight: 400;
     }
 
     .tier-desc {
-      font-size: 0.82rem;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -497,432 +283,191 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      padding: 0;
-      margin: 10px 0;
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-soft);
     }
 
-    .tier-features li {
-      font-size: 0.82rem;
-      color: var(--text-muted);
+    .tier-feature {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .tier-features li::before {
-      content: '✓';
-      color: var(--status-green);
-      font-weight: 700;
+    .tier-feature::before {
+      content: "•";
+      color: var(--sindoor);
+      font-size: 1.2rem;
+      line-height: 0;
     }
 
-    .btn-tier {
-      background: rgba(255, 255, 255, 0.06);
-      color: #ffffff;
-      border: 1px solid var(--surface-border);
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-tier:hover {
-      background: #ffffff;
-      color: #09090b;
-      border-color: #ffffff;
-    }
-
-    /* Sponsor Application Form */
-    .form-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(24px, 5vw, 36px);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .form-input, .form-select, .form-textarea {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      color: #ffffff;
-      font-family: var(--font-sans);
-      font-size: 0.88rem;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    @media (min-width: 600px) {
-      .form-grid-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .btn-submit {
-      background: #ffffff;
-      color: #09090b;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      font-size: 0.92rem;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-submit:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
-
-    .form-success-box {
-      display: none;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 18px;
-      border-radius: 12px;
-      color: #ffffff;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    footer {
+    /* Google AdSense Container */
+    .adsense-container {
       width: 100%;
-      border-top: 1px solid var(--surface-border);
-      padding: 36px 16px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
+      margin: 20px 0;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
       text-align: center;
+      min-height: 90px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-links {
-      display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
     }
 
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-links a:hover {
-      color: #ffffff;
+    .adsense-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Island Navbar -->
-  <header class="nav-wrapper">
-    <nav class="nav-island">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
-          tdrop
-        </div>
-      </a>
-      <div class="nav-actions">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/docs" class="nav-link">Docs</a>
-        <a href="/about" class="nav-link">About</a>
-        <a href="#tiers" class="nav-link">Tiers</a>
-        <a href="#apply" class="btn-apply-nav">Apply Now</a>
-      </div>
-    </nav>
-  </header>
+  ${renderCinnabarNav("sponsor", domain)}
 
-  <div class="container">
-
-    <!-- Hero -->
+  <main class="container">
+    <!-- Hero Section -->
     <section class="hero">
       <div class="hero-chip">
-        <span>Terminal Real Estate</span>
-        <span style="color:var(--surface-border);">/</span>
-        <span style="color:#ffffff;">0% AdBlock Rate</span>
-        <span style="color:var(--surface-border);">/</span>
-        <span>3%–8% CTR</span>
+        <span>0% AdBlock</span>
+        <span>·</span>
+        <span>High-Intent Engineers</span>
+        <span>·</span>
+        <span>Realtime Telemetry</span>
       </div>
-      <h1 class="hero-title">
-        Sponsor the command line.<br>Reach developers where they ship.
-      </h1>
-      <p class="hero-subtitle">
-        Feature your developer tool, database, cloud infra, or API directly inside npx tdrop CLI runs and edge download pages with verifiable impression and click telemetry.
-      </p>
+
+      <h1 class="hero-title">Sponsor the command line.</h1>
+      <p class="hero-subtitle">Promote your developer platform, cloud tool, or API directly inside <code>npx tdrop</code> terminal stdout runs and web download screens.</p>
+
       <div class="hero-actions">
-        <a href="#apply" class="btn-primary">Apply for Sponsorship</a>
-        <a href="#specimen" class="btn-secondary">View CLI Specimen</a>
+        <a href="#tiers" class="btn btn-primary">
+          <span>Explore Packages</span>
+          <span class="btn-icon">→</span>
+        </a>
+        <a href="/stats" class="btn btn-secondary">View Live Telemetry</a>
       </div>
     </section>
 
-    <!-- Key Metrics Bar -->
-    <div class="metrics-bar">
+    <!-- Metrics Bar -->
+    <section class="metrics-bar">
       <div class="metric-card">
-        <div class="metric-val">0%</div>
-        <div class="metric-label">AdBlock Rate</div>
+        <span class="metric-val">0%</span>
+        <span class="metric-label">AdBlock Rate</span>
       </div>
       <div class="metric-card">
-        <div class="metric-val">3%–8%</div>
-        <div class="metric-label">Average CTR</div>
+        <span class="metric-val">3.8%</span>
+        <span class="metric-label">Average CTR</span>
       </div>
       <div class="metric-card">
-        <div class="metric-val">300+</div>
-        <div class="metric-label">Global Edge PoPs</div>
+        <span class="metric-val">300+</span>
+        <span class="metric-label">Edge PoP Reach</span>
       </div>
       <div class="metric-card">
-        <div class="metric-val">100%</div>
-        <div class="metric-label">Technical Audience</div>
+        <span class="metric-val">100%</span>
+        <span class="metric-label">Active Engineers</span>
       </div>
-    </div>
+    </section>
 
-    <!-- Specimen Preview -->
-    <div class="specimen-card" id="specimen">
+    <!-- Terminal Preview Specimen -->
+    <section class="specimen-card">
       <div class="specimen-header">
-        <span class="specimen-title">Terminal Specimen: How Developers See Your Brand</span>
-        <span style="font-size:0.75rem; color:var(--text-dim); font-family:var(--font-mono);">stdout stream</span>
+        <span class="specimen-title">Terminal Stdout Specimen</span>
+        <span class="badge" style="font-size: 11px;"><span class="badge-dot success"></span>Clean Delivery</span>
       </div>
-      <div class="specimen-code">
-        <div><span style="color:var(--text-dim);">$</span> npx tdrop release-v2.0.0.tar.gz</div>
-        <div class="blip-preview-line">
-          <span style="color:var(--text-dim);">[Sponsored by YourCompany]</span> Fast serverless edge database with instant branching <span style="text-decoration:underline;">https://${domain}/ad/your-company</span>
-        </div>
-        <div>Uploading [████████████████████████] 100% | 5.2 MB/s</div>
-        <div style="color:var(--status-green); margin-top: 4px;">✔ Upload complete!</div>
-        <div style="color:var(--text-muted);">  🔗 Link: https://${domain}/x9kP2m4</div>
-      </div>
-    </div>
-
-    <!-- The Unfair Advantage Bento -->
-    <section>
-      <h2 class="section-title">The Unfair Advantage</h2>
-      <p class="section-desc">Traditional web banners suffer 60–80% AdBlock usage among developers. Terminal sponsorships operate where adblockers cannot exist.</p>
-      
-      <div class="advantages-grid">
-        <div class="adv-card">
-          <div class="adv-badge">Visibility</div>
-          <h3 class="adv-title">Zero AdBlock Dropoff</h3>
-          <p class="adv-text">Your message is delivered straight to the terminal stdout. Every developer running an upload sees your brand, headline, and link.</p>
-        </div>
-        <div class="adv-card">
-          <div class="adv-badge">Engagement</div>
-          <h3 class="adv-title">3% to 8% Click-Through</h3>
-          <p class="adv-text">Developers click terminal links because they are context-aware, relevant, and clean. Every click is routed via high-speed 302 tracking.</p>
-        </div>
-        <div class="adv-card">
-          <div class="adv-badge">Audience</div>
-          <h3 class="adv-title">Active Builders & DevOps</h3>
-          <p class="adv-text">Users are shipping logs, databases, build artifacts, and test fixtures. They make architectural tooling and infrastructure decisions daily.</p>
-        </div>
-        <div class="adv-card">
-          <div class="adv-badge">Verifiable Data</div>
-          <h3 class="adv-title">Transparent Realtime Proof</h3>
-          <p class="adv-text">Access live dashboards at /stats showing impressions, clicks, and geographic breakdowns across 300+ Cloudflare edge nodes.</p>
-        </div>
+      <div class="specimen-body">
+        <div><span style="color:var(--text-faint);">$</span> npx tdrop production-dump.sql</div>
+        <div class="specimen-blip">⚡ [Sponsored] PlanetScale — Serverless MySQL with instant branching: https://${domain}/ad/planetscale</div>
+        <div>Uploading [████████████████████] 100% · 14.2 MB/s</div>
+        <div style="color:var(--success-text);">✔ Drop complete! Auto-expires in 24 hours.</div>
+        <div>Link: <span style="color:var(--text);">https://${domain}/a9kL3x2</span></div>
       </div>
     </section>
 
-    <!-- Sponsorship Tiers -->
-    <section id="tiers">
-      <h2 class="section-title">Sponsorship Packages</h2>
-      <p class="section-desc">Flexible packages tailored for devtools, cloud hosting providers, databases, and engineering platforms.</p>
+    <!-- Sponsorship Tiers Grid -->
+    <section class="tiers-section" id="tiers">
+      <h2 class="section-title">Transparent Sponsorship Packages</h2>
 
       <div class="tiers-grid">
+        <!-- Starter Tier -->
         <div class="tier-card">
-          <div class="tier-header">
-            <h3 class="tier-name">Terminal Blip</h3>
-            <p class="tier-desc">Direct text placement inside npx tdrop CLI runs.</p>
+          <div>
+            <div class="tier-name">Starter</div>
+            <div class="tier-price">$99<span class="tier-period"> / mo</span></div>
+            <p class="tier-desc">Ideal for developer tools and indie hackers looking to build consistent mindshare.</p>
+            <ul class="tier-features">
+              <li class="tier-feature">20,000+ Terminal Blip runs</li>
+              <li class="tier-feature">Clean text stdout attribution</li>
+              <li class="tier-feature">Web download landing placement</li>
+              <li class="tier-feature">Real-time CTR telemetry</li>
+            </ul>
           </div>
-          <ul class="tier-features">
-            <li>Single-line CLI blip</li>
-            <li>Weighted random rotation</li>
-            <li>Direct 302 click tracking</li>
-            <li>Live analytics dashboard</li>
-            <li>Custom target URL</li>
-          </ul>
-          <a href="#apply" class="btn-tier" onclick="selectTier('Terminal Blip')">Select Package</a>
+          <a href="mailto:support@ethiccode.in?subject=Starter%20Sponsorship%20Inquiry" class="btn btn-secondary" style="width:100%; justify-content:center;">
+            <span>Apply for Starter</span>
+          </a>
         </div>
 
+        <!-- Growth Pro Tier -->
         <div class="tier-card featured">
-          <div class="tier-featured-tag">Most Popular</div>
-          <div class="tier-header">
-            <h3 class="tier-name">Full-Stack Bundle</h3>
-            <p class="tier-desc">Terminal blip + right-rail web showcase on all download pages.</p>
+          <span class="tier-badge">Most Popular</span>
+          <div>
+            <div class="tier-name">Growth Pro</div>
+            <div class="tier-price">$249<span class="tier-period"> / mo</span></div>
+            <p class="tier-desc">High-frequency terminal exposure across all CLI transfers and top-tier web banners.</p>
+            <ul class="tier-features">
+              <li class="tier-feature">60,000+ Terminal Blip runs</li>
+              <li class="tier-feature">Priority rotation & custom URL</li>
+              <li class="tier-feature">Homepage sponsor banner showcase</li>
+              <li class="tier-feature">Weekly analytics report</li>
+            </ul>
           </div>
-          <ul class="tier-features">
-            <li>High-priority CLI blip weight</li>
-            <li>Desktop web sponsor card</li>
-            <li>Download page brand visibility</li>
-            <li>Full click and impression audits</li>
-            <li>Weekly performance reports</li>
-          </ul>
-          <a href="#apply" class="btn-tier" style="background:#ffffff; color:#09090b;" onclick="selectTier('Full-Stack Bundle')">Select Package</a>
+          <a href="mailto:support@ethiccode.in?subject=Growth%20Pro%20Sponsorship%20Inquiry" class="btn btn-primary" style="width:100%; justify-content:space-between;">
+            <span>Apply for Growth Pro</span>
+            <span class="btn-icon">→</span>
+          </a>
         </div>
 
+        <!-- Title Partner Tier -->
         <div class="tier-card">
-          <div class="tier-header">
-            <h3 class="tier-name">Category Exclusive</h3>
-            <p class="tier-desc">100% share of voice for your devtool industry category.</p>
+          <div>
+            <div class="tier-name">Title Partner</div>
+            <div class="tier-price">$599<span class="tier-period"> / mo</span></div>
+            <p class="tier-desc">Exclusive command line category sponsor with persistent brand logo presence.</p>
+            <ul class="tier-features">
+              <li class="tier-feature">150,000+ Terminal Blip runs</li>
+              <li class="tier-feature">Exclusive industry exclusivity</li>
+              <li class="tier-feature">Sidebar sticky card on all views</li>
+              <li class="tier-feature">GitHub README & docs footer</li>
+            </ul>
           </div>
-          <ul class="tier-features">
-            <li>Exclusive category lockout</li>
-            <li>Highest impression priority</li>
-            <li>Homepage sponsor badge</li>
-            <li>Custom CTA copy iterations</li>
-            <li>Dedicated account support</li>
-          </ul>
-          <a href="#apply" class="btn-tier" onclick="selectTier('Category Exclusive')">Select Package</a>
+          <a href="mailto:support@ethiccode.in?subject=Title%20Partner%20Sponsorship%20Inquiry" class="btn btn-secondary" style="width:100%; justify-content:center;">
+            <span>Contact Partners Team</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Sponsor Application Form -->
-    <section id="apply">
-      <h2 class="section-title">Apply for Sponsorship</h2>
-      <p class="section-desc">Submit your company details below. Our team reviews all applications within 24 hours to ensure high relevance for developers.</p>
-
-      <div class="form-card">
-        <div class="form-success-box" id="successBox">
-          <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">Application Received!</div>
-          Thank you for applying to sponsor tdrop. We will review your developer tool and contact you with onboarding details and real-time campaign credentials within 24 hours.
-        </div>
-
-        <form id="sponsorForm" onsubmit="submitSponsorInquiry(event)">
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label" for="companyName">Company / Tool Name *</label>
-              <input type="text" id="companyName" class="form-input" placeholder="e.g. Neon, Supabase, Vercel" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="workEmail">Work Email *</label>
-              <input type="email" id="workEmail" class="form-input" placeholder="you@company.com" required>
-            </div>
-          </div>
-
-          <div class="form-grid-2" style="margin-top:14px;">
-            <div class="form-group">
-              <label class="form-label" for="websiteUrl">Website / Target Product URL *</label>
-              <input type="url" id="websiteUrl" class="form-input" placeholder="https://yourcompany.com" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="packageSelect">Interested Package</label>
-              <select id="packageSelect" class="form-select">
-                <option value="Terminal Blip">Terminal Blip</option>
-                <option value="Full-Stack Bundle" selected>Full-Stack Bundle (CLI + Web)</option>
-                <option value="Category Exclusive">Category Exclusive Takeover</option>
-                <option value="Custom Campaign">Custom Campaign / Inquiries</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group" style="margin-top:14px;">
-            <label class="form-label" for="message">Proposed Headline / Message / Goals</label>
-            <textarea id="message" class="form-textarea" rows="4" placeholder="Briefly describe what your developer tool does and your target audience (e.g. backend developers, DevOps engineers)."></textarea>
-          </div>
-
-          <div style="margin-top:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-            <button type="submit" id="submitBtn" class="btn-submit">Submit Sponsorship Application</button>
-            <span style="font-size:0.78rem; color:var(--text-dim); font-family:var(--font-mono);">Or email: <a href="mailto:support@ethiccode.in" style="color:inherit; text-decoration:underline;">support@ethiccode.in</a></span>
-          </div>
-        </form>
-      </div>
-    </section>
-
-  </div>
-
-  <footer>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/docs">Documentation</a>
-      <a href="/about">About</a>
-      <a href="/stats">Telemetry Stats</a>
-      <a href="/sponsor">Sponsorship</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/sitemap.xml">Sitemap</a>
-      <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
+    <!-- Google AdSense Container -->
+    <div class="adsense-container" aria-label="Advertisement">
+      <span class="adsense-label">ADVERTISEMENT</span>
+      <ins class="adsbygoogle"
+           style="display:block; width:100%;"
+           data-ad-client="ca-pub-2876380604791121"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
     </div>
-    <p>tdrop · Ephemeral File Sharing · Open Source under the MIT License</p>
-  </footer>
+  </main>
 
-  <script>
-    function selectTier(name) {
-      const select = document.getElementById('packageSelect');
-      if (select) select.value = name;
-    }
-
-    async function submitSponsorInquiry(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const origText = btn.textContent;
-      btn.textContent = 'Submitting...';
-      btn.disabled = true;
-
-      const payload = {
-        company: document.getElementById('companyName').value,
-        email: document.getElementById('workEmail').value,
-        website: document.getElementById('websiteUrl').value,
-        package: document.getElementById('packageSelect').value,
-        message: document.getElementById('message').value,
-        timestamp: Date.now()
-      };
-
-      try {
-        const res = await fetch('/api/sponsor-inquiry', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        document.getElementById('sponsorForm').style.display = 'none';
-        document.getElementById('successBox').style.display = 'block';
-      } catch (err) {
-        // Fallback: mailto
-        window.location.href = 'mailto:support@ethiccode.in?subject=Sponsorship Inquiry: ' + encodeURIComponent(payload.company) + '&body=' + encodeURIComponent(JSON.stringify(payload, null, 2));
-        document.getElementById('sponsorForm').style.display = 'none';
-        document.getElementById('successBox').style.display = 'block';
-      }
-    }
-  </script>
+  ${renderCinnabarFooter(domain)}
 </body>
 </html>`;
 }

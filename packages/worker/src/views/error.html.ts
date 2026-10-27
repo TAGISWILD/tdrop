@@ -1,7 +1,9 @@
+import { CINNABAR_FONTS_HTML, CINNABAR_CSS, renderCinnabarNav, renderCinnabarFooter } from "./cinnabar.js";
+
 export function renderErrorPage(
   statusCode: number = 404,
   title: string = "File Expired or Not Found",
-  message: string = "This ephemeral transfer has reached its expiration window and was permanently incinerated from Cloudflare R2 storage.",
+  message: string = "This ephemeral transfer has reached its expiration window and was permanently incinerated from edge storage.",
   domain: string = "tdrop.link"
 ): string {
   return `<!DOCTYPE html>
@@ -12,6 +14,9 @@ export function renderErrorPage(
   <title>${statusCode} · ${title} · tdrop</title>
   <meta name="description" content="${message}">
   
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0B0B0D">
+
   <!-- Favicons & App Icons -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
@@ -30,9 +35,7 @@ export function renderErrorPage(
   <meta name="twitter:description" content="${message}">
   <meta name="twitter:image" content="https://${domain}/assets/preview.png">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  ${CINNABAR_FONTS_HTML}
 
   <!-- Active Google AdSense Tag -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2876380604791121" crossorigin="anonymous"></script>
@@ -47,229 +50,72 @@ export function renderErrorPage(
   </script>
 
   <style>
-    :root {
-      --bg: #09090b;
-      --surface: #111216;
-      --surface-raised: #18191f;
-      --surface-border: rgba(255, 255, 255, 0.08);
-      --surface-border-subtle: rgba(255, 255, 255, 0.04);
-      --surface-border-hover: rgba(255, 255, 255, 0.18);
-      --text-main: #f4f4f5;
-      --text-muted: #a1a1aa;
-      --text-dim: #71717a;
-      --status-green: #10b981;
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      min-height: 100dvh;
-      width: 100%;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255, 255, 255, 0.04), transparent 60%);
-      background-attachment: fixed;
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-
-    /* Floating Island Navbar */
-    .nav-wrapper {
-      position: sticky;
-      top: 16px;
-      z-index: 100;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 16px;
-      pointer-events: none;
-    }
-
-    .nav-island {
-      pointer-events: auto;
-      background: rgba(14, 15, 20, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--surface-border);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      padding: 8px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-logo {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #ffffff;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      font-size: 0.65rem;
-      font-family: var(--font-mono);
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    .status-dot {
-      width: 5px;
-      height: 5px;
-      background: var(--status-green);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--status-green);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-sm-ghost {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 5px 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      border-radius: 9999px;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-sm-ghost:hover {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-sponsor-nav {
-      background: #ffffff;
-      color: #09090b !important;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .btn-sponsor-nav:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
+    ${CINNABAR_CSS}
 
     /* Master Layout */
     .site-wrapper {
       width: 100%;
-      max-width: 1040px;
+      max-width: 1120px;
       margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       gap: 36px;
-      padding: 40px 16px 80px;
+      padding: 32px 16px 80px;
       min-height: 100vh;
     }
 
-    /* Center Content Container */
     .content-container {
       width: 100%;
-      max-width: 600px;
-      flex: 1 1 600px;
+      max-width: 680px;
+      flex: 1 1 680px;
       min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* Error Card */
+    /* Error Main Card */
     .error-card {
       width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: clamp(24px, 5vw, 40px);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: clamp(32px, 6vw, 48px) clamp(20px, 4vw, 36px);
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       gap: 18px;
+      margin-top: 24px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
     }
 
-    .error-icon-box {
+    /* Error Badge with Cool Rose-Red (Never Sindoor) */
+    .error-symbol-ring {
       width: 64px;
       height: 64px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--surface-border);
+      border-radius: 50%;
+      background: var(--danger-tint);
+      border: 1px solid rgba(225, 29, 72, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    }
-
-    .error-code-badge {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      padding: 3px 10px;
-      border-radius: 9999px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      color: var(--danger);
+      margin-bottom: 4px;
     }
 
     .error-title {
-      font-size: clamp(1.4rem, 4.5vw, 1.85rem);
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.03em;
+      font-size: clamp(1.4rem, 4vw, 1.85rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
       line-height: 1.25;
+      max-width: 520px;
     }
 
     .error-desc {
-      font-size: clamp(0.85rem, 2.6vw, 0.95rem);
+      font-size: 15px;
       color: var(--text-muted);
       line-height: 1.6;
       max-width: 480px;
@@ -278,59 +124,42 @@ export function renderErrorPage(
     .error-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      align-items: center;
       justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
       width: 100%;
-      margin-top: 8px;
-    }
-
-    .btn-solid-white {
-      background: #ffffff;
-      color: #09090b;
-      font-weight: 600;
-      font-size: 0.9rem;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-solid-white:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
     }
 
     .cli-cmd-box {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--surface-border);
-      border-radius: 10px;
-      padding: 11px 16px;
+      background: var(--obsidian);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      padding: 9px 18px;
       font-family: var(--font-mono);
-      font-size: 0.82rem;
+      font-size: 13px;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all var(--dur-fast) ease;
       user-select: none;
     }
 
     .cli-cmd-box:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      color: var(--text-main);
+      border-color: var(--sindoor);
+      color: var(--text);
     }
 
     /* Right Sticky Sponsor Rail */
     .sponsor-rail {
       display: none;
-      width: 240px;
-      flex: 0 0 240px;
+      width: 250px;
+      flex: 0 0 250px;
     }
 
-    @media (min-width: 1040px) {
+    @media (min-width: 1060px) {
       .sponsor-rail {
         display: block;
       }
@@ -339,35 +168,38 @@ export function renderErrorPage(
     .sponsor-sticky-card {
       position: sticky;
       top: 96px;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: 18px;
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
       padding: 22px 18px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: border-color var(--dur-slow) ease;
+    }
+
+    .sponsor-sticky-card:hover {
+      border-color: var(--sindoor);
     }
 
     .sponsor-rail-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      color: var(--sindoor);
       font-family: var(--font-mono);
     }
 
     .sponsor-rail-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
       line-height: 1.3;
-      letter-spacing: -0.01em;
     }
 
     .sponsor-rail-desc {
-      font-size: 0.8rem;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.5;
     }
@@ -375,125 +207,69 @@ export function renderErrorPage(
     .sponsor-rail-stats {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--surface-border-subtle);
+      gap: 8px;
+      background: var(--obsidian);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
     }
 
     .sponsor-stat-pill {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: #ffffff;
+      font-size: 12px;
+      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .sponsor-stat-pill::before {
-      content: '•';
-      color: var(--status-green);
-    }
-
-    .btn-sponsor-rail {
-      background: #ffffff;
-      color: #09090b;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.12);
-      transition: all 0.2s;
-    }
-
-    .btn-sponsor-rail:hover {
-      background: #f4f4f5;
-      transform: translateY(-1px);
-    }
-
-    /* Footer */
-    footer {
-      width: 100%;
-      margin-top: 36px;
-      padding: 24px 16px;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
       gap: 8px;
     }
 
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .footer-links a:hover {
-      color: #ffffff;
+    .sponsor-stat-pill::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Island Navbar -->
-  <header class="nav-wrapper">
-    <nav class="nav-island">
-      <a href="/" class="brand-wrap">
-        <div class="brand-logo">
-          <img src="/assets/logo-128.png" alt="tdrop" width="22" height="22" style="border-radius: 5px; object-fit: contain; flex-shrink: 0;">
-          tdrop
-        </div>
-      </a>
-      <div class="nav-actions">
-        <a href="/" class="btn-sm-ghost">Home</a>
-        <a href="/sponsor" class="btn-sponsor-nav">Sponsor Us</a>
-      </div>
-    </nav>
-  </header>
+  ${renderCinnabarNav("error", domain)}
 
   <div class="site-wrapper">
-
-    <!-- Center Column -->
     <div class="content-container">
 
       <main class="error-card">
-        <div class="error-icon-box">⏳</div>
-        <div class="error-code-badge">${statusCode} · Ephemeral Auto-Purge</div>
+        <div class="error-symbol-ring">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+
+        <span class="badge" style="border-color: rgba(225, 29, 72, 0.35); color: var(--danger-text);">
+          <span class="badge-dot danger"></span>
+          HTTP ${statusCode} · Ephemeral Auto-Purge
+        </span>
+
         <h1 class="error-title">${title}</h1>
         <p class="error-desc">${message}</p>
         
         <div class="error-actions">
-          <a href="/" class="btn-solid-white">Upload New File</a>
-          <div class="cli-cmd-box" onclick="copySnippet('npx tdrop <file>')">
-            <code>$ npx tdrop &lt;file&gt;</code>
-            <span style="font-size:0.75rem; color:var(--text-dim);">Copy</span>
-          </div>
+          <a href="/" class="btn btn-primary">
+            <span>Drop a new file</span>
+            <span class="btn-icon">→</span>
+          </a>
+          <button class="cli-cmd-box" onclick="copyNavCli('npx tdrop <file>', this)" title="Copy CLI Command">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+            <span><code>npx tdrop &lt;file&gt;</code></span>
+          </button>
         </div>
       </main>
-
-      <footer>
-        <div class="footer-links">
-          <a href="/">Home</a>
-          <a href="/sponsor">Sponsorship</a>
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="https://github.com/tagiswild/tdrop" target="_blank" rel="noopener">GitHub</a>
-        </div>
-        <p>Powered by <a href="/" style="color:var(--text-muted); text-decoration:none;">tdrop</a> · Zero egress fees · Zero logs · End-to-end ephemeral</p>
-      </footer>
 
     </div>
 
@@ -502,30 +278,30 @@ export function renderErrorPage(
       <div class="sponsor-sticky-card">
         <div class="sponsor-rail-tag">Sponsorship</div>
         <h3 class="sponsor-rail-title">Sponsor the Command Line</h3>
-        <p class="sponsor-rail-desc">Reach active developers directly on terminal stdout and edge downloads. 0% AdBlock and high CTR.</p>
+        <p class="sponsor-rail-desc">Promote your developer platform or cloud service directly inside npx tdrop CLI runs and edge downloads.</p>
         <div class="sponsor-rail-stats">
           <div class="sponsor-stat-pill">0% AdBlock in Terminal</div>
           <div class="sponsor-stat-pill">3%–8% Average CTR</div>
           <div class="sponsor-stat-pill">300+ Edge PoP Reach</div>
         </div>
-        <a href="/sponsor" class="btn-sponsor-rail">Sponsor Us →</a>
+        <a href="/sponsor" class="btn btn-primary" style="justify-content: space-between;">
+          <span>Sponsor Us</span>
+          <span class="btn-icon">→</span>
+        </a>
       </div>
     </aside>
-
   </div>
 
+  ${renderCinnabarFooter(domain)}
+
   <script>
-    function copySnippet(text) {
+    function copyNavCli(text, elem) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => alert('Copied: ' + text));
-      } else {
-        const temp = document.createElement('input');
-        temp.value = text;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
-        alert('Copied: ' + text);
+        navigator.clipboard.writeText(text).then(() => {
+          const orig = elem.innerHTML;
+          elem.innerHTML = '<span>Copied!</span>';
+          setTimeout(() => elem.innerHTML = orig, 1800);
+        });
       }
     }
   </script>
