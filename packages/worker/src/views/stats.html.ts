@@ -250,19 +250,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       border: 1px solid rgba(234, 179, 8, 0.3);
     }
 
-    /* Live Feed & Infrastructure Split */
-    .dashboard-split {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-
-    @media (min-width: 960px) {
-      .dashboard-split {
-        grid-template-columns: 1.4fr 1fr;
-      }
-    }
-
     .dash-panel {
       background: var(--graphite);
       border: 1px solid var(--line);
@@ -288,52 +275,10 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       letter-spacing: -0.01em;
     }
 
-    /* Live Feed Table (Cinnabar Data Table: Quiet Dividers, No Zebra) */
-    .events-table-wrap {
-      overflow-x: auto;
-      max-height: 480px;
-    }
-
-    .events-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      text-align: left;
-    }
-
-    .events-table th {
-      padding: 10px 12px;
-      font-weight: 500;
-      color: var(--text-faint);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .events-table td {
-      padding: 12px;
-      border-bottom: 1px solid var(--line);
-      color: var(--text-soft);
-      vertical-align: middle;
-    }
-
-    .events-table tr:hover td {
-      background: var(--graphite-raised);
-    }
-
-    .mono-cell {
-      font-family: var(--font-mono);
-    }
-
-    .right-align {
-      text-align: right;
-    }
-
     /* Edge Region Map */
     .map-box {
       width: 100%;
-      height: 240px;
+      height: 280px;
       background: var(--obsidian);
       border: 1px solid var(--line);
       border-radius: var(--radius-md);
@@ -472,23 +417,14 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       </div>
 
       <div class="header-controls">
-        <button class="btn-control active" id="btnToggleStream" onclick="toggleStream()">
-          <span id="streamStateIcon">⏸</span>
-          <span id="streamStateText">Live Feed Active</span>
-        </button>
-        <button class="btn-control" id="btnSeedDrop" onclick="seedSampleDrop()">
-          <span>⚡</span>
-          <span>Generate Test Drop</span>
-        </button>
         <button class="btn-control" onclick="exportStatsJson()">
           <span>↓</span>
           <span>Export JSON</span>
         </button>
-        <button class="btn-control" id="btnInstantUpload" onclick="document.getElementById('instantFileInput').click()">
-          <span>+</span>
-          <span>Drop File</span>
+        <button class="btn-control" onclick="openSponsorModal()">
+          <span>⚡</span>
+          <span>Sponsor CLI</span>
         </button>
-        <input type="file" id="instantFileInput" style="display:none;" onchange="handleInstantUpload(this.files)">
       </div>
     </header>
 
@@ -547,73 +483,40 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       </div>
     </section>
 
-    <!-- Split: Live Drop Feed & Edge Map -->
-    <div class="dashboard-split">
-      <!-- Live Drop Feed -->
-      <section class="dash-panel">
-        <div class="panel-header">
-          <h2 class="panel-title">Real-Time Drop Events</h2>
-          <span class="badge" id="streamLiveIndicator">
-            <span class="badge-dot success"></span>
-            Realtime Stream
-          </span>
-        </div>
+    <!-- Global Footprint & Distribution Map -->
+    <section class="dash-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Global Edge Nodes</h2>
+        <span class="badge">
+          <span class="badge-dot success"></span>
+          100% Operational
+        </span>
+      </div>
 
-        <div class="events-table-wrap">
-          <table class="events-table">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>File / Anonymized</th>
-                <th class="right-align">Size</th>
-                <th>TTL</th>
-                <th class="right-align">Age</th>
-              </tr>
-            </thead>
-            <tbody id="eventsTableBody">
-              <tr>
-                <td colspan="5" style="text-align:center; padding: 24px; color: var(--text-faint);">Loading live telemetry data...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <div class="map-box" id="mapContainer">
+        <svg class="map-svg" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M150,120 Q180,90 260,110 T320,160 T280,240 T180,260 Z" fill="#232328"/>
+          <path d="M450,90 Q540,70 600,100 T680,180 T590,260 T480,210 Z" fill="#232328"/>
+          <path d="M720,140 Q840,110 900,160 T890,280 T760,290 Z" fill="#232328"/>
+          <path d="M280,300 Q360,280 380,360 T320,440 T240,380 Z" fill="#232328"/>
+          <path d="M780,340 Q860,330 880,390 T800,440 T740,390 Z" fill="#232328"/>
+        </svg>
 
-      <!-- Global Footprint & Distribution Map -->
-      <section class="dash-panel">
-        <div class="panel-header">
-          <h2 class="panel-title">Global Edge Nodes</h2>
-          <span class="badge">
-            <span class="badge-dot success"></span>
-            100% Operational
-          </span>
-        </div>
+        <!-- Interactive Node Dots -->
+        <div class="map-node" style="left: 22%; top: 32%;" data-name="SJC / San Jose" data-country="US" data-ping="12ms" data-share="28%" data-count="341"></div>
+        <div class="map-node" style="left: 31%; top: 36%;" data-name="IAD / Washington DC" data-country="US" data-ping="15ms" data-share="24%" data-count="290"></div>
+        <div class="map-node" style="left: 49%; top: 28%;" data-name="LHR / London" data-country="UK" data-ping="19ms" data-share="18%" data-count="214"></div>
+        <div class="map-node" style="left: 54%; top: 31%;" data-name="FRA / Frankfurt" data-country="DE" data-ping="22ms" data-share="14%" data-count="170"></div>
+        <div class="map-node" style="left: 71%; top: 48%;" data-name="BOM / Mumbai" data-country="IN" data-ping="24ms" data-share="9%" data-count="108"></div>
+        <div class="map-node" style="left: 82%; top: 52%;" data-name="SIN / Singapore" data-country="SG" data-ping="26ms" data-share="7%" data-count="85"></div>
 
-        <div class="map-box" id="mapContainer">
-          <svg class="map-svg" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M150,120 Q180,90 260,110 T320,160 T280,240 T180,260 Z" fill="#232328"/>
-            <path d="M450,90 Q540,70 600,100 T680,180 T590,260 T480,210 Z" fill="#232328"/>
-            <path d="M720,140 Q840,110 900,160 T890,280 T760,290 Z" fill="#232328"/>
-            <path d="M280,300 Q360,280 380,360 T320,440 T240,380 Z" fill="#232328"/>
-            <path d="M780,340 Q860,330 880,390 T800,440 T740,390 Z" fill="#232328"/>
-          </svg>
+        <div class="map-tooltip" id="mapTooltip"></div>
+      </div>
 
-          <!-- Interactive Node Dots -->
-          <div class="map-node" style="left: 22%; top: 32%;" data-name="SJC / San Jose" data-country="US" data-ping="12ms" data-share="28%" data-count="341"></div>
-          <div class="map-node" style="left: 31%; top: 36%;" data-name="IAD / Washington DC" data-country="US" data-ping="15ms" data-share="24%" data-count="290"></div>
-          <div class="map-node" style="left: 49%; top: 28%;" data-name="LHR / London" data-country="UK" data-ping="19ms" data-share="18%" data-count="214"></div>
-          <div class="map-node" style="left: 54%; top: 31%;" data-name="FRA / Frankfurt" data-country="DE" data-ping="22ms" data-share="14%" data-count="170"></div>
-          <div class="map-node" style="left: 71%; top: 48%;" data-name="BOM / Mumbai" data-country="IN" data-ping="24ms" data-share="9%" data-count="108"></div>
-          <div class="map-node" style="left: 82%; top: 52%;" data-name="SIN / Singapore" data-country="SG" data-ping="26ms" data-share="7%" data-count="85"></div>
-
-          <div class="map-tooltip" id="mapTooltip"></div>
-        </div>
-
-        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-top: 4px;">
-          Requests automatically route to the nearest Cloudflare Anycast edge data center to ensure zero-lag file uploads and range downloads.
-        </div>
-      </section>
-    </div>
+      <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-top: 4px;">
+        Requests automatically route to the nearest Cloudflare Anycast edge data center to ensure zero-lag file uploads and range downloads.
+      </div>
+    </section>
 
     <!-- Terminal Sponsorship Performance & Calculator -->
     <section class="dash-panel">
@@ -688,24 +591,26 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           <input type="url" id="sponsorUrl" class="input mono" placeholder="https://company.com" required>
         </div>
         <button type="submit" class="btn btn-primary" style="margin-top:8px; width:100%; justify-content:center;">
-          <span>Submit Inquiry</span>
-          <span class="btn-icon">→</span>
+          <span>Send Inquiry via WhatsApp</span>
+          <span class="btn-icon">💬</span>
         </button>
 
         <div id="statsSponsorSuccessBox" style="display:none; padding:12px; background:var(--obsidian); border:1px solid var(--line-strong); border-radius:var(--radius-md); font-size:12px; line-height:1.6; color:var(--text-soft);">
-          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Inquiry Prepared!</div>
-          If your email app didn't launch automatically, email us directly:
+          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Opening WhatsApp...</div>
+          If WhatsApp didn't open automatically, chat directly with EthicCode:
           <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
-            <code style="color:var(--text); font-size:12px; background:var(--graphite); padding:2px 8px; border-radius:4px;">support@ethiccode.in</code>
-            <button type="button" class="btn btn-secondary" onclick="copyStatsSupportEmail(this)" style="padding:3px 10px; font-size:11px;">Copy</button>
+            <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:4px 12px; font-size:12px; gap:6px;">
+              <span>Open WhatsApp (+91 91364 62454)</span>
+              <span class="btn-icon">💬</span>
+            </a>
           </div>
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px; font-size:12px; color:var(--text-faint);">
-          <span>Direct partner contact:</span>
-          <button type="button" class="btn btn-ghost" onclick="copyStatsSupportEmail(this)" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text);">
-            support@ethiccode.in 📋
-          </button>
+          <span>EthicCode WhatsApp Business:</span>
+          <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text); text-decoration:none;">
+            +91 91364 62454 💬
+          </a>
         </div>
       </form>
     </div>
@@ -714,36 +619,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
   ${renderCinnabarFooter(domain)}
 
   <script>
-    let isStreamActive = true;
     let pollInterval = null;
-
-    function renderRealEvents(events) {
-      const tbody = document.getElementById('eventsTableBody');
-      if (!tbody) return;
-
-      if (!events || !events.length) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 24px; color: var(--text-faint);">No recent transfer events recorded.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = events.slice(0, 15).map(e => \`
-        <tr>
-          <td class="mono-cell" style="color:var(--sindoor);"><a href="/\${e.code}" target="_blank" style="text-decoration:none; color:inherit;">\${e.code}</a></td>
-          <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">\${e.filename}</td>
-          <td class="mono-cell right-align">\${e.sizeFormatted}</td>
-          <td><span class="badge" style="font-size:11px; padding:2px 6px;">\${e.ttl}</span></td>
-          <td class="mono-cell right-align" style="color:var(--text-faint);">\${formatTimeAgo(e.timestamp)}</td>
-        </tr>
-      \`).join('');
-    }
-
-    function renderSources(sources) {
-      // Intentionally quiet
-    }
-
-    function renderCampaigns(campaigns) {
-      // Kept clean
-    }
 
     function renderMapNodes(regions) {
       const tooltip = document.getElementById('mapTooltip');
@@ -755,11 +631,10 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           const share = node.getAttribute('data-share');
           const count = node.getAttribute('data-count');
 
-          tooltip.innerHTML = \`
-            <div style="font-weight:600; color:var(--text); margin-bottom:2px;">\${country} · \${name}</div>
-            <div style="color:var(--success-text);">⚡ Latency: \${ping}</div>
-            <div style="color:var(--text-muted); font-size:11px;">Traffic Share: \${share} · \${count} drops</div>
-          \`;
+          tooltip.innerHTML =
+            '<div style="font-weight:600; color:var(--text); margin-bottom:2px;">' + country + ' · ' + name + '</div>' +
+            '<div style="color:var(--success-text);">⚡ Latency: ' + ping + '</div>' +
+            '<div style="color:var(--text-muted); font-size:11px;">Traffic Share: ' + share + ' · ' + count + ' drops</div>';
           tooltip.style.opacity = '1';
         });
 
@@ -773,48 +648,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
           tooltip.style.opacity = '0';
         });
       });
-    }
-
-    function formatTimeAgo(ts) {
-      const diffSec = Math.max(1, Math.floor((Date.now() - ts) / 1000));
-      if (diffSec < 60) return diffSec + 's ago';
-      if (diffSec < 3600) return Math.floor(diffSec / 60) + 'm ago';
-      return Math.floor(diffSec / 3600) + 'h ago';
-    }
-
-    async function seedSampleDrop() {
-      try {
-        const btn = document.getElementById('btnSeedDrop');
-        btn.textContent = '⚡ Seeding...';
-        const res = await fetch('/api/stats/seed', { method: 'POST' });
-        const data = await res.json();
-        btn.textContent = '✔ Seeded!';
-        setTimeout(() => { btn.innerHTML = '<span>⚡</span> Generate Test Drop'; }, 2000);
-        await fetchRealTelemetry();
-      } catch (err) {
-        alert('Failed to seed drop: ' + err.message);
-      }
-    }
-
-    function toggleStream() {
-      isStreamActive = !isStreamActive;
-      const btn = document.getElementById('btnToggleStream');
-      const icon = document.getElementById('streamStateIcon');
-      const text = document.getElementById('streamStateText');
-      const indicator = document.getElementById('streamLiveIndicator');
-
-      if (isStreamActive) {
-        btn.classList.add('active');
-        icon.textContent = '⏸';
-        text.textContent = 'Live Feed Active';
-        indicator.innerHTML = '<span class="badge-dot success"></span> Realtime Stream';
-        fetchRealTelemetry();
-      } else {
-        btn.classList.remove('active');
-        icon.textContent = '▶';
-        text.textContent = 'Feed Paused';
-        indicator.innerHTML = '<span class="badge-dot warning"></span> Paused';
-      }
     }
 
     function updateCalculator(val) {
@@ -845,41 +678,25 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       document.getElementById('sponsorModal').style.display = 'none';
     }
 
-    function copyStatsSupportEmail(btn) {
-      const email = 'support@ethiccode.in';
-      navigator.clipboard.writeText(email).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'Copied!';
-        setTimeout(() => { btn.innerText = orig; }, 2000);
-      }).catch(() => {
-        prompt('Copy support email:', email);
-      });
-    }
-
     function handleSponsorSubmit(e) {
       e.preventDefault();
-      const company = document.getElementById('sponsorCompany').value;
-      const email = document.getElementById('sponsorEmail').value;
+      const company = document.getElementById('sponsorCompany').value.trim();
+      const email = document.getElementById('sponsorEmail').value.trim();
       const tier = document.getElementById('sponsorTierSelect').value;
-      const url = document.getElementById('sponsorUrl').value;
+      const url = document.getElementById('sponsorUrl').value.trim();
 
-      const subject = encodeURIComponent('tdrop Sponsorship Inquiry: ' + company);
-      const body = encodeURIComponent(
-        'Company: ' + company + '\\n' +
-        'Contact Email: ' + email + '\\n' +
-        'Package: ' + tier + '\\n' +
-        'Destination URL: ' + url + '\\n\\n' +
-        'Hello tdrop team, we would like to sponsor tdrop terminal blips and web placement.'
-      );
+      const message =
+        'Hello EthicCode team, I would like to inquire about tdrop sponsorship:\\n\\n' +
+        '• Company / Tool: ' + company + '\\n' +
+        '• Contact Email: ' + email + '\\n' +
+        '• Selected Package: ' + tier + '\\n' +
+        '• Destination URL: ' + url;
 
       const successBox = document.getElementById('statsSponsorSuccessBox');
       if (successBox) successBox.style.display = 'block';
 
-      const dummyAnchor = document.createElement('a');
-      dummyAnchor.href = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
-      dummyAnchor.target = '_blank';
-      dummyAnchor.rel = 'noopener noreferrer';
-      dummyAnchor.click();
+      const waUrl = 'https://wa.me/919136462454?text=' + encodeURIComponent(message);
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
 
     function exportStatsJson() {
@@ -901,39 +718,6 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         });
     }
 
-    async function handleInstantUpload(files) {
-      if (!files || !files.length) return;
-      const file = files[0];
-      const btn = document.getElementById('btnInstantUpload');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<span>⏳</span> Uploading ' + file.name + '...';
-
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('ttl', '24h');
-
-      try {
-        const res = await fetch('/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (res.ok) {
-          const json = await res.json();
-          btn.innerHTML = '<span>✔</span> Uploaded ' + json.code + '!';
-          setTimeout(() => { btn.innerHTML = originalText; }, 2500);
-          await fetchRealTelemetry();
-        } else {
-          const errText = await res.text();
-          alert('Upload failed: ' + errText);
-          btn.innerHTML = originalText;
-        }
-      } catch (err) {
-        alert('Network upload failed: ' + err.message);
-        btn.innerHTML = originalText;
-      }
-    }
-
     function applyTelemetryData(data) {
       if (!data || !data.success) return;
 
@@ -953,14 +737,10 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       document.getElementById('countCtr').textContent = data.sponsorship.averageCtr;
       document.getElementById('impressionsText').textContent = 'Impressions: ' + data.sponsorship.totalBlipImpressions.toLocaleString();
 
-      renderRealEvents(data.recentEvents || []);
-      renderSources(data.community.sourcesBreakdown || {});
-      renderCampaigns(data.sponsorship.campaigns || []);
       renderMapNodes(data.globalFootprint.regions || []);
     }
 
     async function fetchRealTelemetry() {
-      if (!isStreamActive) return;
       try {
         const res = await fetch('/api/stats');
         const data = await res.json();
@@ -972,7 +752,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
     window.addEventListener('DOMContentLoaded', () => {
       fetchRealTelemetry();
-      pollInterval = setInterval(fetchRealTelemetry, 2000);
+      pollInterval = setInterval(fetchRealTelemetry, 3000);
     });
 
     window.addEventListener('keydown', (e) => {

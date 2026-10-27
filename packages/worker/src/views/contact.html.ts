@@ -244,6 +244,13 @@ export function renderContactPage(domain: string = "tdrop.link"): string {
           <div class="channel-desc">Interested in promoting your developer tool or cloud platform to terminal users across 300+ edge nodes?</div>
           <a href="/sponsor" class="channel-link">View Sponsor Options →</a>
         </div>
+
+        <div class="channel-box">
+          <div class="channel-icon">💬</div>
+          <div class="channel-title">WhatsApp Business</div>
+          <div class="channel-desc">Direct partnership and priority business support via EthicCode official business WhatsApp.</div>
+          <a href="https://wa.me/919136462454?text=Hello%20EthicCode%20team%2C%20I%20have%20an%20inquiry%20regarding%20tdrop" target="_blank" rel="noopener" class="channel-link">+91 91364 62454 💬 →</a>
+        </div>
       </div>
 
       <div class="policy-box">

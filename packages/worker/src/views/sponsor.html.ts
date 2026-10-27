@@ -537,24 +537,26 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
         </div>
 
         <button type="submit" class="btn btn-primary" id="btnSubmitSponsor" style="margin-top:4px; width:100%; justify-content:center;">
-          <span>Submit Sponsorship Inquiry</span>
-          <span class="btn-icon">→</span>
+          <span>Send Inquiry via WhatsApp</span>
+          <span class="btn-icon">💬</span>
         </button>
 
         <div id="sponsorSuccessBox" style="display:none; padding:12px; background:var(--obsidian); border:1px solid var(--line-strong); border-radius:var(--radius-md); font-size:12px; line-height:1.6; color:var(--text-soft);">
-          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Inquiry Prepared!</div>
-          If your email app didn't launch automatically, email us directly:
+          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Opening WhatsApp...</div>
+          If WhatsApp didn't open automatically, chat directly with EthicCode:
           <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
-            <code style="color:var(--text); font-size:12px; background:var(--graphite); padding:2px 8px; border-radius:4px;">support@ethiccode.in</code>
-            <button type="button" class="btn btn-secondary" onclick="copySupportEmail(this)" style="padding:3px 10px; font-size:11px;">Copy</button>
+            <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:4px 12px; font-size:12px; gap:6px;">
+              <span>Open WhatsApp (+91 91364 62454)</span>
+              <span class="btn-icon">💬</span>
+            </a>
           </div>
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px; font-size:12px; color:var(--text-faint);">
-          <span>Direct partner contact:</span>
-          <button type="button" class="btn btn-ghost" onclick="copySupportEmail(this)" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text);">
-            support@ethiccode.in 📋
-          </button>
+          <span>EthicCode WhatsApp Business:</span>
+          <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text); text-decoration:none;">
+            +91 91364 62454 💬
+          </a>
         </div>
       </form>
     </div>
@@ -584,17 +586,6 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       modal.setAttribute('aria-hidden', 'true');
     }
 
-    function copySupportEmail(btn) {
-      const email = 'support@ethiccode.in';
-      navigator.clipboard.writeText(email).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'Copied!';
-        setTimeout(() => { btn.innerText = orig; }, 2000);
-      }).catch(() => {
-        prompt('Copy support email:', email);
-      });
-    }
-
     function handleSponsorSubmit(e) {
       e.preventDefault();
       const company = document.getElementById('sponsorCompany').value.trim();
@@ -603,27 +594,21 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       const url = document.getElementById('sponsorUrl').value.trim();
       const notes = document.getElementById('sponsorNotes').value.trim();
 
-      const subject = encodeURIComponent('tdrop Sponsorship Inquiry: ' + company);
-      const body = encodeURIComponent(
-        'Company / Tool: ' + company + '\\n' +
-        'Contact Email: ' + email + '\\n' +
-        'Selected Package: ' + tier + '\\n' +
-        'Destination URL: ' + url + '\\n' +
-        (notes ? ('Notes / Pitch: ' + notes + '\\n') : '') +
-        '\\nHello tdrop team,\\nWe would like to discuss sponsoring tdrop terminal runs and web downloads.'
-      );
+      const message =
+        'Hello EthicCode team, I would like to inquire about tdrop sponsorship:\\n\\n' +
+        '• Company / Tool: ' + company + '\\n' +
+        '• Contact Email: ' + email + '\\n' +
+        '• Selected Package: ' + tier + '\\n' +
+        '• Destination URL: ' + url + '\\n' +
+        (notes ? ('• Notes: ' + notes + '\\n') : '');
 
-      // Show inline confirmation with copyable support email fallback
       const successBox = document.getElementById('sponsorSuccessBox');
       if (successBox) {
         successBox.style.display = 'block';
       }
 
-      // Try triggering mailto link
-      const mailtoLink = 'mailto:support@ethiccode.in?subject=' + subject + '&body=' + body;
-      const dummyAnchor = document.createElement('a');
-      dummyAnchor.href = mailtoLink;
-      dummyAnchor.click();
+      const waUrl = 'https://wa.me/919136462454?text=' + encodeURIComponent(message);
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
 
     window.addEventListener('keydown', (e) => {
