@@ -104,7 +104,7 @@ if [ ! -f "\${TMP_DIR}/\${BINARY_NAME}" ]; then
   if command -v npm >/dev/null 2>&1; then
     printf "\${YELLOW}Prebuilt binary unavailable for this version, falling back to npm global install...\${RESET}\\n"
     npm install -g tdrop
-    printf "\\n\${GREEN}✔ Installed successfully via npm!\${RESET}\\n"
+    printf "\\n\${GREEN}Installed successfully via npm!\${RESET}\\n"
     exit 0
   else
     printf "\${RED}Failed to download binary from GitHub Releases.\${RESET}\\n"
@@ -123,7 +123,7 @@ else
   sudo mv "\${TMP_DIR}/\${BINARY_NAME}" "\${INSTALL_DIR}/\${BINARY_NAME}"
 fi
 
-printf "\\n\${GREEN}\${BOLD}✔ tdrop successfully installed to \${INSTALL_DIR}/\${BINARY_NAME}!\${RESET}\\n"
+printf "\\n\${GREEN}\${BOLD}tdrop successfully installed to \${INSTALL_DIR}/\${BINARY_NAME}!\${RESET}\\n"
 
 # Verify PATH
 case ":\$PATH:" in
@@ -208,7 +208,7 @@ try {
         if ($npmCmd) {
             Write-Host "Prebuilt Windows binary not found on GitHub, falling back to npm..." -ForegroundColor Yellow
             npm install -g tdrop
-            Write-Host "\`n✔ Installed successfully via npm!" -ForegroundColor Green
+            Write-Host "\`nInstalled successfully via npm!" -ForegroundColor Green
             return
         } else {
             throw "Failed to download tdrop from GitHub Releases ($DownloadUrl)."
@@ -220,10 +220,10 @@ try {
         $NewPath = "$InstallDir;$UserPath"
         [Environment]::SetEnvironmentVariable("Path", $NewPath, [EnvironmentVariableTarget]::User)
         $env:Path = "$InstallDir;$env:Path"
-        Write-Host "  ✔ Added $InstallDir to user PATH" -ForegroundColor DarkGray
+        Write-Host "  Added $InstallDir to user PATH" -ForegroundColor DarkGray
     }
 
-    Write-Host "\`n✔ tdrop successfully installed to $TargetExe!" -ForegroundColor Green
+    Write-Host "\`ntdrop successfully installed to $TargetExe!" -ForegroundColor Green
     Write-Host "\`nQuick Start:" -ForegroundColor White
     Write-Host "  tdrop <file>                  Upload file and get instant link + QR" -ForegroundColor Cyan
     Write-Host "  cat file.txt | tdrop -n a.txt Stream piped stdin" -ForegroundColor Cyan

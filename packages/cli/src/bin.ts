@@ -125,14 +125,14 @@ program
       }
 
       // Display Final Beautiful Success Box
-      console.log("\n\x1b[32m✔ Upload complete!\x1b[0m\n");
-      console.log(`  \x1b[1m🛡️  Malware Scan:\x1b[0m \x1b[32m${result.malwareScan}\x1b[0m`);
-      console.log(`  \x1b[1m🔗 Link:\x1b[0m         \x1b[36m\x1b[4m${result.url}\x1b[0m`);
-      console.log(`  \x1b[1m📥 Direct Curl:\x1b[0m  curl -O ${result.url}/${result.filename}`);
-      console.log(`  \x1b[1m⏳ Retention:\x1b[0m    ${result.expiresIn} (Expires ${new Date(result.expiresAt).toLocaleTimeString()})`);
-      console.log(`  \x1b[90mℹ  By uploading, you have already accepted the Terms of Service & Privacy Policy:\x1b[0m`);
-      console.log(`  \x1b[90m   • Terms:   ${apiUrl}/terms\x1b[0m`);
-      console.log(`  \x1b[90m   • Privacy: ${apiUrl}/privacy\x1b[0m\n`);
+      console.log("\n\x1b[32mUpload complete\x1b[0m\n");
+      console.log(`  \x1b[1mMalware scan:\x1b[0m  \x1b[32m${result.malwareScan}\x1b[0m`);
+      console.log(`  \x1b[1mLink:\x1b[0m          \x1b[36m\x1b[4m${result.url}\x1b[0m`);
+      console.log(`  \x1b[1mcURL:\x1b[0m          curl -O ${result.url}/${result.filename}`);
+      console.log(`  \x1b[1mRetention:\x1b[0m     ${result.expiresIn} (Expires ${new Date(result.expiresAt).toLocaleTimeString()})`);
+      console.log(`  \x1b[90mBy uploading, you have accepted the Terms of Service & Privacy Policy:\x1b[0m`);
+      console.log(`  \x1b[90m• Terms:   ${apiUrl}/terms\x1b[0m`);
+      console.log(`  \x1b[90m• Privacy: ${apiUrl}/privacy\x1b[0m\n`);
 
       if (options.qr) {
         try {
@@ -141,7 +141,7 @@ program
             .split("\n")
             .map((line) => "  " + line)
             .join("\n");
-          console.log("  \x1b[1m📱 Scan to open on mobile:\x1b[0m\n");
+          console.log("  \x1b[1mScan to open on mobile:\x1b[0m\n");
           console.log(indentedQr);
           console.log("");
         } catch {

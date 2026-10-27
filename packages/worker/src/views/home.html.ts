@@ -1205,7 +1205,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
             <div class="terminal-line"><span class="terminal-prompt">$</span> <span>npx tdrop release-v1.tar.gz</span></div>
             <div class="terminal-line" style="color:var(--text-faint);"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>
             <div class="terminal-line"><span>Uploading [████████████] 100% | 4.8 MB/s</span></div>
-            <div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>✔ Upload complete!</span></div>
+            <div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>Upload complete</span></div>
             <div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>
             <div class="terminal-line"><span>  Link: </span><span style="color:var(--text);">https://${domain}/a7kX9b2</span></div>
             <div class="terminal-line" style="color:var(--text-faint);"><span>  cURL: curl -O https://${domain}/a7kX9b2/release-v1.tar.gz</span></div>
@@ -1509,14 +1509,14 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
         box.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">$</span> <span>npx tdrop release-v1.tar.gz</span></div>' +
           '<div class="terminal-line" style="color:var(--text-faint);"><span>[Sponsored] High-speed serverless infra -> https://${domain}/ad/r2</span></div>' +
           '<div class="terminal-line"><span>Uploading [████████████] 100% | 4.8 MB/s</span></div>' +
-          '<div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>✔ Upload complete!</span></div>' +
+          '<div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>Upload complete</span></div>' +
           '<div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>' +
           '<div class="terminal-line"><span>  Link: </span><span style="color:var(--text);">https://${domain}/a7kX9b2</span></div>' +
           '<div class="terminal-line" style="color:var(--text-faint);"><span>  cURL: curl -O https://${domain}/a7kX9b2/release-v1.tar.gz</span></div>';
       } else if (tab === 'stdin') {
         box.innerHTML = '<div class="terminal-line"><span class="terminal-prompt">$</span> <span>cat production.log | npx tdrop --filename prod.log</span></div>' +
           '<div class="terminal-line" style="color:var(--text-faint);"><span>Streaming stdin to https://${domain}... 1.2 MB uploaded</span></div>' +
-          '<div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>✔ Stdin upload complete!</span></div>' +
+          '<div class="terminal-line" style="color:var(--success); margin-top:4px;"><span>Stdin upload complete</span></div>' +
           '<div class="terminal-line" style="color:var(--text-muted);"><span>  Scan: Verified Clean (ClamAV)</span></div>' +
           '<div class="terminal-line"><span>  Link: </span><span style="color:var(--text);">https://${domain}/b9mW2q1</span></div>';
       } else if (tab === 'curl') {

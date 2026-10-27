@@ -418,12 +418,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
       <div class="header-controls">
         <button class="btn-control" onclick="exportStatsJson()">
-          <span>↓</span>
           <span>Export JSON</span>
         </button>
         <button class="btn-control" onclick="openSponsorModal()">
-          <span>⚡</span>
           <span>Sponsor CLI</span>
+          <span style="font-family:var(--font-mono); font-size:11px;">→</span>
         </button>
       </div>
     </header>
@@ -433,7 +432,12 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Active Edge Regions</span>
-          <div class="kpi-icon">🌍</div>
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
         </div>
         <div class="kpi-number">
           <span id="countRegions">300+</span>
@@ -446,7 +450,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Unique Developers</span>
-          <div class="kpi-icon">💻</div>
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 17l6-6-6-6M12 19h8"/>
+            </svg>
+          </div>
         </div>
         <div class="kpi-number">
           <span id="countDevs">0</span>
@@ -459,7 +467,13 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Files Processed</span>
-          <div class="kpi-icon">📦</div>
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
         </div>
         <div class="kpi-number">
           <span id="countFiles">0</span>
@@ -472,7 +486,13 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
       <div class="kpi-card">
         <div class="kpi-top">
           <span class="kpi-label">Terminal Ad CTR</span>
-          <div class="kpi-icon">🎯</div>
+          <div class="kpi-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="6"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+          </div>
         </div>
         <div class="kpi-number">
           <span id="countCtr">4.2%</span>
@@ -564,7 +584,11 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h3 style="font-size:1.15rem; font-weight:600; color:var(--text);">Sponsor the Command Line</h3>
-        <button onclick="closeSponsorModal()" class="btn btn-ghost" style="padding:4px 8px; font-size:16px;">✕</button>
+        <button type="button" onclick="closeSponsorModal()" class="btn btn-ghost" style="padding:4px 8px;" aria-label="Close modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
       <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
         Reach thousands of software engineers every week inside <code>npx tdrop</code> command line runs. Fill out your details and we will get back to you within 24 hours.
@@ -592,16 +616,16 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         </div>
         <button type="submit" class="btn btn-primary" style="margin-top:8px; width:100%; justify-content:center;">
           <span>Send Inquiry via WhatsApp</span>
-          <span class="btn-icon">💬</span>
+          <span class="btn-icon">→</span>
         </button>
 
         <div id="statsSponsorSuccessBox" style="display:none; padding:12px; background:var(--obsidian); border:1px solid var(--line-strong); border-radius:var(--radius-md); font-size:12px; line-height:1.6; color:var(--text-soft);">
-          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Opening WhatsApp...</div>
+          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">Opening WhatsApp...</div>
           If WhatsApp didn't open automatically, chat directly with EthicCode:
           <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
             <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:4px 12px; font-size:12px; gap:6px;">
               <span>Open WhatsApp (+91 91364 62454)</span>
-              <span class="btn-icon">💬</span>
+              <span class="btn-icon">→</span>
             </a>
           </div>
         </div>
@@ -609,7 +633,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px; font-size:12px; color:var(--text-faint);">
           <span>EthicCode WhatsApp Business:</span>
           <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text); text-decoration:none;">
-            +91 91364 62454 💬
+            +91 91364 62454 →
           </a>
         </div>
       </form>
@@ -633,7 +657,7 @@ export function renderStatsPage(domain: string = "tdrop.link"): string {
 
           tooltip.innerHTML =
             '<div style="font-weight:600; color:var(--text); margin-bottom:2px;">' + country + ' · ' + name + '</div>' +
-            '<div style="color:var(--success-text);">⚡ Latency: ' + ping + '</div>' +
+            '<div style="color:var(--success-text);">Latency: ' + ping + '</div>' +
             '<div style="color:var(--text-muted); font-size:11px;">Traffic Share: ' + share + ' · ' + count + ' drops</div>';
           tooltip.style.opacity = '1';
         });

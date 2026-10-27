@@ -218,38 +218,59 @@ export function renderContactPage(domain: string = "tdrop.link"): string {
 
       <div class="channels-grid">
         <div class="channel-box">
-          <div class="channel-icon">🐛</div>
+          <div class="channel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="8" height="14" x="8" y="6" rx="4"/>
+              <path d="m19 7-3 2M5 7l3 2M19 19l-3-2M5 19l3-2M20 13h-4M4 13h4M10 4l1 2M14 4l-1 2"/>
+            </svg>
+          </div>
           <div class="channel-title">Bug Reports & Issues</div>
           <div class="channel-desc">Found a bug or error in the CLI, edge worker, or website? Open a tracked issue on our GitHub repository.</div>
           <a href="https://github.com/TAGISWILD/tdrop/issues" target="_blank" rel="noopener" class="channel-link">Open GitHub Issue →</a>
         </div>
 
         <div class="channel-box">
-          <div class="channel-icon">💬</div>
+          <div class="channel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
           <div class="channel-title">Community Discussions</div>
           <div class="channel-desc">Discuss feature proposals, ask questions about terminal integrations, and share how you use tdrop in CI/CD.</div>
           <a href="https://github.com/TAGISWILD/tdrop/discussions" target="_blank" rel="noopener" class="channel-link">Join Discussions →</a>
         </div>
 
         <div class="channel-box">
-          <div class="channel-icon">🛡️</div>
+          <div class="channel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
           <div class="channel-title">Security Disclosures</div>
           <div class="channel-desc">We take security seriously. Please report vulnerabilities responsibly before public disclosure.</div>
           <a href="mailto:security@tdrop.link" class="channel-link">security@tdrop.link →</a>
         </div>
 
         <div class="channel-box">
-          <div class="channel-icon">🤝</div>
+          <div class="channel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m11 17 2 2a1 1 0 0 0 1.4 0l6.6-6.6a2 2 0 0 0 0-2.8l-1.6-1.6a2 2 0 0 0-2.8 0L15 9.6M13 7l-2-2a1 1 0 0 0-1.4 0L3 11.6a2 2 0 0 0 0 2.8l1.6 1.6a2 2 0 0 0 2.8 0L9 14.4"/>
+            </svg>
+          </div>
           <div class="channel-title">Sponsorship Inquiries</div>
           <div class="channel-desc">Interested in promoting your developer tool or cloud platform to terminal users across 300+ edge nodes?</div>
           <a href="/sponsor" class="channel-link">View Sponsor Options →</a>
         </div>
 
         <div class="channel-box">
-          <div class="channel-icon">💬</div>
+          <div class="channel-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
           <div class="channel-title">WhatsApp Business</div>
           <div class="channel-desc">Direct partnership and priority business support via EthicCode official business WhatsApp.</div>
-          <a href="https://wa.me/919136462454?text=Hello%20EthicCode%20team%2C%20I%20have%20an%20inquiry%20regarding%20tdrop" target="_blank" rel="noopener" class="channel-link">+91 91364 62454 💬 →</a>
+          <a href="https://wa.me/919136462454?text=Hello%20EthicCode%20team%2C%20I%20have%20an%20inquiry%20regarding%20tdrop" target="_blank" rel="noopener" class="channel-link">+91 91364 62454 →</a>
         </div>
       </div>
 

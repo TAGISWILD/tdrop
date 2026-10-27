@@ -409,9 +409,9 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
       </div>
       <div class="specimen-body">
         <div><span style="color:var(--text-faint);">$</span> npx tdrop production-dump.sql</div>
-        <div class="specimen-blip">⚡ [Sponsored] PlanetScale — Serverless MySQL with instant branching: https://${domain}/ad/planetscale</div>
+        <div class="specimen-blip">[Sponsored] PlanetScale — Serverless MySQL with instant branching: https://${domain}/ad/planetscale</div>
         <div>Uploading [████████████████████] 100% · 14.2 MB/s</div>
-        <div style="color:var(--success-text);">✔ Drop complete! Auto-expires in 24 hours.</div>
+        <div style="color:var(--success-text);">Drop complete · auto-expires in 24 hours.</div>
         <div>Link: <span style="color:var(--text);">https://${domain}/a9kL3x2</span></div>
       </div>
     </section>
@@ -498,7 +498,11 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h3 id="sponsorModalTitle" style="font-size:1.2rem; font-weight:600; color:var(--text);">Sponsor the Command Line</h3>
-        <button type="button" onclick="closeSponsorModal()" class="btn btn-ghost" style="padding:4px 8px; font-size:16px;" aria-label="Close modal">✕</button>
+        <button type="button" onclick="closeSponsorModal()" class="btn btn-ghost" style="padding:4px 8px;" aria-label="Close modal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
 
       <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">
@@ -538,16 +542,16 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
 
         <button type="submit" class="btn btn-primary" id="btnSubmitSponsor" style="margin-top:4px; width:100%; justify-content:center;">
           <span>Send Inquiry via WhatsApp</span>
-          <span class="btn-icon">💬</span>
+          <span class="btn-icon">→</span>
         </button>
 
         <div id="sponsorSuccessBox" style="display:none; padding:12px; background:var(--obsidian); border:1px solid var(--line-strong); border-radius:var(--radius-md); font-size:12px; line-height:1.6; color:var(--text-soft);">
-          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">✔ Opening WhatsApp...</div>
+          <div style="font-weight:600; color:var(--success-text); margin-bottom:4px;">Opening WhatsApp...</div>
           If WhatsApp didn't open automatically, chat directly with EthicCode:
           <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
             <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:4px 12px; font-size:12px; gap:6px;">
               <span>Open WhatsApp (+91 91364 62454)</span>
-              <span class="btn-icon">💬</span>
+              <span class="btn-icon">→</span>
             </a>
           </div>
         </div>
@@ -555,7 +559,7 @@ export function renderSponsorPage(domain: string = "tdrop.link"): string {
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px; font-size:12px; color:var(--text-faint);">
           <span>EthicCode WhatsApp Business:</span>
           <a href="https://wa.me/919136462454" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="padding:2px 6px; font-size:12px; color:var(--sindoor-text); text-decoration:none;">
-            +91 91364 62454 💬
+            +91 91364 62454 →
           </a>
         </div>
       </form>

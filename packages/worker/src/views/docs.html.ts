@@ -281,7 +281,7 @@ cat &lt;file&gt; | tdrop [options]</code></pre>
       <div class="code-block-wrap">
         <pre><code>$ tdrop --ttl 1h debug.log
 Uploading [████████████] 100% | 1.4 MB/s
-✔ Upload complete!
+Upload complete
   Scan: Verified Clean (ClamAV)
   Link: https://tdrop.link/k8mP2x1
   TTL:  1 hour (auto-incinerates at 15:42 UTC)</code></pre>
@@ -607,7 +607,7 @@ jobs:
         <pre><code>$ RES=$(npx tdrop release-preview.apk --ttl 24h --json)
 $ URL=$(echo "$RES" | jq -r '.url')
 $ curl -X POST -H 'Content-type: application/json' \\
-    --data "{\"text\":\"🚀 New preview build uploaded: $URL (expires in 24h)\"}" \\
+    --data "{\"text\":\"New preview build uploaded: $URL (expires in 24h)\"}" \\
     $SLACK_WEBHOOK_URL</code></pre>
       </div>
     `,

@@ -101,21 +101,21 @@ export interface RealTelemetryData {
 
 // Known global edge PoP coordinates for SVG map
 const POP_COORDINATES: Record<string, { city: string; country: string; flag: string; lat: number; lng: number; x: number; y: number; basePing: number }> = {
-  IAD: { city: "Ashburn (US East)", country: "United States", flag: "🇺🇸", lat: 39.0438, lng: -77.4874, x: 230, y: 165, basePing: 11 },
-  SFO: { city: "San Jose (US West)", country: "United States", flag: "🇺🇸", lat: 37.3382, lng: -121.8863, x: 140, y: 175, basePing: 14 },
-  ORD: { city: "Chicago", country: "United States", flag: "🇺🇸", lat: 41.8781, lng: -87.6298, x: 205, y: 155, basePing: 15 },
-  FRA: { city: "Frankfurt", country: "Germany", flag: "🇩🇪", lat: 50.1109, lng: 8.6821, x: 510, y: 135, basePing: 18 },
-  LHR: { city: "London", country: "United Kingdom", flag: "🇬🇧", lat: 51.5074, lng: -0.1278, x: 485, y: 130, basePing: 15 },
-  AMS: { city: "Amsterdam", country: "Netherlands", flag: "🇳🇱", lat: 52.3676, lng: 4.9041, x: 495, y: 125, basePing: 16 },
-  NRT: { city: "Tokyo", country: "Japan", flag: "🇯🇵", lat: 35.6762, lng: 139.6503, x: 825, y: 175, basePing: 24 },
-  SIN: { city: "Singapore", country: "Singapore", flag: "🇸🇬", lat: 1.3521, lng: 103.8198, x: 740, y: 280, basePing: 26 },
-  SYD: { city: "Sydney", country: "Australia", flag: "🇦🇺", lat: -33.8688, lng: 151.2093, x: 870, y: 390, basePing: 32 },
-  GRU: { city: "São Paulo", country: "Brazil", flag: "🇧🇷", lat: -23.5505, lng: -46.6333, x: 325, y: 360, basePing: 38 },
-  DXB: { city: "Dubai", country: "UAE", flag: "🇦🇪", lat: 25.2048, lng: 55.2708, x: 625, y: 205, basePing: 29 },
-  BOM: { city: "Mumbai", country: "India", flag: "🇮🇳", lat: 19.0760, lng: 72.8777, x: 675, y: 220, basePing: 21 },
-  DEL: { city: "New Delhi", country: "India", flag: "🇮🇳", lat: 28.6139, lng: 77.2090, x: 690, y: 195, basePing: 22 },
-  BLR: { city: "Bengaluru", country: "India", flag: "🇮🇳", lat: 12.9716, lng: 77.5946, x: 690, y: 250, basePing: 23 },
-  DEV: { city: "Local Dev Node", country: "Localhost", flag: "💻", lat: 37.7749, lng: -122.4194, x: 140, y: 175, basePing: 1 },
+  IAD: { city: "Ashburn (US East)", country: "United States", flag: "US", lat: 39.0438, lng: -77.4874, x: 230, y: 165, basePing: 11 },
+  SFO: { city: "San Jose (US West)", country: "United States", flag: "US", lat: 37.3382, lng: -121.8863, x: 140, y: 175, basePing: 14 },
+  ORD: { city: "Chicago", country: "United States", flag: "US", lat: 41.8781, lng: -87.6298, x: 205, y: 155, basePing: 15 },
+  FRA: { city: "Frankfurt", country: "Germany", flag: "DE", lat: 50.1109, lng: 8.6821, x: 510, y: 135, basePing: 18 },
+  LHR: { city: "London", country: "United Kingdom", flag: "GB", lat: 51.5074, lng: -0.1278, x: 485, y: 130, basePing: 15 },
+  AMS: { city: "Amsterdam", country: "Netherlands", flag: "NL", lat: 52.3676, lng: 4.9041, x: 495, y: 125, basePing: 16 },
+  NRT: { city: "Tokyo", country: "Japan", flag: "JP", lat: 35.6762, lng: 139.6503, x: 825, y: 175, basePing: 24 },
+  SIN: { city: "Singapore", country: "Singapore", flag: "SG", lat: 1.3521, lng: 103.8198, x: 740, y: 280, basePing: 26 },
+  SYD: { city: "Sydney", country: "Australia", flag: "AU", lat: -33.8688, lng: 151.2093, x: 870, y: 390, basePing: 32 },
+  GRU: { city: "São Paulo", country: "Brazil", flag: "BR", lat: -23.5505, lng: -46.6333, x: 325, y: 360, basePing: 38 },
+  DXB: { city: "Dubai", country: "UAE", flag: "AE", lat: 25.2048, lng: 55.2708, x: 625, y: 205, basePing: 29 },
+  BOM: { city: "Mumbai", country: "India", flag: "IN", lat: 19.0760, lng: 72.8777, x: 675, y: 220, basePing: 21 },
+  DEL: { city: "New Delhi", country: "India", flag: "IN", lat: 28.6139, lng: 77.2090, x: 690, y: 195, basePing: 22 },
+  BLR: { city: "Bengaluru", country: "India", flag: "IN", lat: 12.9716, lng: 77.5946, x: 690, y: 250, basePing: 23 },
+  DEV: { city: "Local Dev Node", country: "Localhost", flag: "DEV", lat: 37.7749, lng: -122.4194, x: 140, y: 175, basePing: 1 },
 };
 
 // In-memory persistent state for local development & fallback
@@ -186,7 +186,7 @@ export class TelemetryService {
       colo: rawColo,
       city: cf?.city || rawColo,
       country: countryCode,
-      flag: countryCode === "US" ? "🇺🇸" : countryCode === "IN" ? "🇮🇳" : "🌐",
+      flag: countryCode === "US" ? "US" : countryCode === "IN" ? "IN" : "GLOBAL",
     };
   }
 
@@ -463,7 +463,7 @@ export class TelemetryService {
       const known = POP_COORDINATES[code] || {
         city: code,
         country: "Edge PoP",
-        flag: "🌐",
+        flag: "GLOBAL",
         lat: 30,
         lng: 0,
         x: 500,

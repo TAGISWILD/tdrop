@@ -141,9 +141,9 @@ USAGE VIA CURL:
   curl -T "myfile.zip" -H "X-TDrop-Filename: myfile.zip" https://${domain}/upload/raw
 
 SECURITY:
-  🛡️  Files scanned with ClamAV Engine before distribution.
-  🔒 Direct streaming to Cloudflare R2 (zero disk writes).
-  ⏳ Strictly ephemeral: 1 hour, 24 hours, or 7 days retention.
+  • Files scanned with ClamAV Engine before distribution.
+  • Direct streaming to Cloudflare R2 (zero disk writes).
+  • Strictly ephemeral: 1 hour, 24 hours, or 7 days retention.
 `
     );
   }
