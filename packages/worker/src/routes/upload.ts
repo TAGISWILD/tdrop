@@ -41,7 +41,7 @@ async function processUpload(
     return c.json(
       {
         error: "Payload Too Large",
-        message: "Free uploads are strictly limited to 10MB.",
+        message: "Free uploads are strictly limited to 25MB.",
       },
       413
     );
@@ -52,7 +52,7 @@ async function processUpload(
   const uuid = crypto.randomUUID();
   const objectKey = `objects/${retention}/quarantine/${uuid}`;
 
-  // Read stream chunks with strict 10MB cutoff
+  // Read stream chunks with strict 25MB cutoff
   const chunks: Uint8Array[] = [];
   let totalBytes = 0;
   const reader = stream.getReader();
@@ -67,7 +67,7 @@ async function processUpload(
         return c.json(
           {
             error: "Payload Too Large",
-            message: "Free uploads are strictly limited to 10MB.",
+            message: "Free uploads are strictly limited to 25MB.",
           },
           413
         );

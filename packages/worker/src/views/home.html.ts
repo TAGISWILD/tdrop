@@ -1213,7 +1213,7 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
           </div>
           <div>
             <div class="drop-title">Drop file here or tap to upload</div>
-            <div class="drop-subtitle">Free edge transfer up to 10MB per file · Auto-incinerating</div>
+            <div class="drop-subtitle">Free edge transfer up to 25MB per file · Auto-incinerating</div>
           </div>
           <input type="file" id="fileInput" class="file-input" onchange="handleFileSelect(this.files)">
         </div>
@@ -1494,8 +1494,8 @@ export function renderHomePage(domain: string = "tdrop.link", googleSiteVerifica
     function handleFileSelect(files) {
       if (!files || !files.length) return;
       const file = files[0];
-      if (file.size > 10 * 1024 * 1024) {
-        alert('File size (' + (file.size / 1024 / 1024).toFixed(1) + 'MB) exceeds the 10MB free tier limit.');
+      if (file.size > 25 * 1024 * 1024) {
+        alert('File size (' + (file.size / 1024 / 1024).toFixed(1) + 'MB) exceeds the 25MB free tier limit.');
         return;
       }
 

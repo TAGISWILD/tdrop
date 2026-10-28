@@ -20,7 +20,7 @@ export async function uploadFile(
 ): Promise<UploadResponse> {
   const stats = fs.statSync(filePath);
   if (stats.size > MAX_FREE_BYTES) {
-    throw new Error(`File size (${(stats.size / 1024 / 1024).toFixed(1)}MB) exceeds the 10MB free tier limit.`);
+    throw new Error(`File size (${(stats.size / 1024 / 1024).toFixed(1)}MB) exceeds the 25MB free tier limit.`);
   }
 
   const fileBuffer = fs.readFileSync(filePath);
@@ -41,8 +41,7 @@ export async function uploadFile(
   });
 
   if (res.statusCode === 413) {
-    fileStream.destroy();
-    throw new Error("File exceeds the 10MB free tier limit.");
+    throw new Error("File exceeds the 25MB free tier limit.");
   }
 
   if (res.statusCode !== 201) {
@@ -67,7 +66,7 @@ export async function uploadStdin(
       uploaded += chunk.length;
       if (uploaded > MAX_FREE_BYTES) {
         stdin.destroy();
-        return callback(new Error("Piped input exceeds the 10MB free tier limit."));
+        return callback(new Error("Piped input exceeds the 25MB free tier limit."));
       }
       options.onProgress?.(uploaded);
       callback(null, chunk);
@@ -91,7 +90,7 @@ export async function uploadStdin(
 
     if (res.statusCode === 413) {
       stdin.destroy();
-      throw new Error("Piped input exceeds the 10MB free tier limit.");
+      throw new Error("Piped input exceeds the 25MB free tier limit.");
     }
 
     if (res.statusCode !== 201) {

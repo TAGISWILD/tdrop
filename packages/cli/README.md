@@ -43,7 +43,7 @@ curl -C - -O https://tdrop.link/a7kX9b2/archive.tar.gz
 
 ## 🔒 Security & Privacy
 
-* **Strict 10MB Limit**: Free uploads are capped at 10MB with zero server RAM accumulation.
+* **Strict 25MB Limit**: Free uploads are capped at 25MB with zero server RAM accumulation.
 * **Malware Scanning**: Files are verified with ClamAV before distribution.
 * **Ephemeral Storage**: Files are permanently purged after the requested TTL.
 * **Zero Telemetry**: Strict opt-in policy. No tracking, no analytics, no hidden phone-home calls.

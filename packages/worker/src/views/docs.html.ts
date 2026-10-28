@@ -310,7 +310,7 @@ $ echo "Artifact ready at: $DROP_URL"</code></pre>
       <ul>
         <li><code>0</code>: Upload succeeded and verified clean by ClamAV.</li>
         <li><code>1</code>: General network or server connection failure.</li>
-        <li><code>2</code>: File size exceeded the 10MB limit.</li>
+        <li><code>2</code>: File size exceeded the 25MB limit.</li>
         <li><code>3</code>: Malicious binary detected by ClamAV antivirus engine (upload rejected).</li>
       </ul>
     `,
@@ -709,10 +709,10 @@ $ curl -X POST -H 'Content-type: application/json' \\
       <p>tdrop is an open-source, ephemeral file sharing service designed for the command line and modern web browsers. It lets you send files instantly from your terminal (via <code>npx tdrop &lt;file&gt;</code>, WinGet, Homebrew, or cURL) or web interface with automatic short links, QR codes, and automated self-destruction.</p>
 
       <h3>Is tdrop completely free?</h3>
-      <p>Yes. tdrop is 100% free to use for files up to 10MB under our standard retention tiers (1 hour, 24 hours, or 7 days). There are no hidden fees, subscriptions, or credit card requirements.</p>
+      <p>Yes. tdrop is 100% free to use for files up to 25MB under our standard retention tiers (1 hour, 24 hours, or 7 days). There are no hidden fees, subscriptions, or credit card requirements.</p>
 
-      <h3>Why is there a 10MB free limit?</h3>
-      <p>The 10MB limit is intentionally designed to optimize tdrop for its core purpose: sharing code archives, configuration files, screenshots, logs, patches, and documents. Keeping uploads under 10MB allows our Cloudflare Workers edge network to stream and inspect files instantaneously with near-zero latency while preventing abuse.</p>
+      <h3>Why is there a 25MB free limit?</h3>
+      <p>The 25MB limit is intentionally designed to optimize tdrop for its core purpose: sharing code archives, configuration files, screenshots, logs, patches, and documents. Keeping uploads under 25MB allows our Cloudflare Workers edge network to stream and inspect files instantaneously with near-zero latency while preventing abuse.</p>
 
       <h2>Security & Privacy Questions</h2>
 

@@ -2,8 +2,8 @@
  * Core limits and constants for tdrop
  */
 
-// Maximum file size for free unauthenticated uploads: 10MB
-export const MAX_FREE_BYTES = 10 * 1024 * 1024; // 10,485,760 bytes
+// Maximum file size for free unauthenticated uploads: 25MB
+export const MAX_FREE_BYTES = 25 * 1024 * 1024; // 26,214,400 bytes
 
 // Base62 Alphabet for 7-character shortcodes
 export const BASE62_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";

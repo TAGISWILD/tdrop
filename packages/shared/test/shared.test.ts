@@ -13,8 +13,8 @@ import {
 
 describe("@tdrop/shared", () => {
   describe("Constants", () => {
-    it("should enforce exactly 10MB free limit", () => {
-      expect(MAX_FREE_BYTES).toBe(10 * 1024 * 1024);
+    it("should enforce exactly 25MB free limit", () => {
+      expect(MAX_FREE_BYTES).toBe(25 * 1024 * 1024);
     });
 
     it("should define standard retention classes", () => {

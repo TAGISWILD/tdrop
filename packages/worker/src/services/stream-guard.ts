@@ -1,7 +1,7 @@
 import { MAX_FREE_BYTES } from "@tdrop/shared";
 
 export class PayloadTooLargeError extends Error {
-  constructor(message = "File exceeds the 10MB free tier limit.") {
+  constructor(message = "File exceeds the 25MB free tier limit.") {
     super(message);
     this.name = "PayloadTooLargeError";
   }

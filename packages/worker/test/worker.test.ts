@@ -125,8 +125,8 @@ describe("@tdrop/worker", () => {
     });
   });
 
-  describe("ByteLimitGuard (10MB Strict Free Limit)", () => {
-    it("should allow data under 10MB without error", async () => {
+  describe("ByteLimitGuard (25MB Strict Free Limit)", () => {
+    it("should allow data under 25MB without error", async () => {
       const guard = createByteLimitGuard(MAX_FREE_BYTES);
       const chunk = new Uint8Array(1024 * 1024); // 1MB
       const source = new ReadableStream<Uint8Array>({
@@ -145,7 +145,7 @@ describe("@tdrop/worker", () => {
       expect(guard.getBytesRead()).toBe(1024 * 1024);
     });
 
-    it("should abort immediately with PayloadTooLargeError when exceeding 10MB", async () => {
+    it("should abort immediately with PayloadTooLargeError when exceeding limit", async () => {
       const guard = createByteLimitGuard(100); // 100 bytes limit for test
       const chunk = new Uint8Array(101); // 101 bytes
       const source = new ReadableStream<Uint8Array>({
