@@ -6,6 +6,7 @@ import { uploadRoute } from "./routes/upload.js";
 import { downloadRoute } from "./routes/download.js";
 import { blipRoute } from "./routes/blip.js";
 import { internalRoute } from "./routes/internal.js";
+import { opsRoute } from "./routes/ops.js";
 import { statsRoute } from "./routes/stats.js";
 import { renderHomePage } from "./views/home.html.js";
 import { renderSponsorPage } from "./views/sponsor.html.js";
@@ -156,6 +157,7 @@ SECURITY:
 app.route("/", seoRoute);
 app.route("/", docsRoute);
 app.route("/", internalRoute);
+app.route("/api/ops", opsRoute);
 app.route("/", blipRoute);
 app.route("/", statsRoute);
 app.route("/", installRoute);

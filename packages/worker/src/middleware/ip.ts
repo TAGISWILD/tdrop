@@ -34,6 +34,7 @@ export async function rateLimitMiddleware(c: Context<AppContext>, next: Next) {
   const secret = c.env.RATE_LIMIT_SECRET || "default_tdrop_secret_salt";
   const ipHash = await hashIp(rawIp, secret);
   c.set("ipHash", ipHash);
+  c.set("rawIp", rawIp);
 
   const redisService = new MetadataService(c.env);
   const ua = (c.req.header("user-agent") || "").toLowerCase();
@@ -43,8 +44,8 @@ export async function rateLimitMiddleware(c: Context<AppContext>, next: Next) {
     !acceptHeader.includes("text/html");
   const domain = c.env.APP_DOMAIN || "tdrop.link";
 
-  // Check if IP is temporarily blocked by the probe tripwire
-  const isBlocked = await redisService.isBlocked(ipHash);
+  // Check if IP is temporarily blocked by the probe tripwire or admin ban
+  const isBlocked = await redisService.isBlocked(ipHash, rawIp);
   if (isBlocked) {
     if (!isTerminalClient) {
       return c.html(

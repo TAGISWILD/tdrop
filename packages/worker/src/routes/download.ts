@@ -125,6 +125,11 @@ async function handleDownload(c: any, isHead: boolean) {
   const forceDownload = Boolean(c.req.query("download"));
 
   if (!isHead && !forceDownload && !isTerminalClient) {
+    try {
+      c.executionCtx.waitUntil(redisService.incrementViews(code));
+    } catch {
+      redisService.incrementViews(code).catch(() => {});
+    }
     return c.html(renderDownloadPage(metadata, domain));
   }
 
@@ -179,7 +184,7 @@ async function handleDownload(c: any, isHead: boolean) {
     return c.json({ error: "Not Found", message: "Underlying storage object not found." }, 404);
   }
 
-  // Record real download telemetry
+  // Record real download telemetry & increment per-link download counter
   const telemetry = new TelemetryService(c.env);
   const downloadPayload = {
     code,
@@ -191,8 +196,10 @@ async function handleDownload(c: any, isHead: boolean) {
   };
   try {
     c.executionCtx.waitUntil(telemetry.recordDownload(downloadPayload));
+    c.executionCtx.waitUntil(redisService.incrementDownloads(code));
   } catch {
     telemetry.recordDownload(downloadPayload).catch(console.error);
+    redisService.incrementDownloads(code).catch(() => {});
   }
 
   return new Response(r2Object.body, { status: 200, headers });

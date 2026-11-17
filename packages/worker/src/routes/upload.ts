@@ -118,6 +118,16 @@ async function processUpload(
   const shortcode = generateShortcode();
   const now = Date.now();
   const expiresAt = now + ttlSeconds * 1000;
+  const rawIp =
+    c.get("rawIp") ||
+    c.req.header("cf-connecting-ip") ||
+    c.req.header("x-real-ip") ||
+    c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "127.0.0.1";
+  const cf = (c.req.raw as any)?.cf;
+  const country = cf?.country || "XX";
+  const colo = cf?.colo || "EDGE";
+  const uploadSource = detectSource(c);
 
   const metadata: FileMetadata = {
     code: shortcode,
@@ -132,6 +142,13 @@ async function processUpload(
     retentionClass: retention,
     status: "PENDING_SCAN",
     malwareClean: true, // Default to true for optimistic UX
+    ipHash: c.get("ipHash"),
+    uploaderIp: rawIp,
+    uploaderSource: uploadSource,
+    country,
+    colo,
+    views: 0,
+    downloads: 0,
   };
 
   const redisService = new MetadataService(c.env);

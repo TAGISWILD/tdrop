@@ -17,6 +17,12 @@ export interface FileMetadata {
   malwareClean: boolean;
   sha256?: string;
   ipHash?: string;
+  uploaderIp?: string;
+  uploaderSource?: string;
+  country?: string;
+  colo?: string;
+  views?: number;
+  downloads?: number;
 }
 
 export interface UploadResponse {

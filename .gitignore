@@ -6,6 +6,8 @@ dist-release/
 .env.*
 !.env.example
 *.log
+logs/
+ops/
 .DS_Store
 *.bun-build
 .dev.vars
